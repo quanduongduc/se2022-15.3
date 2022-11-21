@@ -1,19 +1,13 @@
 FROM node:16-alpine
 
-EXPOSE 3000
-
 WORKDIR /src
-
-RUN npm i npm@latest -g
 
 COPY package*.json ./
 
-RUN npm install
-
 COPY . .
 
-RUN npm run build
+RUN npm ci
 
-CMD [ "npm","start"]
+CMD [ "npm", "start" ]
 
 
