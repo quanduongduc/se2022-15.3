@@ -1,0 +1,3 @@
+dev.env
+.docker-compose.yml
+.vscode/
