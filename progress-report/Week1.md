@@ -22,6 +22,7 @@ Báo cáo những công việc đã thực hiện được trong tuần đầu t
 
     ![Alt text](images/compose-up.png)
     ![Alt text](images/compose-result.gif)
+
     Đã có thể gọi api được từ backend.
 
 ## Kế Hoạch Cho Các Tuần Tiếp Theo
