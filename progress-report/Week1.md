@@ -66,7 +66,7 @@ Báo cáo những công việc đã thực hiện được trong tuần đầu t
     Câu lệnh run container :
 
   ```bash
-  docker run -d --env-file ./.env --name back-end -p5000:5000 backend-test
+  docker run -d --env-file ./.env --name backend-test -p5000:5000 backend-test
   ```
 
   - Mô tả các Option :
