@@ -1,0 +1,82 @@
+ame: Deploy
+
+on:
+  push:
+    branches:
+      - "**"
+      - "main"
+
+env:
+  AWS_REGION: ap-northeast-1
+  ECR_REPOSITORY_FRONTEND: frontend
+  ECR_REPOSITORY_BACKEND: backend
+  ECR_REPOSITORY_NGINX: nginx
+  BACKEND_CONTAINER: backend
+  FRONTEND_CONTAINER: frontend
+  NGINX_CONTAINER: nginx
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: "no"
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: build and push backend image
+        id: build-backend-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG
+          echo "Build and push $imagename"
+          docker build -t $imagename ./backend
+          docker push $imagename
+
+      - name: build and push frontend image
+        id: build-frontend-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
+          echo "Build and push $imagename"
+          docker build -t $imagename ./frontend
+          docker push $imagename
+
+      - name: build and push nginx image
+        id: build-nginx-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_NGINX:$IMAGE_TAG
+          echo "Build and push $imagename"
+          docker build -t $imagename ./nginx
+          docker push $imagename
