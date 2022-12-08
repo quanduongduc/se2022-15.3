@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - "**"
+      - "**" # for testing purposes only, the deployment will only be trigger on main branch
       - "main"
 
 env:
@@ -11,9 +11,6 @@ env:
   ECR_REPOSITORY_FRONTEND: frontend
   ECR_REPOSITORY_BACKEND: backend
   ECR_REPOSITORY_NGINX: nginx
-  BACKEND_CONTAINER: backend
-  FRONTEND_CONTAINER: frontend
-  NGINX_CONTAINER: nginx
 
 permissions:
   contents: read
