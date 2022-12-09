@@ -164,9 +164,9 @@ jobs:
 
             echo "--- Deployment with Docker Compose ---"
             cd $HOME/projects/$PROJECT_NAME
-            echo -e "AWS_ECR_NGINX=$NGINX-IMAGE" >> .env
-            echo -e "AWS_ECR_BACKEND=$BACKEND-IMAGE" >> .env
-            echo -e "AWS_ECR_FRONTEND=$FRONTEND-IMAGE" >> .env
+            echo -e "AWS_ECR_NGINX=$NGINX_IMAGE" >> .env
+            echo -e "AWS_ECR_BACKEND=$BACKEND_IMAGE" >> .env
+            echo -e "AWS_ECR_FRONTEND=$FRONTEND_IMAGE" >> .env
 
             sudo docker compose -f docker-compose.production.yml up -d
             echo "--- Clean up old docker images"
