@@ -112,7 +112,7 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
           script: |
-            echo "$CLONE_URL"
+            echo "$NGINX_IMAGE"
             echo "-- Check Docker existence"
             docker --version
             if [  $? -eq 127 ]; then
