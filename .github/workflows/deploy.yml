@@ -104,7 +104,7 @@ jobs:
           BACKEND_IMAGE: ${{ needs.build.outputs.backend-image }}
           FRONTEND_IMAGE: ${{ needs.build.outputs.frontend-image }}
           NGINX_IMAGE: ${{ needs.build.outputs.nginx-image }}
-          ECR_REGISTRY: ${{ needs.build.outputs.registry }}
+          ECR_REGISTRY: ${{ needs.build.outputs.ECR_REGISTRY }}
           PROJECT_NAME: "se2022-15.3"
         with:
           host: ${{ secrets.HOSTNAME }}
@@ -112,6 +112,7 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
           script: |
+            echo "$CLONE_URL"
             echo "-- Check Docker existence"
             docker --version
             if [  $? -eq 127 ]; then
