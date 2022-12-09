@@ -20,6 +20,12 @@ jobs:
     name: Build and Push images to Registry
     runs-on: ubuntu-latest
 
+    outputs:
+      backend-image: ${{ steps.build-backend-image.outputs.backend-image }}
+      frontend-image: ${{ steps.build-frontend-image.outputs.frontend-image }}
+      nginx-image: ${{ steps.build-nginx-image.outputs.nginx-image }}
+      ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -49,6 +55,7 @@ jobs:
           echo "Build and push $imagename"
           docker build -t $imagename ./backend
           docker push $imagename
+          echo "backend-image=$imagename" >> $GITHUB_OUTPUT
 
       - name: build and push frontend image
         id: build-frontend-image
@@ -63,6 +70,7 @@ jobs:
           echo "Build and push $imagename"
           docker build -t $imagename ./frontend
           docker push $imagename
+          echo "frontend-image=$imagename" >> $GITHUB_OUTPUT
 
       - name: build and push nginx image
         id: build-nginx-image
@@ -77,3 +85,83 @@ jobs:
           echo "Build and push $imagename"
           docker build -t $imagename ./nginx
           docker push $imagename
+          echo "nginx-image=$imagename" >> $GITHUB_OUTPUT
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: Production
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: SSH in EC2 and deploy
+        uses: fifsky/ssh-action@master
+
+        with:
+          host: ${{ secrets.HOSTNAME }}
+          user: ${{ secrets.USERNAME }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          command: |
+            echo "-- Check Docker existence"
+            docker --version
+            if [  $? -eq 127 ]; then
+              echo "Docker is not installed"
+              echo "--- Install Docker ---"
+              sudo snap install docker
+            fi
+
+            echo "-- Check git existence"
+            git version
+
+            if [ $? -eq 127 ]; then
+                echo "Git is not installed"
+                echo "--- Git Install ---"
+                sudo apt -y install git
+            fi
+            echo "--- Update repo ---"
+
+            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+
+            ! [ -d $HOME/projects ] && mkdir $HOME/projects
+            if ! [ -d $HOME/projects/se2022-15.3]; then
+              echo "--- Clone code from GitHub ---"
+              cd $HOME/projects
+              git clone -b deploy git@github.com:quanduongduc/se2022-15.3.git
+              echo "--- Clone done! ---"
+            else 
+              cd $HOME/projects/test-se2022
+              git fetch --all
+              git reset --hard origin/test
+            fi
+
+            echo "--- Update done! ---"
+            echo "-- Check AWS CLI existence"
+            aws --version
+            if [ $? -eq 127 ]; then
+                echo "AWS CLI is not installed"
+                echo "--- AWS CLI Install ---"
+                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                sudo apt install unzip
+                unzip awscliv2.zip
+                sudo ./aws/install
+            fi
+
+            echo "--- Load AWS Credentials ---"
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws configure set default.region ${{ env.AWS_REGION }}
+            echo ~/.aws/credentials
+
+            echo "--- Docker Log in to AWS ---"
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ needs.build.outputs.ECR_REGISTRY }}
+
+            echo "--- Deployment with Docker Compose ---"
+            cd $HOME/projects/test-se2022
+            echo -e "AWS_ECR_NGINX=${{ needs.build.outputs.nginx-image }}" >> .env
+            echo -e "AWS_ECR_BACKEND=${{ needs.build.outputs.backend-image }}" >> .env
+            echo -e "AWS_ECR_FRONTEND=${{ needs.build.outputs.frontend-image }}" >> .env
+            sudo docker compose -f docker-compose.production.yml up -d
+            echo "--- Clean up old docker images"
+            sudo docker image prune -f -a
+            echo "--- Deployment done! ---"
