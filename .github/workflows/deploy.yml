@@ -99,7 +99,7 @@ jobs:
       - name: SSH in EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
         env:
-          CLONE_URL: "git@github.com:"+$github.repository+".git"
+          CLONE_URL: "git@github.com:${{ github.repository }}.git"
           BACKEND_IMAGE: ${{ needs.build.outputs.backend-image }}
           FRONTEND_IMAGE: ${{ needs.build.outputs.frontend-image }}
           NGINX_IMAGE: ${{ needs.build.outputs.nginx-image }}
