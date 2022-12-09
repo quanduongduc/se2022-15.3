@@ -111,10 +111,6 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
           script: |
-            echo "$NGINX_IMAGE"
-            echo "$CLONE_URL"
-            echo "$PROJECT_NAME"
-            echo "$ECR_REGISTRY"
             echo "-- Check Docker existence"
             docker --version
             if [  $? -eq 127 ]; then
@@ -144,7 +140,7 @@ jobs:
             else 
               cd $HOME/projects/$PROJECT_NAME
               git fetch --all
-              git reset --hard origin/test
+              git reset --hard origin/deploy
             fi
             echo "-- Check AWS CLI existence"
             aws --version
@@ -153,7 +149,7 @@ jobs:
                 echo "--- AWS CLI Install ---"
                 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
                 sudo apt install unzip
-                unzip awscliv2.zip
+                unzip -o -q awscliv2.zip
                 sudo ./aws/install
             fi
 
