@@ -96,7 +96,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - run: |
-          echo "CLONE_URL=$(git remote get-url origin)">>$GITHUB_ENV
+          echo "CLONE_URL=$(git config --get remote.origin.url)">>$GITHUB_ENV
       - name: SSH in EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
         env:
@@ -133,7 +133,7 @@ jobs:
             ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
             ! [ -d $HOME/projects ] && mkdir $HOME/projects
-            if ! [ -d $HOME/projects/$PROJECT_NAME]; then
+            if ! [ -d $HOME/projects/"$PROJECT_NAME"]; then
               echo "--- Clone code from GitHub ---"
               cd $HOME/projects
               git clone -b deploy $CLONE_URL
