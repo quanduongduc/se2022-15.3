@@ -95,12 +95,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: |
-          echo "CLONE_URL=$(git config --get remote.origin.url)">>$GITHUB_OUTPUT
+
       - name: SSH in EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
         env:
-          CLONE_URL: ${{ steps.Checkout.outputs.CLONE_URL }}
+          CLONE_URL: "git@github.com:"+$github.repository+".git"
           BACKEND_IMAGE: ${{ needs.build.outputs.backend-image }}
           FRONTEND_IMAGE: ${{ needs.build.outputs.frontend-image }}
           NGINX_IMAGE: ${{ needs.build.outputs.nginx-image }}
@@ -174,6 +173,7 @@ jobs:
             echo -e "AWS_ECR_NGINX=$NGINX-IMAGE" >> .env
             echo -e "AWS_ECR_BACKEND=$BACKEND-IMAGE" >> .env
             echo -e "AWS_ECR_FRONTEND=$FRONTEND-IMAGE" >> .env
+            cat .env
             sudo docker compose -f docker-compose.production.yml up -d
             echo "--- Clean up old docker images"
             sudo docker image prune -f -a
