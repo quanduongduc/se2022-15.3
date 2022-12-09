@@ -96,11 +96,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - run: |
-          echo "CLONE_URL=$(git config --get remote.origin.url)">>$GITHUB_ENV
+          echo "CLONE_URL=$(git config --get remote.origin.url)">>$GITHUB_OUTPUT
       - name: SSH in EC2 and deploy
         uses: appleboy/ssh-action@v0.1.6
         env:
-          CLONE_URL: $CLONE_URL
+          CLONE_URL: ${{ steps.Checkout.outputs.CLONE_URL }}
           BACKEND_IMAGE: ${{ needs.build.outputs.backend-image }}
           FRONTEND_IMAGE: ${{ needs.build.outputs.frontend-image }}
           NGINX_IMAGE: ${{ needs.build.outputs.nginx-image }}
@@ -113,6 +113,9 @@ jobs:
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
           script: |
             echo "$NGINX_IMAGE"
+            echo "$CLONE_URL"
+            echo "$PROJECT_NAME"
+            echo "$ECR_REGISTRY"
             echo "-- Check Docker existence"
             docker --version
             if [  $? -eq 127 ]; then
