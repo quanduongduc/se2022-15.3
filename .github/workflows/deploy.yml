@@ -96,13 +96,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: SSH in EC2 and deploy
-        uses: fifsky/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.6
 
         with:
           host: ${{ secrets.HOSTNAME }}
-          user: ${{ secrets.USERNAME }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
-          command: |
+          script: |
             echo "-- Check Docker existence"
             docker --version
             if [  $? -eq 127 ]; then
