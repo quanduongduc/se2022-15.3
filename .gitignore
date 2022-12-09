@@ -1,4 +1,0 @@
-*
-.vscode/
-!docker-compose.production.yml
-!.env
