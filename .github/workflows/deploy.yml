@@ -136,7 +136,7 @@ jobs:
             ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
             ! [ -d $HOME/projects ] && mkdir $HOME/projects
-            if ! [ -d "$HOME/projects/$PROJECT_NAME"]; then
+            if ! [ -d "$HOME/projects/$PROJECT_NAME" ]; then
               echo "--- Clone code from GitHub ---"
               cd $HOME/projects
               git clone -b deploy $CLONE_URL
