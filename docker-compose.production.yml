@@ -19,7 +19,6 @@ services:
       - mongodb
     image: $AWS_ECR_BACKEND
     restart: unless-stopped
-    env_file: ./.env
     ports:
       - $NODE_HOST_PORT:$NODE_DOCKER_PORT
     environment:
