@@ -48,7 +48,7 @@ Workflow bao gồm 2 quá trình chính :
   1. Clone code từ github
   1. Chạy các containers (**docker compose up**)
 
-Check workflow running tại : [Actions](https://github.com/quanduongduc/se2022-15.3/actions)
+Check quá trình chạy workflow tại : [Actions](https://github.com/quanduongduc/se2022-15.3/actions)
 
 Các image đã được push lên registry :
 
