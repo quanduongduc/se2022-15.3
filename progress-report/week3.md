@@ -70,3 +70,5 @@ Kết quả :
   - key : private sshkey, với ec2 có thể sử dụng trực tiếp key_pair
 
 - Cần sử dụng ECR nên phải store **account access credentials** của aws vào actions secret : [hướng dẫn](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
+
+- Truy cập web tại : [http://18.178.7.5/](http://18.178.7.5/)
