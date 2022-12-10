@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   mongodb:
@@ -13,7 +13,7 @@ services:
       - db:/data/db
     networks:
       - backend
-  
+
   backend:
     depends_on:
       - mongodb
@@ -40,7 +40,7 @@ services:
     ports:
       - $REACT_HOST_PORT:$REACT_DOCKER_PORT
     networks:
-      - app-network  
+      - app-network
   nginx:
     depends_on:
       - backend
@@ -51,7 +51,7 @@ services:
     networks:
       - app-network
 
-volumes: 
+volumes:
   db:
 
 networks:
