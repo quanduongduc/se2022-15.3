@@ -36,6 +36,8 @@ Các khái niệm trong github actions:
 
 ![Alt text](images/week3/cd-workflow.png)
 
+[Workflow File](https://github.com/quanduongduc/se2022-15.3/blob/main/.github/workflows/deploy.yml)
+
 Workflow bao gồm 2 quá trình chính :
 
 - Build : build các docker images và push chúng lên Registry(AWS ECR sẽ được sử dụng trong Project này)
@@ -46,4 +48,25 @@ Workflow bao gồm 2 quá trình chính :
   1. Clone code từ github
   1. Chạy các containers (**docker compose up**)
 
-- [Workflow File](https://github.com/quanduongduc/se2022-15.3/blob/main/.github/workflows/deploy.yml)
+Check workflow running tại : [Actions](https://github.com/quanduongduc/se2022-15.3/actions)
+
+Các image đã được push lên registry :
+
+![Alt text](images/week3/backend-registry.png)
+![Alt text](images/week3/nginx-registry.png)
+![Alt text](images/week3/frontend-registry.png)
+
+Kết quả :
+
+![Alt text](images/week3/workflow-deploy-result.png)
+
+### Notes
+
+- Cần Clone repo nên cần setup deploy key cho github : [hướng dẫn](https://docs.github.com/en/developers/overview/managing-deploy-keys)
+- Cần remote VPS nên cần store credentials vào actions secret : [setup actions secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets), credentials :
+
+  - hostname : tên máy chủ (hiện tại sử dụng IPv4 của VPS)
+  - username : username của OS (mặc định trong Ubuntu Server sử dụng trong project là **ubuntu**)
+  - key : private sshkey, với ec2 có thể sử dụng trực tiếp key_pair
+
+- Cần sử dụng ECR nên phải store **account access credentials** của aws vào actions secret : [hướng dẫn](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
