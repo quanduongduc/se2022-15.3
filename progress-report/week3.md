@@ -16,7 +16,7 @@ Hình ảnh khi thực hiện **docker compose up**
 
 Thấy các images đã được build và các containers đã được khởi động.
 
-Kết quả nhận được : đã chạy được các containers và truy cập được web thông quá IP
+Kết quả nhận được : đã chạy được các containers và truy cập được web thông quá IPv4
 
 ![Alt text](images/week3/manually-deploy-result.png)
 
