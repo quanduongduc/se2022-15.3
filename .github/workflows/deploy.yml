@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - "**" # for testing purposes only, the deployment will only be trigger on main branch
+      - "5-deploy-to-aws" # for testing purposes only, the deployment will only be trigger on main branch
       - "main"
 
 env:
