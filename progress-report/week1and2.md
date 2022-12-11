@@ -1,4 +1,4 @@
-# Báo Cáo Tuần 1
+# Báo Cáo Tuần 1 và tuần 2
 
 Báo cáo những công việc đã thực hiện được trong tuần đầu tiên.
 
