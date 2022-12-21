@@ -42,35 +42,35 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: build and push backend image
-        id: build-backend-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
-          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG
-          echo "Build and push $imagename"
-          docker build -t $imagename ./backend
-          docker push $imagename
-          echo "backend-image=$imagename" >> $GITHUB_OUTPUT
+      # - name: build and push backend image
+      #   id: build-backend-image
+      #   env:
+      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     IMAGE_TAG: ${{ github.sha }}
+      #   run: |
+      #     # Build a docker container and
+      #     # push it to ECR so that it can
+      #     # be deployed to ECS.
+      #     imagename=$ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG
+      #     echo "Build and push $imagename"
+      #     docker build -t $imagename ./backend
+      #     docker push $imagename
+      #     echo "backend-image=$imagename" >> $GITHUB_OUTPUT
 
-      - name: build and push frontend image
-        id: build-frontend-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
-          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
-          echo "Build and push $imagename"
-          docker build -t $imagename ./frontend
-          docker push $imagename
-          echo "frontend-image=$imagename" >> $GITHUB_OUTPUT
+      # - name: build and push frontend image
+      #   id: build-frontend-image
+      #   env:
+      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     IMAGE_TAG: ${{ github.sha }}
+      #   run: |
+      #     # Build a docker container and
+      #     # push it to ECR so that it can
+      #     # be deployed to ECS.
+      #     imagename=$ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
+      #     echo "Build and push $imagename"
+      #     docker build -t $imagename ./frontend
+      #     docker push $imagename
+      #     echo "frontend-image=$imagename" >> $GITHUB_OUTPUT
 
       - name: build and push nginx image
         id: build-nginx-image
