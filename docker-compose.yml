@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   mongodb:
@@ -8,12 +8,12 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
       - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
     ports:
-      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+      - $MONGODB_HOST_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
     networks:
       - backend
-  
+
   backend:
     depends_on:
       - mongodb
@@ -21,9 +21,9 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - $NODE_HOST_PORT:$NODE_DOCKER_PORT
     environment:
-      - PORT=$NODE_LOCAL_PORT
+      - PORT=$NODE_HOST_PORT
       - DB_HOST=mongodb
       - DB_USER=$MONGODB_USER
       - DB_PASSWORD=$MONGODB_PASSWORD
@@ -41,7 +41,7 @@ services:
     ports:
       - $REACT_HOST_PORT:$REACT_DOCKER_PORT
     networks:
-      - app-network  
+      - app-network
   nginx:
     depends_on:
       - backend
@@ -53,7 +53,7 @@ services:
     networks:
       - app-network
 
-volumes: 
+volumes:
   db:
 
 networks:
