@@ -111,7 +111,6 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
           script: |
-            set -e
             echo "--- Check Docker existence ---"
             docker --version
             if [  $? -eq 127 ]; then
@@ -128,6 +127,26 @@ jobs:
                 echo "--- Git Install ---"
                 sudo apt -y install git
             fi
+
+            echo "--- Check AWS CLI existence ---"
+            aws --version
+            if [ $? -eq 127 ]; then
+                echo "AWS CLI is not installed"
+                echo "--- AWS CLI Install ---"
+                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                sudo apt install unzip
+                unzip -o -q awscliv2.zip
+                sudo ./aws/install
+            fi
+
+            set -e # exit and make workflow fail if following command exits with a non-zero status
+
+            echo "--- Load AWS Credentials ---"
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws configure set default.region ${{ env.AWS_REGION }}
+            echo ~/.aws/credentials
+
             echo "--- Update repo ---"
 
             ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
@@ -143,22 +162,6 @@ jobs:
               git fetch --all
               git reset --hard origin/deploy
             fi
-            echo "--- Check AWS CLI existence ---"
-            aws --version
-            if [ $? -eq 127 ]; then
-                echo "AWS CLI is not installed"
-                echo "--- AWS CLI Install ---"
-                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                sudo apt install unzip
-                unzip -o -q awscliv2.zip
-                sudo ./aws/install
-            fi
-
-            echo "--- Load AWS Credentials ---"
-            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws configure set default.region ${{ env.AWS_REGION }}
-            echo ~/.aws/credentials
 
             echo "--- Docker Log in to AWS ---"
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | sudo docker login --username AWS --password-stdin $ECR_REGISTRY
