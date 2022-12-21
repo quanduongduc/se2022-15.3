@@ -112,6 +112,7 @@ jobs:
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
           script_stop: true
           script: |
+            set -e 
             echo "--- Check Docker existence ---"
             docker --version
             if [  $? -eq 127 ]; then
