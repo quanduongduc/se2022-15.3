@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
+import { ApiVersion } from '@configs/ApiVersion';
 dotenv.config();
 
 export const getApp = (): Application => {
@@ -17,7 +18,7 @@ export const getApp = (): Application => {
         res.send('Healthy');
     });
 
-    app.get('/api/random', (req: Request, res: Response) => {
+    app.get(`${ApiVersion}/random`, (req: Request, res: Response) => {
         const randomNumber: number = Math.floor(Math.random() * 100000);
         return res.json({
             name: String(randomNumber)
