@@ -110,9 +110,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           envs: CLONE_URL,BACKEND_IMAGE,FRONTEND_IMAGE,NGINX_IMAGE,PROJECT_NAME,ECR_REGISTRY
-          script_stop: true
           script: |
-            exit
+            set -e
             echo "--- Check Docker existence ---"
             docker --version
             if [  $? -eq 127 ]; then
