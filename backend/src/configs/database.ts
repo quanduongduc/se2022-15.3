@@ -1,9 +1,10 @@
-import config from './config';
+import { config } from '../configs';
 import mongoose, { ConnectOptions } from 'mongoose';
 
 export const connectDB = async () => {
     try {
         const connectionString = `mongodb://${config.DB_USER}:${config.DB_PASSWORD}@${config.DB_HOST}:${config.DB_PORT}/${config.DB_NAME}`;
+
         const connectRes = await mongoose.connect(connectionString, {
             useNewUrlParser: true,
             useUnifiedTopology: true

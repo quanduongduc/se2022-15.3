@@ -8,6 +8,7 @@ interface ENV {
     DB_PASSWORD: string | undefined;
     DB_NAME: string | undefined;
     DB_PORT: string | undefined;
+    JWT_SECRET: string | undefined;
 }
 
 interface Config {
@@ -17,6 +18,7 @@ interface Config {
     DB_PASSWORD: string;
     DB_NAME: string;
     DB_PORT: string;
+    JWT_SECRET: string;
 }
 
 const getConfig = (): ENV => {
@@ -26,7 +28,8 @@ const getConfig = (): ENV => {
         DB_USER: process.env.DB_USER,
         DB_PASSWORD: process.env.DB_PASSWORD,
         DB_NAME: process.env.DB_NAME,
-        DB_PORT: process.env.DB_PORT
+        DB_PORT: process.env.DB_PORT,
+        JWT_SECRET: process.env.JWT_SECRET
     };
 };
 
@@ -43,4 +46,4 @@ const config = getConfig();
 
 const sanitizedConfig = getSanitzedConfig(config);
 
-export default sanitizedConfig;
+export { sanitizedConfig };
