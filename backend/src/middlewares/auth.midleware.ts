@@ -7,6 +7,11 @@ import { config } from '../configs';
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { accessToken } = req.cookies;
+        if (!accessToken) {
+            return next(
+                new HttpException(HttpStatus.BAD_REQUEST, 'Authenticate fail')
+            );
+        }
         console.log(accessToken);
 
         const user = jwt.verify(accessToken, config.JWT_SECRET);
