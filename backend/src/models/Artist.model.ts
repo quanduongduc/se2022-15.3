@@ -12,7 +12,8 @@ const ArtistSchema = new Schema<IArtist>(
         name: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            index: true
         },
         location: {
             type: String,

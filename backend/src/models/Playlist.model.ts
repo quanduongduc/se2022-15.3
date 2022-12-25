@@ -10,7 +10,8 @@ const PlaylistSchema = new Schema<IPlaylist>(
         title: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            index: true
         },
         tracks: {
             type: [

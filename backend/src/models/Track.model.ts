@@ -12,7 +12,8 @@ const TrackSchema = new Schema<ITrack>(
         title: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            index: true
         },
         url: {
             type: String,

@@ -16,19 +16,17 @@ const permissionSchema = new Schema<IPermission>({
     create: { type: Boolean, required: true },
     delete: { type: Boolean, required: true },
     update: { type: Boolean, required: true },
-    read: { type: Boolean, required: true }
+    read: { type: Boolean, default: true }
 });
-
-const Permission = model<IPermission>('Permission', permissionSchema);
 
 const roleSchema = new Schema<IRole>(
     {
         name: {
             type: String,
-            require: true
+            default: 'user'
         },
         permission: {
-            type: Permission,
+            type: permissionSchema,
             require: true
         }
     },
@@ -42,4 +40,4 @@ const roleSchema = new Schema<IRole>(
 
 const Role = model<IRole>('Role', roleSchema);
 
-export { IRole, Role };
+export { IRole, Role, roleSchema };

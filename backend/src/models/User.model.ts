@@ -1,4 +1,5 @@
 import { Schema, model, Model, ObjectId } from 'mongoose';
+import { roleSchema } from './Role.model';
 
 interface IUser {
     userName: string;
@@ -9,6 +10,7 @@ interface IUser {
     gender: string;
     playlists: [ObjectId];
     favouriteTracks: [ObjectId];
+    isDeleted: boolean;
 }
 
 const UserSchema: Schema<IUser> = new Schema<IUser>(
@@ -24,7 +26,7 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
             trim: true
         },
         role: {
-            type: Schema.Types.ObjectId,
+            type: roleSchema,
             ref: 'Role',
             required: true
         },
@@ -58,6 +60,10 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
                     ref: 'Track'
                 }
             ]
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false
         }
     },
     {
@@ -68,6 +74,14 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     }
 );
 
+UserSchema.pre('find', function () {
+    this.where({ isDeleted: false });
+});
+
+UserSchema.pre('findOne', function () {
+    this.where({ isDeleted: false });
+});
+
 const User: Model<IUser> = model<IUser>('User', UserSchema);
 
-export { User };
+export { User, IUser };
