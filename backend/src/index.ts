@@ -1,8 +1,7 @@
 import 'module-alias/register';
 import { Application } from 'express';
-import { connectDB } from '@configs/database';
-import config from '@configs/config';
 import { getApp } from './app';
+import { connectDB, config } from './configs';
 
 const app: Application = getApp();
 const PORT = config.PORT || 8000;
