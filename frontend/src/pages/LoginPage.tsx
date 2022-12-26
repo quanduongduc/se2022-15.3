@@ -3,6 +3,7 @@ import {
     faFacebook,
     faGoogle
 } from '@fortawesome/free-brands-svg-icons';
+import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement } from 'react';
 import '../css/login.css';
@@ -22,7 +23,7 @@ const LoginPage = (): ReactElement => {
             <div className="content mt-5">
                 <div className="form-wrapper">
                     <div className="login-container mt-5">
-                        <button className="face-login btn btn-primary btn-outline-dark mb-2 rounded-pill d-flex justify-content-center">
+                        <button className="face-login btn btn-primary border-dark mb-2 rounded-pill d-flex justify-content-center">
                             <FontAwesomeIcon
                                 icon={faFacebook}
                                 size="2x"
@@ -32,7 +33,7 @@ const LoginPage = (): ReactElement => {
                                 ĐĂNG NHẬP BẰNG FACEBOOK
                             </p>
                         </button>
-                        <button className="apple-login btn btn-dark btn-outline-dark mb-2 rounded-pill d-flex justify-content-center">
+                        <button className="apple-login btn btn-dark border-dark mb-2 rounded-pill d-flex justify-content-center">
                             <FontAwesomeIcon
                                 icon={faApple}
                                 size="2x"
@@ -42,34 +43,48 @@ const LoginPage = (): ReactElement => {
                                 ĐĂNG NHẬP BẰNG APPLE
                             </p>
                         </button>
-                        <button className="google-login btn btn-light btn-outline-dark mb-2 rounded-pill d-flex justify-content-center">
+                        <button className="google-login btn btn-light border-dark mb-2 rounded-pill d-flex justify-content-center">
                             <FontAwesomeIcon icon={faGoogle} size="2x" />
                             <p className="mx-4">ĐĂNG NHẬP BẰNG GOOGLE</p>
                         </button>
-                        <button className="sdt-login btn btn-light btn-outline-dark mb-3 rounded-pill d-flex justify-content-center">
-                            <p>ĐĂNG NHẬP BẰNG SỐ ĐIỆN THOẠI</p>
+                        <button className="sdt-login btn btn-light border-dark mb-3 rounded-pill d-flex justify-content-center">
+                            <FontAwesomeIcon icon={faPhone} size="2x" />
+                            <p className="mx-4">ĐĂNG NHẬP BẰNG SỐ ĐIỆN THOẠI</p>
                         </button>
                         <hr className="divider" />
-                        <div className="login-form mt-3">
+                        <form
+                            className="login-form needs-validation mt-3"
+                            noValidate
+                        >
                             <div className="login-group input-group mb-3">
-                                <div className="label">
+                                <label
+                                    htmlFor="username-validation"
+                                    className="form-label"
+                                >
                                     Địa chỉ email hoặc tên người dùng
-                                </div>
+                                </label>
                                 <input
                                     type="text"
                                     aria-invalid="false"
-                                    className="login-username"
+                                    className="login-username form-control border-dark"
+                                    id="username-validation"
                                     placeholder="Địa chỉ email hoặc tên người dùng"
                                     autoCapitalize="off"
                                     required
                                 />
                             </div>
                             <div className="login-group  input-group mb-3">
-                                <div className="label">Mật khẩu</div>
+                                <label
+                                    htmlFor="password-validation"
+                                    className="form-label"
+                                >
+                                    Mật khẩu
+                                </label>
                                 <input
                                     type="text"
                                     aria-invalid="false"
-                                    className="login-password"
+                                    className="login-password form-control border-dark"
+                                    id="password-validation"
                                     placeholder="Mật khẩu"
                                     autoCapitalize="off"
                                     required
@@ -93,17 +108,17 @@ const LoginPage = (): ReactElement => {
                                         Hãy nhớ tôi
                                     </label>
                                 </div>
-                                <button className="btn btn-outline-dark btn-lg rounded-pill">
+                                <button className="btn border-dark btn-lg rounded-pill">
                                     Đăng nhập
                                 </button>
                             </div>
-                        </div>
+                        </form>
                         <hr className="divider" />
                         <div className="sign-up-form mt-3">
-                            <div className="label mb-4">
+                            <div className="label-unaccount mb-4">
                                 Bạn chưa có tài khoản?
                             </div>
-                            <button className="btn btn-light btn-outline-dark btn-lg rounded-pill">
+                            <button className="btn btn-light border-dark btn-lg rounded-pill">
                                 Đăng ký Salyr
                             </button>
                         </div>

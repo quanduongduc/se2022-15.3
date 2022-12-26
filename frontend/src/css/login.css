@@ -58,6 +58,10 @@ img {
     height: 48px;
 }
 
+p {
+    margin-top: 0.3rem !important;
+}
+
 .login-form {
     max-width: 450px;
     width: 100%;
@@ -66,14 +70,15 @@ img {
 }
 
 .login-group {
-    width: 450px;
+    width: 100%;
     height: 80px;
     display: inline-block;
 }
 
-.label {
+.form-label {
     width: 100%;
     height: 28px;
+    font-weight: 600;
 }
 
 input {
@@ -85,6 +90,7 @@ input {
     text-decoration: none;
     color: #000000;
 }
+
 .login-btn {
     display: flex;
     flex-direction: row;
@@ -96,6 +102,7 @@ input {
 .login-btn > .btn {
     background-color: #1ED760;
     margin-left: 200px;
+    font-weight: 600;
 }
 
 .sign-up-form {
@@ -104,7 +111,7 @@ input {
     text-align: center;
 }
 
-.sign-up-form > .label {
+.label-unaccount {
     font-size: 20px;
     font-weight: 600;
 }
