@@ -38,11 +38,11 @@ export const login = async (
             );
         }
 
-        const secondOfMonth = 2592000;
+        const milSecondOfMonth = 2592000000;
 
         const token = jwt.sign(user.toJSON(), config.JWT_SECRET);
         res.cookie('accessToken', token, {
-            maxAge: secondOfMonth,
+            maxAge: milSecondOfMonth,
             httpOnly: true
         });
         res.json({
@@ -62,3 +62,5 @@ export const login = async (
 };
 
 export const register = userController.createUser;
+
+export const registerAdmin = userController.createAdminUser;

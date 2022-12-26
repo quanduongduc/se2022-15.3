@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { generateToken, HttpException, HttpStatus } from '../utils';
-import { Role, User } from '../models';
+import { Artist } from '../models';
 import { BaseController } from './base.controller';
 
-class UserController extends BaseController {
+class ArtistController extends BaseController {
     constructor() {
-        super(User);
+        super(Artist);
     }
 }
 
-export const userController = new UserController();
+export const artistController = new ArtistController();
