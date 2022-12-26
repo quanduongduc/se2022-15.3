@@ -2,9 +2,11 @@ import { Schema, model, Model, ObjectId } from 'mongoose';
 
 interface ITrack {
     title: string;
-    url: string;
+    storageName: string;
     artists: [ObjectId];
     duration: number;
+    theme: string;
+    description: string;
 }
 
 const TrackSchema = new Schema<ITrack>(
@@ -15,7 +17,17 @@ const TrackSchema = new Schema<ITrack>(
             trim: true,
             index: true
         },
-        url: {
+        storageName: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        theme: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        description: {
             type: String,
             required: true,
             trim: true
@@ -26,9 +38,7 @@ const TrackSchema = new Schema<ITrack>(
                     type: Schema.Types.ObjectId,
                     ref: 'Artist'
                 }
-            ],
-            minLength: 1,
-            required: true
+            ]
         },
         duration: {
             type: Number,
