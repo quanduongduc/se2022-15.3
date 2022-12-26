@@ -62,7 +62,7 @@ class TrackController extends BaseController {
             const { title } = req.query;
             const titleRegex = new RegExp(title as string, 'i');
 
-            const tracks = await this.findMany(
+            const tracks: any = await this.findMany(
                 {
                     title: titleRegex
                 },
@@ -71,9 +71,31 @@ class TrackController extends BaseController {
                 10
             );
 
+            const tracksWithUrl = await Promise.all(
+                tracks?.map(async (track: any) => {
+                    console.log(track);
+
+                    const getTrackUrlPromise = getObjectSignedUrl(
+                        track.storageName
+                    );
+                    const getThemeUrlPromise = getObjectSignedUrl(track.theme);
+                    const [trackUrl, themeUrl] = await Promise.all([
+                        getTrackUrlPromise,
+                        getThemeUrlPromise
+                    ]);
+                    return {
+                        ...track.toJSON(),
+                        trackUrl,
+                        themeUrl
+                    };
+                })
+            );
+            console.log(tracks);
+            console.log(tracksWithUrl);
+
             this.res(res, {
-                message: 'get users successfully',
-                tracks: tracks
+                message: 'get tracks successfully',
+                tracks: tracksWithUrl
             });
         } catch (error) {
             console.log(error);
