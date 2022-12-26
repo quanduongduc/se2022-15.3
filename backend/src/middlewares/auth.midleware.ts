@@ -3,6 +3,7 @@ import { HttpStatus } from '../utils';
 import { HttpException } from '../utils';
 import * as jwt from 'jsonwebtoken';
 import { config } from '../configs';
+import { userController } from '../controllers';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -12,15 +13,26 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
                 new HttpException(HttpStatus.BAD_REQUEST, 'Authenticate fail')
             );
         }
-        console.log(accessToken);
-
-        const user = jwt.verify(accessToken, config.JWT_SECRET);
+        const verifiedUser: any = jwt.verify(accessToken, config.JWT_SECRET);
+        if (!verifiedUser) {
+            res.clearCookie('accessToken');
+            return next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Authenticate fail'
+                )
+            );
+        }
+        const user = await userController.findById(
+            verifiedUser._id,
+            '-password'
+        );
         if (!user) {
             res.clearCookie('accessToken');
             return next(
                 new HttpException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    'Login session expired, please login again'
+                    'Authenticate fail'
                 )
             );
         }

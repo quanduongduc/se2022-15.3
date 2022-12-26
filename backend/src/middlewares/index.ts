@@ -1,3 +1,4 @@
 import { errorHandler } from './errorHandler.middleware';
 import { auth } from './auth.midleware';
-export { errorHandler, auth };
+import { userInfoValidator } from './validate.midleware';
+export { errorHandler, auth, userInfoValidator };

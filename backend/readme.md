@@ -6,13 +6,13 @@
 
 Register a new user with required data :
 
-| Parameter   | Type     | Description                                        |
-| :---------- | :------- | :------------------------------------------------- |
-| `userName`  | `string` | **Required**.                                      |
-| `password`  | `string` | **Required**.                                      |
-| `firstName` | `string` | **Required**.                                      |
-| `lastName`  | `string` | **Required**.                                      |
-| `gender`    | `string` | **Required**. one of ["male","female","undefined"] |
+| Parameter   | Type     | Description                                                                                 |
+| :---------- | :------- | :------------------------------------------------------------------------------------------ |
+| `userName`  | `string` | **Required**. at least 8 characters and maximum 32 characters                               |
+| `password`  | `string` | **Required**. at least 8 characters,1 upperscase, 1 special charactor, maxium 32 characters |
+| `firstName` | `string` | **Required**. at least 8 not numberic characters                                            |
+| `lastName`  | `string` | **Required**. at least 8 not numberic characters                                            |
+| `gender`    | `string` | **Required**. one of ["male","female","undefined"]                                          |
 
 ### Request
 

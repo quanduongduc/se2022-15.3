@@ -9,7 +9,7 @@ interface IPermission {
 
 interface IRole {
     name: string;
-    permission: IPermission;
+    trackPermission: IPermission;
 }
 
 const roleSchema = new Schema<IRole>(
@@ -18,7 +18,7 @@ const roleSchema = new Schema<IRole>(
             type: String,
             default: 'user'
         },
-        permission: {
+        trackPermission: {
             create: { type: Boolean, default: false },
             delete: { type: Boolean, default: false },
             update: { type: Boolean, default: false },
