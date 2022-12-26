@@ -13,6 +13,7 @@ interface ENV {
     AWS_BUCKET_REGION: string | undefined;
     AWS_SECRET_KEY: string | undefined;
     AWS_ACCESS_KEY: string | undefined;
+    ADMIN_PERMISSION_KEY: string | undefined;
 }
 
 interface Config {
@@ -27,6 +28,7 @@ interface Config {
     AWS_BUCKET_REGION: string;
     AWS_SECRET_KEY: string;
     AWS_ACCESS_KEY: string;
+    ADMIN_PERMISSION_KEY: string;
 }
 
 const getConfig = (): ENV => {
@@ -41,7 +43,8 @@ const getConfig = (): ENV => {
         AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
         AWS_BUCKET_REGION: process.env.AWS_BUCKET_REGION,
         AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
-        AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY
+        AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+        ADMIN_PERMISSION_KEY: process.env.ADMIN_PERMISSION_KEY
     };
 };
 
