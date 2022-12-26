@@ -30,8 +30,8 @@ export const getApp = (): Application => {
         });
     });
 
-    routes.use('/users', userRoute);
-    routes.use('/auth', authRoute);
+    routes.use('/api/users', userRoute);
+    routes.use('/api/auth', authRoute);
 
     app.use(routes);
 
