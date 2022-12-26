@@ -6,8 +6,7 @@ import {
     updatePermissionRequire,
     createPermissionRequire
 } from './permission.midleware';
-import { audioFilter } from './audioFilter.midleware';
-
+import { audioFilter, imageFilter } from './fileFilter.midleware';
 export {
     errorHandler,
     authRequire,
@@ -16,5 +15,6 @@ export {
     deletePermissionRequire,
     updatePermissionRequire,
     createPermissionRequire,
-    audioFilter
+    audioFilter,
+    imageFilter
 };

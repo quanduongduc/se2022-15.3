@@ -1,4 +1,5 @@
 import { login, register } from './auth.controller';
 import { userController } from './user.controller';
+import { trackController } from './track.controller';
 
-export { userController, login, register };
+export { userController, trackController, login, register };

@@ -18,6 +18,7 @@ export const authRequire = async (
             );
         }
         const verifiedUser: any = jwt.verify(accessToken, config.JWT_SECRET);
+
         if (!verifiedUser) {
             res.clearCookie('accessToken');
             return next(

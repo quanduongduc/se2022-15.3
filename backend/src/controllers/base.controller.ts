@@ -18,7 +18,7 @@ export class BaseController implements IController {
     public create = async (document: unknown) => {
         try {
             const data: Document = await this.model.create(document);
-            console.log(data);
+            return data;
         } catch (error) {
             console.log(error);
         }
@@ -189,7 +189,7 @@ export class BaseController implements IController {
     public deleteById = async (documentId: string, softDelete = false) => {
         if (softDelete) {
             return await this.model
-                .findByIdAndUpdate(documentId, {
+                .findByIdAndDelete(documentId, {
                     isDeleted: true
                 })
                 .exec();
