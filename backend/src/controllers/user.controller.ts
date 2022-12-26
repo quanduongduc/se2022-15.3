@@ -20,7 +20,6 @@ class UserController extends BaseController {
             const existedUser: unknown = await this.findOne({
                 userName: userName
             });
-            console.log(existedUser);
             if (existedUser) {
                 return next(
                     new HttpException(
@@ -39,8 +38,8 @@ class UserController extends BaseController {
                 gender,
                 role
             };
-            const token = generateToken(user);
-            await this.create(user);
+            const userDocument: any = await this.create(user);
+            const token = generateToken(userDocument.toJSON());
 
             const secondOfMonth = 2592000;
 
