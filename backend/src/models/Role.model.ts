@@ -12,13 +12,6 @@ interface IRole {
     permission: IPermission;
 }
 
-const permissionSchema = new Schema<IPermission>({
-    create: { type: Boolean, required: true },
-    delete: { type: Boolean, required: true },
-    update: { type: Boolean, required: true },
-    read: { type: Boolean, default: true }
-});
-
 const roleSchema = new Schema<IRole>(
     {
         name: {
@@ -26,8 +19,10 @@ const roleSchema = new Schema<IRole>(
             default: 'user'
         },
         permission: {
-            type: permissionSchema,
-            require: true
+            create: { type: Boolean, default: false },
+            delete: { type: Boolean, default: false },
+            update: { type: Boolean, default: false },
+            read: { type: Boolean, default: true }
         }
     },
     {
