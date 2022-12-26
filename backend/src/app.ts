@@ -1,13 +1,19 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
+import { authRoute, userRoute, trackRoute } from './routes';
+import { errorHandler } from './middlewares';
+import cookieParser from 'cookie-parser';
+
 dotenv.config();
 
 export const getApp = (): Application => {
     const app: Application = express();
+    const routes = Router();
 
     app.use(express.json());
+    app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
 
     app.use(helmet());
@@ -24,5 +30,11 @@ export const getApp = (): Application => {
         });
     });
 
+    routes.use('/api/users', userRoute);
+    routes.use('/api/auth', authRoute);
+    routes.use('/api/track', trackRoute);
+    app.use(routes);
+
+    app.use(errorHandler);
     return app;
 };
