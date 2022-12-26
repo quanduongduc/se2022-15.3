@@ -1,6 +1,4 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-
 import './App.css';
 
 function App() {
@@ -9,19 +7,9 @@ function App() {
             <div>
                 <ul>
                     <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/random">Testing api page</Link>
-                    </li>
-                    <li>
-                        <Link to="/register">Register</Link>
-                    </li>
-                    <li>
-                        <Link to="/signin">Signin</Link>
+                        <Link to="/login">Login page</Link>
                     </li>
                 </ul>
-                <hr />
             </div>
         </div>
     );
