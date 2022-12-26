@@ -5,7 +5,11 @@ import * as jwt from 'jsonwebtoken';
 import { config } from '../configs';
 import { userController } from '../controllers';
 
-export const auth = async (req: Request, res: Response, next: NextFunction) => {
+export const authRequire = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const { accessToken } = req.cookies;
         if (!accessToken) {
@@ -36,12 +40,42 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
                 )
             );
         }
+        req.body.user = user;
+        console.log(req.body);
+
+        next();
+    } catch (error) {
+        console.log(error);
+
+        next(
+            new HttpException(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                'Intenal Server Error'
+            )
+        );
+    }
+};
+
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { user } = req.body;
+        const userExisted = await userController.findById(
+            user._id,
+            '-password'
+        );
+        if (!userExisted) {
+            res.clearCookie('accessToken');
+            return next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Authenticate fail : user not found'
+                )
+            );
+        }
         res.json({
             message: 'Authenticate successfully',
-            user: user
+            user: userExisted
         });
-        req.body.user = user;
-        next();
     } catch (error) {
         console.log(error);
 

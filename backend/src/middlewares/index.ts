@@ -1,4 +1,20 @@
 import { errorHandler } from './errorHandler.middleware';
-import { auth } from './auth.midleware';
+import { authRequire, auth } from './auth.midleware';
 import { userInfoValidator } from './validate.midleware';
-export { errorHandler, auth, userInfoValidator };
+import {
+    deletePermissionRequire,
+    updatePermissionRequire,
+    createPermissionRequire
+} from './permission.midleware';
+import { audioFilter } from './audioFilter.midleware';
+
+export {
+    errorHandler,
+    authRequire,
+    auth,
+    userInfoValidator,
+    deletePermissionRequire,
+    updatePermissionRequire,
+    createPermissionRequire,
+    audioFilter
+};
