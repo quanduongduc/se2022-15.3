@@ -15,6 +15,7 @@ artistRoute.post(
     createPermissionRequire,
     artistController.createArtist
 );
+artistRoute.get('/search', authRequire, artistController.findArtistByName);
 artistRoute.get('/:id', authRequire, artistController.findArtistById);
 artistRoute.delete(
     '/:id',

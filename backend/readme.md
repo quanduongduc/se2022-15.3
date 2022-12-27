@@ -137,7 +137,7 @@ Search Tracks by name(nearly like "included" search)
 
 ### Request
 
-`GET /api/track/search/?title=hello`
+`GET /api/track/search/?title`
 
 ### Response Example
 
@@ -187,7 +187,7 @@ add track to user's favourite list
 
 ### Request
 
-`Patch /api/users/addFavourite/:id`
+`Patch /api/user/addFavourite/:id`
 
 ### Response Example
 
@@ -293,8 +293,6 @@ add track to user's favourite list
 
 Create new Artist
 
-**\*Create permission require**
-
 | Parameter  | Type     | Description                                 |
 | :--------- | :------- | :------------------------------------------ |
 | `name`     | `string` | **Required**.                               |
@@ -352,5 +350,67 @@ Find artist by id
         "updated_at": "2022-12-27T11:27:16.952Z",
         "__v": 0
     }
+}
+```
+
+## Find Artist by Name
+
+Find artist by id
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `name`    | `string` | **Required**. query params |
+
+### Request
+
+`Get /api/artist/search/?name`
+
+### Response Example
+
+```json
+{
+    "message": "get artists successfully",
+    "users": [
+        {
+            "_id": "63aad07da14ea04ded568570",
+            "name": "Hana",
+            "location": "us",
+            "gender": "male",
+            "tracks": ["63aad694940222700515caf3"],
+            "created_at": "2022-12-27T11:01:17.520Z",
+            "updated_at": "2022-12-27T11:27:16.952Z",
+            "__v": 0
+        },
+        {
+            "_id": "63aad21adab06405a755ba24",
+            "name": "Hana1",
+            "location": "us",
+            "gender": "male",
+            "tracks": ["63aad694940222700515caf3"],
+            "created_at": "2022-12-27T11:08:10.037Z",
+            "updated_at": "2022-12-27T11:27:16.954Z",
+            "__v": 0
+        },
+        {
+            "_id": "63aad21ddab06405a755ba28",
+            "name": "Hana12",
+            "location": "us",
+            "gender": "male",
+            "tracks": [],
+            "created_at": "2022-12-27T11:08:13.018Z",
+            "updated_at": "2022-12-27T11:08:13.018Z",
+            "__v": 0
+        },
+        {
+            "_id": "63aae12d8926e992c080e1c3",
+            "name": "Hana122",
+            "location": "us",
+            "gender": "male",
+            "tracks": [],
+            "created_at": "2022-12-27T12:12:29.782Z",
+            "updated_at": "2022-12-27T12:12:29.782Z",
+            "__v": 0
+        }
+    ]
 }
 ```

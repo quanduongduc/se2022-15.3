@@ -182,7 +182,6 @@ class UserController extends BaseController {
                 {},
                 10
             );
-            console.log(users);
 
             this.res(res, {
                 message: 'get users successfully',

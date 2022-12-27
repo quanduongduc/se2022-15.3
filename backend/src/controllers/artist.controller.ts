@@ -125,6 +125,40 @@ class ArtistController extends BaseController {
             );
         }
     };
+
+    public findArtistByName = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const { name } = req.query;
+            const nameRegex = new RegExp(name as string, 'i');
+
+            const artists = await this.findMany(
+                {
+                    name: nameRegex
+                },
+                '-password',
+                {},
+                10
+            );
+
+            this.res(res, {
+                message: 'get artists successfully',
+                users: artists
+            });
+        } catch (error) {
+            console.log(error);
+
+            next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Some error Occour please try again'
+                )
+            );
+        }
+    };
 }
 
 export const artistController = new ArtistController();
