@@ -355,7 +355,7 @@ Find artist by id
 
 ## Find Artist by Name
 
-Find artist by id
+Find artist by name
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
