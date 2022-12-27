@@ -16,6 +16,8 @@ const uploadOption = upload.fields([
 ]);
 const trackRoute = Router();
 
+trackRoute.get('/', authRequire, trackController.findAllTrack);
+
 trackRoute.post(
     '/create',
     authRequire,

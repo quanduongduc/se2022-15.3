@@ -179,7 +179,8 @@ class UserController extends BaseController {
                 },
                 '-password',
                 {},
-                10
+                10,
+                'lastPlay'
             );
             console.log(users);
 
@@ -205,10 +206,57 @@ class UserController extends BaseController {
         next: NextFunction
     ) => {
         try {
-            const user = await this.findById(req.params.id, '-password');
+            const user = await this.findById(
+                req.params.id,
+                '-password',
+                'lastPlay'
+            );
+            if (!user) {
+                next(
+                    new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
+                );
+            }
             this.res(res, {
                 message: 'get user successfully',
                 user: user
+            });
+        } catch (error) {
+            console.log(error);
+
+            next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Some error Occour please try again'
+                )
+            );
+        }
+    };
+
+    public lastPlayTracking = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const { id } = req.params;
+            const user: any = await this.updateById(
+                req.body.user.id,
+                {
+                    lastPlay: id
+                },
+                'lastPlay'
+            );
+            if (!user) {
+                next(
+                    new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
+                );
+            }
+            this.res(res, {
+                message: 'get user successfully',
+                user: {
+                    ...user.toJSON(),
+                    password: undefined
+                }
             });
         } catch (error) {
             console.log(error);

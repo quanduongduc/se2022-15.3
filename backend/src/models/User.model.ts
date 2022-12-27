@@ -10,6 +10,7 @@ interface IUser {
     gender: string;
     playlists: [ObjectId];
     favouriteTracks: [ObjectId];
+    lastPlay: ObjectId;
     isDeleted: boolean;
 }
 
@@ -60,6 +61,10 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
                     ref: 'Track'
                 }
             ]
+        },
+        lastPlay: {
+            type: Schema.Types.ObjectId,
+            ref: 'Track'
         },
         isDeleted: {
             type: Boolean,

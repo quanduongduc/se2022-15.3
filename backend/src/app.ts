@@ -2,7 +2,7 @@ import express, { Application, Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
-import { authRoute, userRoute, trackRoute } from './routes';
+import { authRoute, userRoute, trackRoute, artistRoute } from './routes';
 import { errorHandler } from './middlewares';
 import cookieParser from 'cookie-parser';
 
@@ -33,6 +33,7 @@ export const getApp = (): Application => {
     routes.use('/api/users', userRoute);
     routes.use('/api/auth', authRoute);
     routes.use('/api/track', trackRoute);
+    routes.use('/api/artist', artistRoute);
     app.use(routes);
 
     app.use(errorHandler);

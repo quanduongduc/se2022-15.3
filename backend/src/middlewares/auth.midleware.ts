@@ -30,7 +30,8 @@ export const authRequire = async (
         }
         const user = await userController.findById(
             verifiedUser._id,
-            '-password'
+            '-password',
+            'lastPlay'
         );
         if (!user) {
             res.clearCookie('accessToken');
