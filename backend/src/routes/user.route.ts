@@ -7,9 +7,14 @@ const userRoute = Router();
 userRoute.get('/', userController.findAllUser);
 userRoute.get('/search', userController.findUserByName);
 userRoute.get('/:id', userController.findUserById);
-userRoute.post(
+userRoute.patch(
     '/tracking/lastPlay/:id',
     authRequire,
     userController.lastPlayTracking
+);
+userRoute.patch(
+    '/addFavourite/:id',
+    authRequire,
+    userController.addFavouriteTrack
 );
 export { userRoute };

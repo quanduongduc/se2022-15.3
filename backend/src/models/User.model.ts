@@ -80,10 +80,12 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
 );
 
 UserSchema.pre('find', function () {
+    this.populate('favouriteTracks lastPlay playlists');
     this.where({ isDeleted: false });
 });
 
 UserSchema.pre('findOne', function () {
+    this.populate('favouriteTracks lastPlay playlists');
     this.where({ isDeleted: false });
 });
 

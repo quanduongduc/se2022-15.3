@@ -4,6 +4,7 @@ import { Role, User } from '../models';
 import { BaseController } from './base.controller';
 import * as bcrypt from 'bcrypt';
 import { config } from '../configs';
+import { trackController } from './track.controller';
 
 class UserController extends BaseController {
     constructor() {
@@ -179,8 +180,7 @@ class UserController extends BaseController {
                 },
                 '-password',
                 {},
-                10,
-                'lastPlay'
+                10
             );
             console.log(users);
 
@@ -206,11 +206,7 @@ class UserController extends BaseController {
         next: NextFunction
     ) => {
         try {
-            const user = await this.findById(
-                req.params.id,
-                '-password',
-                'lastPlay'
-            );
+            const user = await this.findById(req.params.id, '-password');
             if (!user) {
                 next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
@@ -239,13 +235,9 @@ class UserController extends BaseController {
     ) => {
         try {
             const { id } = req.params;
-            const user: any = await this.updateById(
-                req.body.user.id,
-                {
-                    lastPlay: id
-                },
-                'lastPlay'
-            );
+            const user: any = await this.updateById(req.body.user.id, {
+                lastPlay: id
+            });
             if (!user) {
                 next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
@@ -253,6 +245,46 @@ class UserController extends BaseController {
             }
             this.res(res, {
                 message: 'get user successfully',
+                user: {
+                    ...user.toJSON(),
+                    password: undefined
+                }
+            });
+        } catch (error) {
+            console.log(error);
+
+            next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Some error Occour please try again'
+                )
+            );
+        }
+    };
+
+    public addFavouriteTrack = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const { id } = req.params;
+            const track: any = await trackController.findById(id);
+            if (!track) {
+                next(
+                    new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
+                );
+            }
+            const user: any = await this.updateById(req.body.user.id, {
+                $push: { favouriteTracks: track._id }
+            });
+            if (!user) {
+                next(
+                    new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
+                );
+            }
+            this.res(res, {
+                message: 'add track to favourite successfully',
                 user: {
                     ...user.toJSON(),
                     password: undefined

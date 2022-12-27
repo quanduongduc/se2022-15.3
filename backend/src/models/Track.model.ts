@@ -66,6 +66,16 @@ TrackSchema.post('save', async function (doc) {
     );
 });
 
+TrackSchema.pre('find', function (next) {
+    this.populate('artists');
+    next();
+});
+
+TrackSchema.pre('findOne', function (next) {
+    this.populate('artists');
+    next();
+});
+
 const Track: Model<ITrack> = model<ITrack>('Track', TrackSchema);
 
 export { ITrack, Track };
