@@ -6,10 +6,22 @@ import {
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/login.css';
-import Logo from '../image/logo.png';
+import Logo from '../../image/logo.png';
 
 const LoginPage = (): ReactElement => {
+    const navigate = useNavigate();
+
+    const getUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const username = event.target.value;
+    };
+
+    const getPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value);
+        const password = event.target.value;
+    };
+
     return (
         <div className="wrapper">
             <div className="header mb-5">
@@ -70,6 +82,7 @@ const LoginPage = (): ReactElement => {
                                     id="username-validation"
                                     placeholder="Địa chỉ email hoặc tên người dùng"
                                     autoCapitalize="off"
+                                    onChange={getUserName}
                                     required
                                 />
                             </div>
@@ -81,16 +94,21 @@ const LoginPage = (): ReactElement => {
                                     Mật khẩu
                                 </label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     aria-invalid="false"
                                     className="login-password form-control border-dark"
                                     id="password-validation"
                                     placeholder="Mật khẩu"
                                     autoCapitalize="off"
+                                    onChange={getPassword}
                                     required
                                 />
                             </div>
-                            <a href="" className="reset-password-link">
+                            <a
+                                href=""
+                                className="reset-password-link"
+                                onClick={() => navigate('/password-reset')}
+                            >
                                 Quên mật khẩu của bạn?
                             </a>
                             <div className="login-btn mb-3">
@@ -118,7 +136,12 @@ const LoginPage = (): ReactElement => {
                             <div className="label-unaccount mb-4">
                                 Bạn chưa có tài khoản?
                             </div>
-                            <button className="btn btn-light border-dark btn-lg rounded-pill">
+                            <button
+                                className="btn btn-light border-dark btn-lg rounded-pill"
+                                onClick={() => {
+                                    return navigate('/register');
+                                }}
+                            >
                                 Đăng ký Salyr
                             </button>
                         </div>
