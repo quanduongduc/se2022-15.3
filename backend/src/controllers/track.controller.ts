@@ -26,6 +26,7 @@ class TrackController extends BaseController {
             const audio = files.audio[0];
             const theme = files.image[0];
             const { title, artistIds, description, duration } = req.body;
+            console.log(artistIds);
 
             const audioUploadResult = await uploadToS3(audio);
             const themeUploadResult = await uploadToS3(theme);
@@ -34,6 +35,7 @@ class TrackController extends BaseController {
                 title: title,
                 storageName: audioUploadResult?.key,
                 duration: duration,
+                artists: artistIds,
                 theme: themeUploadResult?.key,
                 description: description
             });
@@ -62,22 +64,82 @@ class TrackController extends BaseController {
             const { title } = req.query;
             const titleRegex = new RegExp(title as string, 'i');
 
-            const tracks = await this.findMany(
+            const tracks: any = await this.findMany(
                 {
                     title: titleRegex
                 },
                 '',
                 {},
-                10
+                10,
+                'artists'
+            );
+
+            const tracksWithUrl = await Promise.all(
+                tracks?.map(async (track: any) => {
+                    const getTrackUrlPromise = getObjectSignedUrl(
+                        track.storageName
+                    );
+                    const getThemeUrlPromise = getObjectSignedUrl(track.theme);
+                    const [trackUrl, themeUrl] = await Promise.all([
+                        getTrackUrlPromise,
+                        getThemeUrlPromise
+                    ]);
+                    return {
+                        ...track.toJSON(),
+                        trackUrl,
+                        themeUrl
+                    };
+                })
             );
 
             this.res(res, {
-                message: 'get users successfully',
-                tracks: tracks
+                message: 'get tracks successfully',
+                tracks: tracksWithUrl
             });
         } catch (error) {
             console.log(error);
 
+            next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Some error Occour please try again'
+                )
+            );
+        }
+    };
+
+    public findAllTrack = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const tracks: any = await this.findAll();
+
+            const tracksWithUrl = await Promise.all(
+                tracks?.map(async (track: any) => {
+                    const getTrackUrlPromise = getObjectSignedUrl(
+                        track.storageName
+                    );
+                    const getThemeUrlPromise = getObjectSignedUrl(track.theme);
+                    const [trackUrl, themeUrl] = await Promise.all([
+                        getTrackUrlPromise,
+                        getThemeUrlPromise
+                    ]);
+                    return {
+                        ...track.toJSON(),
+                        trackUrl,
+                        themeUrl
+                    };
+                })
+            );
+
+            this.res(res, {
+                message: 'Get tracks successfully',
+                tracks: tracksWithUrl
+            });
+        } catch (error) {
+            console.log(error);
             next(
                 new HttpException(
                     HttpStatus.INTERNAL_SERVER_ERROR,

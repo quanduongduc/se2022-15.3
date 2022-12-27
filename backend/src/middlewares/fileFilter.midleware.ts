@@ -62,14 +62,8 @@ export const imageFilter = async (
                 )
             );
         }
-        const acceptedMineTypes = [
-            'image/png',
-            'image/jpeg',
-            'image/svg+xml',
-            'image/gif'
-        ]; // only .mp3 type, may add more in the future
-
-        const isValidType = image.mimetype in acceptedMineTypes;
+        const acceptedMineTypes = ['image/png', 'image/jpeg', 'image/svg+xml'];
+        const isValidType = acceptedMineTypes.includes(image.mimetype);
         if (!isValidType) {
             return next(
                 new HttpException(HttpStatus.BAD_REQUEST, 'Invalid File Type')

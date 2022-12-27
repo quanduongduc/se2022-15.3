@@ -1,4 +1,5 @@
 import { Schema, model, Model, ObjectId } from 'mongoose';
+import { Artist } from './Artist.model';
 
 interface ITrack {
     title: string;
@@ -38,7 +39,8 @@ const TrackSchema = new Schema<ITrack>(
                     type: Schema.Types.ObjectId,
                     ref: 'Artist'
                 }
-            ]
+            ],
+            default: []
         },
         duration: {
             type: Number,
@@ -52,6 +54,27 @@ const TrackSchema = new Schema<ITrack>(
         }
     }
 );
+
+TrackSchema.post('save', async function (doc) {
+    const artistIds = doc.artists;
+    Promise.all(
+        artistIds.map(async (id) => {
+            return await Artist.findByIdAndUpdate(id, {
+                $push: { tracks: doc._id }
+            });
+        })
+    );
+});
+
+TrackSchema.pre('find', function (next) {
+    this.populate('artists');
+    next();
+});
+
+TrackSchema.pre('findOne', function (next) {
+    this.populate('artists');
+    next();
+});
 
 const Track: Model<ITrack> = model<ITrack>('Track', TrackSchema);
 

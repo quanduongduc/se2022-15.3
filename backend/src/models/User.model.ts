@@ -10,6 +10,7 @@ interface IUser {
     gender: string;
     playlists: [ObjectId];
     favouriteTracks: [ObjectId];
+    lastPlay: ObjectId;
     isDeleted: boolean;
 }
 
@@ -61,6 +62,10 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
                 }
             ]
         },
+        lastPlay: {
+            type: Schema.Types.ObjectId,
+            ref: 'Track'
+        },
         isDeleted: {
             type: Boolean,
             default: false
@@ -75,10 +80,12 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
 );
 
 UserSchema.pre('find', function () {
+    this.populate('favouriteTracks lastPlay playlists');
     this.where({ isDeleted: false });
 });
 
 UserSchema.pre('findOne', function () {
+    this.populate('favouriteTracks lastPlay playlists');
     this.where({ isDeleted: false });
 });
 
