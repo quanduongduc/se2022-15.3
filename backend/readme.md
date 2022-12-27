@@ -92,6 +92,8 @@ Authenticate user using accessToken as cookies
 
 Create new track and store audio file and theme image file to storage
 
+**\*Create permission require**
+
 | Parameter     | Type       | Description                         |
 | :------------ | :--------- | :---------------------------------- |
 | `title`       | `string`   | **Required**.                       |
@@ -172,5 +174,183 @@ Search Tracks by name(nearly like "included" search)
             "themeUrl": "https://music-app-bucket.s3.ap-northeast-1.amazonaws.com/81ac9fbd1a091fec049ee368bf5b46678434e12b2648f22351365a3e8fe601aa?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAYJHUX7KGUZC2PMXM%2F20221226%2Fap-northeast-1%2Fs3%2Faws4_request&X-Amz-Date=20221226T171010Z&X-Amz-Expires=3600&X-Amz-Signature=5bf9cc13ca8635f778e3eacb39f172f9293d9c9572060c989e99e3063c739d83&X-Amz-SignedHeaders=host&x-id=GetObject"
         }
     ]
+}
+```
+
+## Add Track to favourite list
+
+add track to user's favourite list
+
+| Parameter | Type     | Description                   |
+| :-------- | :------- | :---------------------------- |
+| `id`      | `string` | **Required**. query parameter |
+
+### Request
+
+`Patch /api/users/addFavourite/:id`
+
+### Response Example
+
+```json
+{
+    "message": "add track to favourite successfully",
+    "user": {
+        "_id": "63a9d390b71c2a8dd1467f53",
+        "userName": "admin_permission1",
+        "role": {
+            "trackPermission": {
+                "create": true,
+                "delete": true,
+                "update": true,
+                "read": true
+            },
+            "name": "admin",
+            "_id": "63a9d390b71c2a8dd1467f52"
+        },
+        "firstName": "admin",
+        "lastName": "admin",
+        "gender": "female",
+        "playlists": [],
+        "favouriteTracks": [
+            {
+                "_id": "63aad3d9da1616c18264e576",
+                "title": "HelloWold",
+                "storageName": "831e411ea5edfb06e2dd9faf2259961d1cc268843b9560498791b9d2a8727153",
+                "theme": "e62b505e26c9635c489b3e6f8115dd30fa211fece1354a103612767a037ff82f",
+                "description": "HelloWodl13123214",
+                "artists": ["63aad07da14ea04ded568570"],
+                "duration": 204,
+                "created_at": "2022-12-27T11:15:37.942Z",
+                "updated_at": "2022-12-27T11:15:37.942Z",
+                "__v": 0
+            }
+        ],
+        "isDeleted": false,
+        "created_at": "2022-12-26T17:02:08.669Z",
+        "updated_at": "2022-12-27T11:50:42.021Z",
+        "__v": 0,
+        "lastPlay": {
+            "_id": "63aad3d9da1616c18264e576",
+            "title": "HelloWold",
+            "storageName": "831e411ea5edfb06e2dd9faf2259961d1cc268843b9560498791b9d2a8727153",
+            "theme": "e62b505e26c9635c489b3e6f8115dd30fa211fece1354a103612767a037ff82f",
+            "description": "HelloWodl13123214",
+            "artists": ["63aad07da14ea04ded568570"],
+            "duration": 204,
+            "created_at": "2022-12-27T11:15:37.942Z",
+            "updated_at": "2022-12-27T11:15:37.942Z",
+            "__v": 0
+        }
+    }
+}
+```
+
+## Tracking user's last play track
+
+add track to user's favourite list
+
+| Parameter | Type     | Description                   |
+| :-------- | :------- | :---------------------------- |
+| `id`      | `string` | **Required**. query parameter |
+
+### Request
+
+`Patch api/user/tracking/lastPlay/:id`
+
+### Response Example
+
+```json
+{
+    "message": "get user successfully",
+    "user": {
+        "_id": "63a9d390b71c2a8dd1467f53",
+        "userName": "admin_permission1",
+        "role": {
+            "trackPermission": {
+                "create": true,
+                "delete": true,
+                "update": true,
+                "read": true
+            },
+            "name": "admin",
+            "_id": "63a9d390b71c2a8dd1467f52"
+        },
+        "firstName": "admin",
+        "lastName": "admin",
+        "gender": "female",
+        "playlists": [],
+        "favouriteTracks": ["63aad3d9da1616c18264e576"],
+        "isDeleted": false,
+        "created_at": "2022-12-26T17:02:08.669Z",
+        "updated_at": "2022-12-27T12:08:01.092Z",
+        "__v": 0,
+        "lastPlay": "63aad3d9da1616c18264e576"
+    }
+}
+```
+
+## Create new Artist
+
+Create new Artist
+
+**\*Create permission require**
+
+| Parameter  | Type     | Description                                 |
+| :--------- | :------- | :------------------------------------------ |
+| `name`     | `string` | **Required**.                               |
+| `location` | `string` | **Required**.                               |
+| `gender`   | `string` | **Required**. ['male','female','undefined'] |
+
+### Request
+
+`Post /api/artist/register`
+
+### Response Example
+
+```json
+{
+    "message": "Register new artist successfully",
+    "artist": {
+        "name": "Hana122",
+        "location": "us",
+        "gender": "male",
+        "tracks": [],
+        "_id": "63aae12d8926e992c080e1c3",
+        "created_at": "2022-12-27T12:12:29.782Z",
+        "updated_at": "2022-12-27T12:12:29.782Z",
+        "__v": 0
+    }
+}
+```
+
+## find Artist by Id
+
+Find artist by id
+
+**\*Create permission require**
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id`      | `string` | **Required**. query params |
+
+### Request
+
+`Get /api/artist/:id`
+
+### Response Example
+
+```json
+{
+    "message": "get artist successfully",
+    "artist": {
+        "_id": "63aad07da14ea04ded568570",
+        "name": "Hana",
+        "location": "us",
+        "gender": "male",
+        "tracks": ["63aad694940222700515caf3"],
+        "created_at": "2022-12-27T11:01:17.520Z",
+        "updated_at": "2022-12-27T11:27:16.952Z",
+        "__v": 0
+    }
 }
 ```

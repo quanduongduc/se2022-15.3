@@ -30,7 +30,7 @@ export const getApp = (): Application => {
         });
     });
 
-    routes.use('/api/users', userRoute);
+    routes.use('/api/user', userRoute);
     routes.use('/api/auth', authRoute);
     routes.use('/api/track', trackRoute);
     routes.use('/api/artist', artistRoute);
