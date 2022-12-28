@@ -1,10 +1,10 @@
-import express, { Application, Request, Response, Router } from 'express';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import cors from 'cors';
-import { authRoute, userRoute, trackRoute, artistRoute } from './routes';
-import { errorHandler } from './middlewares';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express, { Application, Request, Response, Router } from 'express';
+import helmet from 'helmet';
+import { errorHandler } from './middlewares';
+import { artistRoute, authRoute, trackRoute, userRoute } from './routes';
 
 dotenv.config();
 

@@ -207,7 +207,7 @@ class UserController extends BaseController {
         try {
             const user = await this.findById(req.params.id, '-password');
             if (!user) {
-                next(
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
                 );
             }
@@ -238,7 +238,7 @@ class UserController extends BaseController {
                 lastPlay: id
             });
             if (!user) {
-                next(
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
                 );
             }
@@ -270,15 +270,55 @@ class UserController extends BaseController {
             const { id } = req.params;
             const track: any = await trackController.findById(id);
             if (!track) {
-                next(
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
                 );
             }
             const user: any = await this.updateById(req.body.user.id, {
-                $push: { favouriteTracks: track._id }
+                $addToSet: { favouriteTracks: track._id }
             });
             if (!user) {
-                next(
+                return next(
+                    new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
+                );
+            }
+            this.res(res, {
+                message: 'remove track from favourite successfully',
+                user: {
+                    ...user.toJSON(),
+                    password: undefined
+                }
+            });
+        } catch (error) {
+            console.log(error);
+
+            next(
+                new HttpException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    'Some error Occour please try again'
+                )
+            );
+        }
+    };
+
+    public removeFavouriteTrack = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const { id } = req.params;
+            const track: any = await trackController.findById(id);
+            if (!track) {
+                return next(
+                    new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
+                );
+            }
+            const user: any = await this.updateById(req.body.user.id, {
+                $pull: { favouriteTracks: track._id }
+            });
+            if (!user) {
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'User not found')
                 );
             }

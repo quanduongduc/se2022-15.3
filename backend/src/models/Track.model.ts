@@ -1,4 +1,4 @@
-import { Schema, model, Model, ObjectId } from 'mongoose';
+import { model, Model, ObjectId, Schema } from 'mongoose';
 import { Artist } from './Artist.model';
 
 interface ITrack {
