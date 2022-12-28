@@ -24,12 +24,12 @@ playlistRoute.delete(
     playlistController.deletePlaylistById
 );
 playlistRoute.patch(
-    '/add-track/:id',
+    '/:playlistId/add-track/:trackId',
     authRequire,
     playlistController.addPlaylistTrack
 );
 playlistRoute.patch(
-    '/remove-track/:id',
+    '/:playlistId/remove-track/:trackId',
     authRequire,
     playlistController.removePlaylistTrack
 );

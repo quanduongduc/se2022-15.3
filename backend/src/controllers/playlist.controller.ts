@@ -53,8 +53,7 @@ class PlaylistController extends BaseController {
                 },
                 '',
                 {},
-                10,
-                'artists'
+                10
             );
 
             this.res(res, {
@@ -136,6 +135,7 @@ class PlaylistController extends BaseController {
     ) => {
         try {
             const { id } = req.params;
+            const userId = req.body.user._id;
             const deletedPlaylist = await this.deleteById(id);
             if (!deletedPlaylist) {
                 return next(
@@ -145,6 +145,9 @@ class PlaylistController extends BaseController {
                     )
                 );
             }
+            await userController.updateById(userId, {
+                $pull: { playlist: deletedPlaylist }
+            });
             this.res(res, {
                 message: 'delete playlist sucessfully',
                 deletedPlaylist: deletedPlaylist
@@ -166,14 +169,25 @@ class PlaylistController extends BaseController {
         next: NextFunction
     ) => {
         try {
-            const { id } = req.params;
-            const track: any = await trackController.findById(id);
+            const { trackId, playlistId } = req.params;
+            const userPlaylists: any = req.body.user.playlists;
+
+            const hasPermission = userPlaylists.some((playlist: any) => {
+                return playlist._id.equals(playlistId);
+            });
+            if (!hasPermission) {
+                return next(
+                    new HttpException(HttpStatus.FORBIDDEN, 'Permission denied')
+                );
+            }
+
+            const track: any = await trackController.findById(trackId);
             if (!track) {
                 return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
                 );
             }
-            const playlist: any = await this.updateById(req.body.user.id, {
+            const playlist: any = await this.updateById(playlistId, {
                 $addToSet: { tracks: track._id }
             });
             if (!playlist) {
@@ -185,7 +199,7 @@ class PlaylistController extends BaseController {
                 );
             }
             this.res(res, {
-                message: 'add track from playlist successfully',
+                message: 'add track to playlist successfully',
                 playlist: playlist.toJSON()
             });
         } catch (error) {
@@ -206,14 +220,25 @@ class PlaylistController extends BaseController {
         next: NextFunction
     ) => {
         try {
-            const { id } = req.params;
-            const track: any = await trackController.findById(id);
+            const { trackId, playlistId } = req.params;
+            const userPlaylists: any = req.body.user.playlists;
+
+            const hasPermission = userPlaylists.some((playlist: any) => {
+                return playlist._id.equals(playlistId);
+            });
+            if (!hasPermission) {
+                return next(
+                    new HttpException(HttpStatus.FORBIDDEN, 'Permission denied')
+                );
+            }
+
+            const track: any = await trackController.findById(trackId);
             if (!track) {
                 return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'track not found')
                 );
             }
-            const playlist: any = await this.updateById(req.body.user.id, {
+            const playlist: any = await this.updateById(playlistId, {
                 $pull: { tracks: track._id }
             });
             if (!track) {
@@ -225,7 +250,7 @@ class PlaylistController extends BaseController {
                 );
             }
             this.res(res, {
-                message: 'remove track to playlist successfully',
+                message: 'remove track from playlist successfully',
                 playlist: playlist.toJSON()
             });
         } catch (error) {
