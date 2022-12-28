@@ -14,14 +14,14 @@ userRoute.patch(
     userController.lastPlayTracking
 );
 userRoute.patch(
-    '/addFavourite/:id',
+    '/add-favourite/:id',
     authRequire,
     objectIdValidator,
     userController.addFavouriteTrack
 );
 
 userRoute.patch(
-    '/removeFavourite/:id',
+    '/remove-favourite/:id',
     authRequire,
     objectIdValidator,
     userController.removeFavouriteTrack

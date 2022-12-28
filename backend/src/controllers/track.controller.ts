@@ -26,12 +26,11 @@ class TrackController extends BaseController {
             const audio = files.audio[0];
             const theme = files.image[0];
             const { title, artistIds, description, duration } = req.body;
-            console.log(artistIds);
 
             const audioUploadResult = await uploadToS3(audio);
             const themeUploadResult = await uploadToS3(theme);
 
-            const track = new Track({
+            const track = await this.create({
                 title: title,
                 storageName: audioUploadResult?.key,
                 duration: duration,
@@ -39,7 +38,6 @@ class TrackController extends BaseController {
                 theme: themeUploadResult?.key,
                 description: description
             });
-            await track.save();
             this.res(res, {
                 message: 'Track add successfully',
                 track: track
@@ -205,7 +203,7 @@ class TrackController extends BaseController {
             const { id } = req.params;
             const deletedTrack = await this.deleteById(id);
             if (!deletedTrack) {
-                next(
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
                 );
             }
