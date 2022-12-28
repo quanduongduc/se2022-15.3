@@ -17,6 +17,7 @@ Register a new user with required data :
 ### Request
 
 `POST /api/auth/register`
+
 `POST /api/auth/register/admin` For Admin (Request Key : admin_permission_key)
 
 ### Response Example
