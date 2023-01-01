@@ -17,7 +17,8 @@ Register a new user with required data :
 ### Request
 
 `POST /api/auth/register`
-`POST /api/auth/register/admin` For Admin (Request Key : admin_permission_key)
+
+`POST /api/auth/register/admin` For Admin (Require Key : admin_permission_key)
 
 ### Response Example
 
@@ -131,9 +132,9 @@ Create new track and store audio file and theme image file to storage
 
 Search Tracks by name(nearly like "included" search)
 
-| Parameter | Type     | Description                   |
-| :-------- | :------- | :---------------------------- |
-| `title`   | `string` | **Required**. query parameter |
+| Parameter | Type     | Description                 |
+| :-------- | :------- | :-------------------------- |
+| `title`   | `string` | **Required**. track's title |
 
 ### Request
 
@@ -181,9 +182,9 @@ Search Tracks by name(nearly like "included" search)
 
 add track to user's favourite list
 
-| Parameter | Type     | Description                   |
-| :-------- | :------- | :---------------------------- |
-| `id`      | `string` | **Required**. query parameter |
+| Parameter | Type     | Description              |
+| :-------- | :------- | :----------------------- |
+| `id`      | `string` | **Required**. track's id |
 
 ### Request
 
@@ -249,9 +250,9 @@ add track to user's favourite list
 
 add track to user's favourite list
 
-| Parameter | Type     | Description                   |
-| :-------- | :------- | :---------------------------- |
-| `id`      | `string` | **Required**. query parameter |
+| Parameter | Type     | Description              |
+| :-------- | :------- | :----------------------- |
+| `id`      | `string` | **Required**. track's id |
 
 ### Request
 
@@ -289,9 +290,102 @@ add track to user's favourite list
 }
 ```
 
+## add track to favourites
+
+add track to authenticated user's favourite
+
+| Parameter | Type     | Description              |
+| :-------- | :------- | :----------------------- |
+| `id`      | `string` | **Required**. track's id |
+
+### Request
+
+`Patch /api/user/add-favourite/:id`
+
+### Response Example
+
+```json
+{
+    "message": "add track from favourite successfully",
+    "user": {
+        "_id": "63a9d390b71c2a8dd1467f53",
+        "userName": "admin_permission1",
+        "role": {
+            "trackPermission": {
+                "create": true,
+                "delete": true,
+                "update": true,
+                "read": true
+            },
+            "name": "admin",
+            "_id": "63a9d390b71c2a8dd1467f52"
+        },
+        "firstName": "admin",
+        "lastName": "admin",
+        "gender": "female",
+        "playlists": ["63abe4f63590a6a3bc3e0642"],
+        "favouriteTracks": [
+            "63aad3d9da1616c18264e576",
+            "63aad694940222700515caf3"
+        ],
+        "isDeleted": false,
+        "created_at": "2022-12-26T17:02:08.669Z",
+        "updated_at": "2022-12-28T06:55:49.772Z",
+        "__v": 0,
+        "lastPlay": "63aad3d9da1616c18264e576"
+    }
+}
+```
+
+## remove track from favourites
+
+remove a track from authenticated user's favourite
+
+| Parameter | Type     | Description              |
+| :-------- | :------- | :----------------------- |
+| `id`      | `string` | **Required**. track's id |
+
+### Request
+
+`Patch /api/user/remove-favourite/:id`
+
+### Response Example
+
+```json
+{
+    "message": "remove track to favourite successfully",
+    "user": {
+        "_id": "63a9d390b71c2a8dd1467f53",
+        "userName": "admin_permission1",
+        "role": {
+            "trackPermission": {
+                "create": true,
+                "delete": true,
+                "update": true,
+                "read": true
+            },
+            "name": "admin",
+            "_id": "63a9d390b71c2a8dd1467f52"
+        },
+        "firstName": "admin",
+        "lastName": "admin",
+        "gender": "female",
+        "playlists": ["63abe4f63590a6a3bc3e0642"],
+        "favouriteTracks": ["63aad3d9da1616c18264e576"],
+        "isDeleted": false,
+        "created_at": "2022-12-26T17:02:08.669Z",
+        "updated_at": "2022-12-28T06:59:45.517Z",
+        "__v": 0,
+        "lastPlay": "63aad3d9da1616c18264e576"
+    }
+}
+```
+
 ## Create new Artist
 
 Create new Artist
+
+**\*Create permission require**
 
 | Parameter  | Type     | Description                                 |
 | :--------- | :------- | :------------------------------------------ |
@@ -325,11 +419,9 @@ Create new Artist
 
 Find artist by id
 
-**\*Create permission require**
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `id`      | `string` | **Required**. query params |
+| Parameter | Type     | Description               |
+| :-------- | :------- | :------------------------ |
+| `id`      | `string` | **Required**. artist's id |
 
 ### Request
 
@@ -357,9 +449,9 @@ Find artist by id
 
 Find artist by name
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `name`    | `string` | **Required**. query params |
+| Parameter | Type     | Description                 |
+| :-------- | :------- | :-------------------------- |
+| `name`    | `string` | **Required**. artist's name |
 
 ### Request
 
@@ -412,5 +504,193 @@ Find artist by name
             "__v": 0
         }
     ]
+}
+```
+
+## Create playlist
+
+create a new playist for authenticated user
+
+| Parameter | Type     | Description                    |
+| :-------- | :------- | :----------------------------- |
+| `title`   | `string` | **Required**. playlist's title |
+
+### Request
+
+`POST api/playlist/create`
+
+### Response Example
+
+```json
+{
+    "message": "create playlist successfully",
+    "playlist": {
+        "title": "Hello12",
+        "tracks": [],
+        "_id": "63abecb5aca248e163c60cca",
+        "created_at": "2022-12-28T07:13:57.610Z",
+        "updated_at": "2022-12-28T07:13:57.610Z",
+        "__v": 0
+    }
+}
+```
+
+## Search playlist by title
+
+Search Playlists by title(nearly like "included" search)
+
+| Parameter | Type     | Description                    |
+| :-------- | :------- | :----------------------------- |
+| `title`   | `string` | **Required**. playlist's title |
+
+### Request
+
+`GET /api/playlist/search/?title`
+
+### Response Example
+
+```json
+{
+    "message": "get playlist successfully",
+    "playlists": [
+        {
+            "_id": "63abe4f63590a6a3bc3e0642",
+            "title": "Hello",
+            "tracks": [],
+            "created_at": "2022-12-28T06:40:54.887Z",
+            "updated_at": "2022-12-28T06:40:54.887Z",
+            "__v": 0
+        },
+        {
+            "_id": "63abeb88aca248e163c60c8d",
+            "title": "Hello12",
+            "tracks": [],
+            "created_at": "2022-12-28T07:08:56.764Z",
+            "updated_at": "2022-12-28T07:08:56.764Z",
+            "__v": 0
+        },
+        {
+            "_id": "63abecb5aca248e163c60cca",
+            "title": "Hello12",
+            "tracks": [],
+            "created_at": "2022-12-28T07:13:57.610Z",
+            "updated_at": "2022-12-28T07:13:57.610Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
+## Get playlist by id
+
+Search Playlists by title(nearly like "included" search)
+
+| Parameter | Type     | Description                 |
+| :-------- | :------- | :-------------------------- |
+| `id`      | `string` | **Required**. playlist's id |
+
+### Request
+
+`GET /api/playlist/:id`
+
+### Response Example
+
+```json
+{
+    "message": "Get playlist successfully",
+    "playlist": {
+        "_id": "63abe4f63590a6a3bc3e0642",
+        "title": "Hello",
+        "tracks": [],
+        "created_at": "2022-12-28T06:40:54.887Z",
+        "updated_at": "2022-12-28T06:40:54.887Z",
+        "__v": 0
+    }
+}
+```
+
+## delete playlist by id
+
+delete a playlist and remove from user's playlist
+
+| Parameter | Type     | Description                 |
+| :-------- | :------- | :-------------------------- |
+| `id`      | `string` | **Required**. playlist's id |
+
+### Request
+
+`DELETE /api/playlist/delete/:id`
+
+### Response Example
+
+```json
+{
+    "message": "delete playlist sucessfully",
+    "deletedPlaylist": {
+        "_id": "63abe4f63590a6a3bc3e0642",
+        "title": "Hello",
+        "tracks": [],
+        "created_at": "2022-12-28T06:40:54.887Z",
+        "updated_at": "2022-12-28T06:40:54.887Z",
+        "__v": 0
+    }
+}
+```
+
+## add track to playlist
+
+add a track to playlist
+
+| Parameter    | Type     | Description                 |
+| :----------- | :------- | :-------------------------- |
+| `trackId`    | `string` | **Required**. track's id    |
+| `playlistId` | `string` | **Required**. playlist's id |
+
+### Request
+
+`PATCH /api/playlist/:playlistId/add-track/:trackId`
+
+### Response Example
+
+```json
+{
+    "message": "add track to playlist successfully",
+    "playlist": {
+        "_id": "63abeb88aca248e163c60c8d",
+        "title": "Hello12",
+        "tracks": ["63aad3d9da1616c18264e576"],
+        "created_at": "2022-12-28T07:08:56.764Z",
+        "updated_at": "2022-12-28T07:26:08.458Z",
+        "__v": 0
+    }
+}
+```
+
+## remove track from playlist
+
+remove a track from a playlist
+
+| Parameter    | Type     | Description                 |
+| :----------- | :------- | :-------------------------- |
+| `trackId`    | `string` | **Required**. track's id    |
+| `playlistId` | `string` | **Required**. playlist's id |
+
+### Request
+
+`PATCH /api/playlist/:playlistId/remove-track/:trackId`
+
+### Response Example
+
+```json
+{
+    "message": "remove track from playlist successfully",
+    "playlist": {
+        "_id": "63abeb88aca248e163c60c8d",
+        "title": "Hello12",
+        "tracks": [],
+        "created_at": "2022-12-28T07:08:56.764Z",
+        "updated_at": "2022-12-28T07:28:32.356Z",
+        "__v": 0
+    }
 }
 ```

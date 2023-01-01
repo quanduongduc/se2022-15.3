@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
+import { Track } from '../models';
 import {
     getObjectSignedUrl,
     HttpException,
     HttpStatus,
     uploadToS3
 } from '../utils';
-import { Track } from '../models';
 import { BaseController } from './base.controller';
 
 class TrackController extends BaseController {
@@ -26,12 +26,11 @@ class TrackController extends BaseController {
             const audio = files.audio[0];
             const theme = files.image[0];
             const { title, artistIds, description, duration } = req.body;
-            console.log(artistIds);
 
             const audioUploadResult = await uploadToS3(audio);
             const themeUploadResult = await uploadToS3(theme);
 
-            const track = new Track({
+            const track = await this.create({
                 title: title,
                 storageName: audioUploadResult?.key,
                 duration: duration,
@@ -39,7 +38,6 @@ class TrackController extends BaseController {
                 theme: themeUploadResult?.key,
                 description: description
             });
-            await track.save();
             this.res(res, {
                 message: 'Track add successfully',
                 track: track
@@ -76,18 +74,13 @@ class TrackController extends BaseController {
 
             const tracksWithUrl = await Promise.all(
                 tracks?.map(async (track: any) => {
-                    const getTrackUrlPromise = getObjectSignedUrl(
-                        track.storageName
+                    const urls = await this.generateTrackUrls(
+                        track.storageName,
+                        track.theme
                     );
-                    const getThemeUrlPromise = getObjectSignedUrl(track.theme);
-                    const [trackUrl, themeUrl] = await Promise.all([
-                        getTrackUrlPromise,
-                        getThemeUrlPromise
-                    ]);
                     return {
                         ...track.toJSON(),
-                        trackUrl,
-                        themeUrl
+                        ...urls
                     };
                 })
             );
@@ -118,18 +111,13 @@ class TrackController extends BaseController {
 
             const tracksWithUrl = await Promise.all(
                 tracks?.map(async (track: any) => {
-                    const getTrackUrlPromise = getObjectSignedUrl(
-                        track.storageName
+                    const urls = await this.generateTrackUrls(
+                        track.storageName,
+                        track.theme
                     );
-                    const getThemeUrlPromise = getObjectSignedUrl(track.theme);
-                    const [trackUrl, themeUrl] = await Promise.all([
-                        getTrackUrlPromise,
-                        getThemeUrlPromise
-                    ]);
                     return {
                         ...track.toJSON(),
-                        trackUrl,
-                        themeUrl
+                        ...urls
                     };
                 })
             );
@@ -159,19 +147,20 @@ class TrackController extends BaseController {
             const track: any = await this.findById(id);
 
             if (!track) {
-                next(
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
                 );
             }
-            const trackUrl = await getObjectSignedUrl(track.storageName);
-            const themeUrl = await getObjectSignedUrl(track.theme);
+            const urls = await this.generateTrackUrls(
+                track.storageName,
+                track.theme
+            );
 
             this.res(res, {
                 message: 'Get track successfully',
                 track: {
                     ...track.toJSON(),
-                    trackUrl,
-                    themeUrl
+                    ...urls
                 }
             });
         } catch (error) {
@@ -185,6 +174,26 @@ class TrackController extends BaseController {
         }
     };
 
+    private generateTrackUrls = async (
+        audioStorageName: string,
+        themeStorageName: string
+    ) => {
+        try {
+            const trackUrlPromise = getObjectSignedUrl(audioStorageName);
+            const themeUrlPromise = getObjectSignedUrl(themeStorageName);
+            const [trackUrl, themeUrl] = await Promise.all([
+                trackUrlPromise,
+                themeUrlPromise
+            ]);
+            return {
+                trackUrl,
+                themeUrl
+            };
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     public deleteTrackById = async (
         req: Request,
         res: Response,
@@ -194,7 +203,7 @@ class TrackController extends BaseController {
             const { id } = req.params;
             const deletedTrack = await this.deleteById(id);
             if (!deletedTrack) {
-                next(
+                return next(
                     new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
                 );
             }

@@ -31,6 +31,16 @@ const PlaylistSchema = new Schema<IPlaylist>(
     }
 );
 
+PlaylistSchema.pre('find', function (next) {
+    this.populate('tracks');
+    next();
+});
+
+PlaylistSchema.pre('findOne', function (next) {
+    this.populate('tracks');
+    next();
+});
+
 const Playlist: Model<IPlaylist> = model<IPlaylist>('Playlist', PlaylistSchema);
 
 export { Playlist, IPlaylist };

@@ -5,7 +5,7 @@ import { audioFilter, authRequire, imageFilter } from '../middlewares';
 import {
     deletePermissionRequire,
     createPermissionRequire,
-    updatePermissionRequire
+    objectIdValidator
 } from '../middlewares';
 
 const storage = multer.memoryStorage();
@@ -28,11 +28,12 @@ trackRoute.post(
     trackController.createTrack
 );
 trackRoute.get('/search', trackController.findTrackByTitle);
-trackRoute.get('/:id', trackController.findTrackById);
+trackRoute.get('/:id', objectIdValidator, trackController.findTrackById);
 trackRoute.delete(
     '/delete/:id',
     authRequire,
     deletePermissionRequire,
+    objectIdValidator,
     trackController.deleteTrackById
 );
 
