@@ -1,4 +1,4 @@
-import { corsOptions } from 'configs';
+import { corsOptions } from './configs';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -22,6 +22,15 @@ export const getApp = (): Application => {
     app.use(express.json());
     app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
+
+    app.use(function (req, res, next) {
+        res.header('Content-Type', 'application/json;charset=UTF-8');
+        res.header(
+            'Access-Control-Allow-Headers',
+            'Origin, X-Requested-With, Content-Type, Accept'
+        );
+        next();
+    });
 
     app.use(helmet());
     app.use(cors(corsOptions));

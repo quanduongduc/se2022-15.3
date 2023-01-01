@@ -1,8 +1,11 @@
 export const corsOptions = {
     origin: [
-        'http://localhost:80/*',
-        'http://localhost:3000/*',
-        'https://spotifake.site/*'
+        'http://localhost:8080',
+        'http://localhost:3000',
+        'http://localhost'
     ],
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 };
