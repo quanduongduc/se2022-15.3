@@ -9,7 +9,7 @@ export const userInfoValidator = (
 ) => {
     try {
         const { userName, password, firstName, lastName, gender } = req.body;
-        if (!userName || !password || !firstName || !lastName) {
+        if (!userName || !password || !firstName || !lastName || !gender) {
             return next(
                 new HttpException(
                     HttpStatus.BAD_REQUEST,
