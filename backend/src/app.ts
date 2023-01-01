@@ -1,3 +1,4 @@
+import { corsOptions } from 'configs';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -23,7 +24,7 @@ export const getApp = (): Application => {
     app.use(express.urlencoded({ extended: true }));
 
     app.use(helmet());
-    app.use(cors());
+    app.use(cors(corsOptions));
 
     app.get('/', (req: Request, res: Response) => {
         res.send('Healthy');
