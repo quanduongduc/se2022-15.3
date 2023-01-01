@@ -2,7 +2,8 @@ import { Router } from 'express';
 import {
     authRequire,
     createPermissionRequire,
-    deletePermissionRequire
+    deletePermissionRequire,
+    objectIdValidator
 } from '../middlewares';
 import { artistController } from '../controllers';
 
@@ -16,10 +17,16 @@ artistRoute.post(
     artistController.createArtist
 );
 artistRoute.get('/search', authRequire, artistController.findArtistByName);
-artistRoute.get('/:id', authRequire, artistController.findArtistById);
+artistRoute.get(
+    '/:id',
+    authRequire,
+    objectIdValidator,
+    artistController.findArtistById
+);
 artistRoute.delete(
     '/:id',
     deletePermissionRequire,
+    objectIdValidator,
     artistController.deleteArtistById
 );
 

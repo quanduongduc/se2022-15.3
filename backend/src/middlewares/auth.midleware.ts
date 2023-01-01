@@ -42,8 +42,6 @@ export const authRequire = async (
             );
         }
         req.body.user = user;
-        console.log(req.body);
-
         next();
     } catch (error) {
         console.log(error);
