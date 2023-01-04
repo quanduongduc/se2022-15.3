@@ -1,4 +1,4 @@
-.wrapper {
+.register-wrapper {
     max-width: 450px;
     height: 100%;
     display: flex;
@@ -7,7 +7,7 @@
     margin: 0px auto;
 }
 
-.header {
+.register-header {
     width: 100%;
     height: 150px;
     display: block;
@@ -16,7 +16,7 @@
     border-style: none;
 }
 
-.title-wrapper {
+.register-title-wrapper {
     width: 100%;
     height: 100px;
     display: flex;
@@ -31,13 +31,13 @@ img {
     border-radius: 50%;
 }
 
-.title {
+.register-title {
     padding-left: 20px;
     font-size: 34px;
     font-weight: 600;
 }
 
-.content {
+.register-content {
     width: 100%;
     height: 590px;
     align-items: center;
@@ -45,20 +45,30 @@ img {
     display: flex;
 }
 
+.errmsg-register {
+    width: 450px;
+    height: 48px;
+    background-color: red;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.register-font {
+    width: 24px;
+    height: 24px;
+}
+
 p {
     margin-top: 0.3rem !important;
 }
 
-.form-label {
+.register-form-label {
     width: 100%;
     height: 28px;
     font-weight: 600;
 }
 
-input {
-    width: 100%;
-    height: 52px;
-}
 .register-btn .btn {
     background-color: #1ED760;
 }

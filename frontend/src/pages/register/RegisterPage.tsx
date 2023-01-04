@@ -5,6 +5,7 @@ import './register.css';
 import Logo from '../../image/logo.png';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 const REGISTER_URL = '/register';
 
@@ -14,43 +15,74 @@ const RegisterPage = (): ReactElement => {
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [gender, setGender] = useState(false);
+    const [gender, setGender] = useState('undefined');
+    const [errMsg, setErrMsg] = useState('');
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await axios.post(
-            REGISTER_URL,
-            JSON.stringify({ userName, password, firstName, lastName }),
-            {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-        );
-        console.log(JSON.stringify(response?.data));
-        setUserName('');
-        setPassword('');
-        setFirstName('');
-        setLastName('');
-        setGender(false);
+        const response = await axios
+            .post(
+                REGISTER_URL,
+                JSON.stringify({
+                    userName,
+                    password,
+                    firstName,
+                    lastName,
+                    gender
+                }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            .then((response) => {
+                navigate('/login');
+                setUserName('');
+                setPassword('');
+                setFirstName('');
+                setLastName('');
+                setGender('');
+            })
+            .catch(function (err) {
+                if (err.response) {
+                    setErrMsg(err.response.data.message);
+                }
+            });
     };
 
-    const handleChange = (e: any) => {
-        setGender(e.target.checked);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGender(e.target.value);
     };
 
     return (
-        <div className="wrapper d-flex align-items-center">
-            <div className="header mb-5">
-                <div className="title-wrapper">
+        <div className="register-wrapper d-flex align-items-center">
+            <div className="register-header">
+                <div className="register-title-wrapper">
                     <div className="logo mb-3">
                         <img src={Logo} />
                     </div>
-                    <div className="title">Salyr</div>
+                    <div className="register-title">Salyr</div>
                 </div>
             </div>
-            <div className="content mt-5">
-                <div className="form-wrapper">
-                    <div className="login-container mt-5">
+            <div className="register-content mt-3">
+                <div className="register-form-wrapper">
+                    <div className="register-container mt-5">
+                        <p
+                            className={
+                                errMsg
+                                    ? 'errmsg-register text-center mb-4 text-white'
+                                    : 'offscreen'
+                            }
+                            aria-live="assertive"
+                        >
+                            <FontAwesomeIcon
+                                icon={faCircleExclamation}
+                                size="2x"
+                                color="white"
+                                className="register-font mx-3"
+                            />
+                            {errMsg}
+                        </p>
                         <button className="face-login btn btn-primary border-dark mb-2 rounded-pill d-flex justify-content-center">
                             <FontAwesomeIcon
                                 icon={faFacebook}
@@ -74,7 +106,7 @@ const RegisterPage = (): ReactElement => {
                             <div className="register-group  input-group mb-3">
                                 <label
                                     htmlFor="firstName-validation"
-                                    className="form-label"
+                                    className="register-form-label"
                                 >
                                     Họ của bạn là gì
                                 </label>
@@ -95,7 +127,7 @@ const RegisterPage = (): ReactElement => {
                             <div className="register-group  input-group mb-3">
                                 <label
                                     htmlFor="lastName-validation"
-                                    className="form-label"
+                                    className="register-form-label"
                                 >
                                     Tên của bạn là gì
                                 </label>
@@ -116,7 +148,7 @@ const RegisterPage = (): ReactElement => {
                             <div className="register-group  input-group mb-3">
                                 <label
                                     htmlFor="username-validation"
-                                    className="form-label"
+                                    className="register-form-label"
                                 >
                                     Đặt tên tài khoản của bạn
                                 </label>
@@ -137,7 +169,7 @@ const RegisterPage = (): ReactElement => {
                             <div className="register-group  input-group mb-3">
                                 <label
                                     htmlFor="password-validation"
-                                    className="form-label"
+                                    className="register-form-label"
                                 >
                                     Tạo mật khẩu
                                 </label>
@@ -155,32 +187,15 @@ const RegisterPage = (): ReactElement => {
                                     required
                                 />
                             </div>
-                            <div className="register-group  input-group mb-3">
-                                <label
-                                    htmlFor="re-password-validation"
-                                    className="form-label"
-                                >
-                                    Xác nhận mật khẩu
-                                </label>
-                                <input
-                                    type="password"
-                                    aria-invalid="false"
-                                    className="form-control border-dark"
-                                    id="re-password-validation"
-                                    placeholder="Nhập lại mật khẩu của ban."
-                                    autoCapitalize="off"
-                                    required
-                                />
-                            </div>
                             <div className="gender-group d-flex flex-wrap mb-3">
                                 <div className="form-check ps-4 pe-4">
                                     <input
                                         className="form-check-input"
                                         type="radio"
-                                        name="flexRadio"
+                                        name="radio"
                                         id="male"
                                         onChange={handleChange}
-                                        checked={gender}
+                                        value="male"
                                     />
                                     <label
                                         className="form-check-label"
@@ -193,10 +208,10 @@ const RegisterPage = (): ReactElement => {
                                     <input
                                         className="form-check-input"
                                         type="radio"
-                                        name="flexRadio"
+                                        name="radio"
                                         id="female"
                                         onChange={handleChange}
-                                        checked={gender}
+                                        value="female"
                                     />
                                     <label
                                         className="form-check-label"
@@ -209,14 +224,14 @@ const RegisterPage = (): ReactElement => {
                                     <input
                                         className="form-check-input"
                                         type="radio"
-                                        name="flexRadio"
-                                        id="undefind-gender"
+                                        name="radio"
+                                        id="undefind"
                                         onChange={handleChange}
-                                        checked={gender}
+                                        value="undefined"
                                     />
                                     <label
                                         className="form-check-label"
-                                        htmlFor="undefind-gender"
+                                        htmlFor="undefind"
                                     >
                                         Không phân biệt giới tính
                                     </label>
@@ -225,10 +240,10 @@ const RegisterPage = (): ReactElement => {
                                     <input
                                         className="form-check-input"
                                         type="radio"
-                                        name="flexRadio"
+                                        name="radio"
                                         id="undefined"
                                         onChange={handleChange}
-                                        checked
+                                        value="undefined"
                                     />
                                     <label
                                         className="form-check-label"

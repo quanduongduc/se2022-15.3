@@ -4,13 +4,17 @@ import {
     faGoogle
 } from '@fortawesome/free-brands-svg-icons';
 
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCircleExclamation,
+    faPhone
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, {
     ReactElement,
     useState,
     SyntheticEvent,
-    useContext
+    useContext,
+    useEffect
 } from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -18,43 +22,73 @@ import './login.css';
 import Logo from '../../image/logo.png';
 import axios from '../../api/axios';
 import AuthContext from '../../context/AuthProvider';
-const LOGIN_URL = '/auth';
+const LOGIN_URL = '/login';
 
 const LoginPage = (): ReactElement => {
     const { setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [isChecked, setIsChecked] = useState(true);
+    const [errMsg, setErrMsg] = useState('');
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [userName, password]);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await axios.post(
-            LOGIN_URL,
-            JSON.stringify({ userName, password }),
-            {
+        const response = await axios
+            .post(LOGIN_URL, JSON.stringify({ userName, password }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
-            }
-        );
-        console.log(JSON.stringify(response?.data));
-        setAuth({ userName, password });
-        setUserName('');
-        setPassword('');
+            })
+            .then((response) => {
+                navigate('/');
+                setAuth({ userName, password });
+                setUserName('');
+                setPassword('');
+            })
+            .catch(function (err) {
+                if (err.response) {
+                    setErrMsg(err.response.data.message);
+                }
+            });
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsChecked(e.target.checked);
     };
 
     return (
-        <div className="wrapper">
-            <div className="header">
-                <div className="title-wrapper">
+        <div className="login-wrapper">
+            <div className="login-header mb-5">
+                <div className="login-title-wrapper">
                     <div className="logo mb-3 mx-0">
                         <img src={Logo} />
                     </div>
-                    <div className="title">Salyr</div>
+                    <div className="login-title">Salyr</div>
                 </div>
             </div>
-            <div className="content">
+            <div className="login-content mt-5">
                 <div className="form-wrapper">
                     <div className="login-container mt-5">
+                        <p
+                            className={
+                                errMsg
+                                    ? 'errmsg-login text-center mb-4 text-white'
+                                    : 'offscreen'
+                            }
+                            aria-live="assertive"
+                        >
+                            <FontAwesomeIcon
+                                icon={faCircleExclamation}
+                                size="2x"
+                                color="white"
+                                className="login-font mx-3"
+                            />
+                            {errMsg}
+                        </p>
                         <button className="face-login btn btn-primary border-dark mb-2 rounded-pill d-flex justify-content-center">
                             <FontAwesomeIcon
                                 icon={faFacebook}
@@ -92,7 +126,7 @@ const LoginPage = (): ReactElement => {
                             <div className="login-group input-group mb-3">
                                 <label
                                     htmlFor="username-validation"
-                                    className="form-label"
+                                    className="login-form-label"
                                 >
                                     Địa chỉ email hoặc tên người dùng
                                 </label>
@@ -113,7 +147,7 @@ const LoginPage = (): ReactElement => {
                             <div className="login-group  input-group mb-3">
                                 <label
                                     htmlFor="password-validation"
-                                    className="form-label"
+                                    className="login-form-label"
                                 >
                                     Mật khẩu
                                 </label>
@@ -145,6 +179,8 @@ const LoginPage = (): ReactElement => {
                                         type="checkbox"
                                         value=""
                                         id="flexCheckDefault"
+                                        onChange={handleChange}
+                                        checked={isChecked}
                                     />
                                     <label
                                         className="form-check-label"
@@ -159,8 +195,8 @@ const LoginPage = (): ReactElement => {
                             </div>
                         </form>
                         <hr className="divider" />
-                        <div className="sign-up-form mt-3">
-                            <div className="label-unaccount mb-4">
+                        <div className="sign-up-group mt-3">
+                            <div className="label-noaccount mb-4">
                                 Bạn chưa có tài khoản?
                             </div>
                             <button
