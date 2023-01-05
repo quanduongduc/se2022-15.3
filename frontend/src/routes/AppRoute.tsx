@@ -1,39 +1,22 @@
 import { ReactElement } from 'react';
-import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
-import Account from '../pages/tsx/Account';
+import { Route, Routes } from 'react-router-dom';
 import Home from '../pages/tsx/Home';
 import LoginPage from '../pages/login/LoginPage';
 import PasswordReset from '../pages/password-reset/PasswordResetPage';
 import RegisterPage from '../pages/register/RegisterPage';
-
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Home />
-    },
-    {
-        path: '/login',
-        element: <LoginPage />
-    },
-    {
-        path: '/register',
-        element: <RegisterPage />
-    },
-    {
-        path: '/password-reset',
-        element: <PasswordReset />
-    },
-    {
-        path: '/account',
-        element: <Account />
-    }
-]);
+import RequireAuth from '../components/tsx/RequireAuth';
 
 const AppRoute = (): ReactElement => {
     return (
-        <>
-            <RouterProvider router={router}></RouterProvider>
-        </>
+        <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/password-reset" element={<PasswordReset />} />
+
+            <Route element={<RequireAuth />}>
+                <Route path="/" element={<Home />} />
+            </Route>
+        </Routes>
     );
 };
 

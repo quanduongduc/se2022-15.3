@@ -13,29 +13,26 @@ import React, {
     ReactElement,
     useState,
     SyntheticEvent,
-    useContext,
-    useEffect
+    useContext
 } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './login.css';
 import Logo from '../../image/logo.png';
-import { LOCAL_STORAGE_TOKEN_NAME } from '../../constants/constants';
-import AuthContext from '../../context/AuthProvider';
 import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 const LOGIN_URL = '/auth/login';
+const AUTH_URL = '/auth';
 
 const LoginPage = (): ReactElement => {
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(true);
     const [errMsg, setErrMsg] = useState('');
-
-    useEffect(() => {
-        setErrMsg('');
-    }, [userName, password]);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -44,17 +41,23 @@ const LoginPage = (): ReactElement => {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             })
-            .then((response) => {
-                navigate('/');
-                setAuth({ userName, password });
+            .then(() => {
                 setUserName('');
                 setPassword('');
-                localStorage.setItem(
-                    LOCAL_STORAGE_TOKEN_NAME,
-                    response.data.accessToken
-                );
+                axios
+                    .get(AUTH_URL, { withCredentials: true })
+                    .then((res) => {
+                        const user = res?.data?.user;
+                        setAuth({ user });
+                        navigate(from, { replace: true });
+                    })
+                    .catch(function (err) {
+                        if (err.response) {
+                            console.log(err.response);
+                        }
+                    });
             })
-            .catch(function (err) {
+            .catch((err) => {
                 if (err.response) {
                     setErrMsg(err.response.data.message);
                 }

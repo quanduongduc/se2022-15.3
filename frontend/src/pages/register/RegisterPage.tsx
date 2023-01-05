@@ -4,7 +4,6 @@ import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import './register.css';
 import Logo from '../../image/logo.png';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../../constants/constants';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import axios from '../../api/axios';
 const REGISTER_URL = 'auth/register';
@@ -20,7 +19,7 @@ const RegisterPage = (): ReactElement => {
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await axios
+        await axios
             .post(
                 REGISTER_URL,
                 JSON.stringify({
@@ -35,7 +34,7 @@ const RegisterPage = (): ReactElement => {
                     withCredentials: true
                 }
             )
-            .then((response) => {
+            .then(() => {
                 navigate('/login');
                 setUserName('');
                 setPassword('');
@@ -43,7 +42,7 @@ const RegisterPage = (): ReactElement => {
                 setLastName('');
                 setGender('');
             })
-            .catch(function (err) {
+            .catch((err) => {
                 if (err.response) {
                     setErrMsg(err.response.data.message);
                 }
