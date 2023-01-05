@@ -20,9 +20,9 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 import Logo from '../../image/logo.png';
-import axios from '../../api/axios';
+import { API_URL, LOCAL_STORAGE_TOKEN_NAME } from '../../constants/constants';
 import AuthContext from '../../context/AuthProvider';
-const LOGIN_URL = '/auth/login';
+import axios from 'axios';
 
 const LoginPage = (): ReactElement => {
     const { setAuth } = useContext(AuthContext);
@@ -39,15 +39,23 @@ const LoginPage = (): ReactElement => {
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         const response = await axios
-            .post(LOGIN_URL, JSON.stringify({ userName, password }), {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            })
+            .post(
+                `${API_URL}/auth/login`,
+                JSON.stringify({ userName, password }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
             .then((response) => {
                 navigate('/');
                 setAuth({ userName, password });
                 setUserName('');
                 setPassword('');
+                localStorage.setItem(
+                    LOCAL_STORAGE_TOKEN_NAME,
+                    response.data.accessToken
+                );
             })
             .catch(function (err) {
                 if (err.response) {

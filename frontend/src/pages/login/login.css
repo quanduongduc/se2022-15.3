@@ -1,6 +1,5 @@
 .login-wrapper {
-    width: 100vw;
-    height: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;

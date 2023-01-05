@@ -4,10 +4,9 @@ import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import './register.css';
 import Logo from '../../image/logo.png';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios';
+import { API_URL } from '../../constants/constants';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-
-const REGISTER_URL = '/auth/register';
+import axios from 'axios';
 
 const RegisterPage = (): ReactElement => {
     const navigate = useNavigate();
@@ -22,7 +21,7 @@ const RegisterPage = (): ReactElement => {
         e.preventDefault();
         const response = await axios
             .post(
-                REGISTER_URL,
+                `${API_URL}/auth/login`,
                 JSON.stringify({
                     userName,
                     password,
