@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AppRoute from './routes/AppRoute';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { AuthProvider } from './context/AuthProvider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <AppRoute></AppRoute>
+        <AuthProvider>
+            <AppRoute></AppRoute>
+        </AuthProvider>
     </React.StrictMode>
 );
 

@@ -1,6 +1,18 @@
 version: "3.9"
 
 services:
+  mongo-express:
+    image: mongo-express:latest
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=$MONGODB_USER
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=$MONGODB_PASSWORD
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    ports:
+      - 8081:8081
+    networks:
+      - backend
+
   mongodb:
     image: mongo:latest
     restart: unless-stopped
@@ -29,6 +41,8 @@ services:
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=$MONGODB_DOCKER_PORT
+      - JWT_SECRET=$JWT_SECRET
+      - ADMIN_PERMISSION_KEY=$ADMIN_PERMISSION_KEY
     networks:
       - backend
       - app-network
@@ -38,6 +52,8 @@ services:
       - backend
     build:
       context: ./frontend
+    environment:
+      - ADMIN_PERMISSION_KEY=$ADMIN_PERMISSION_KEY
     ports:
       - $REACT_HOST_PORT:$REACT_DOCKER_PORT
     networks:
