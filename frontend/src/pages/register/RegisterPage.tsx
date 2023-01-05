@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 
-const REGISTER_URL = '/register';
+const REGISTER_URL = '/auth/register';
 
 const RegisterPage = (): ReactElement => {
     const navigate = useNavigate();

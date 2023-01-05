@@ -22,7 +22,7 @@ import './login.css';
 import Logo from '../../image/logo.png';
 import axios from '../../api/axios';
 import AuthContext from '../../context/AuthProvider';
-const LOGIN_URL = '/login';
+const LOGIN_URL = '/auth/login';
 
 const LoginPage = (): ReactElement => {
     const { setAuth } = useContext(AuthContext);
