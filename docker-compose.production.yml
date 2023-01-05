@@ -28,6 +28,8 @@ services:
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=$MONGODB_DOCKER_PORT
+      - JWT_SECRET=$JWT_SECRET
+      - ADMIN_PERMISSION_KEY=$ADMIN_PERMISSION_KEY
     networks:
       - backend
       - app-network
@@ -36,6 +38,8 @@ services:
     depends_on:
       - backend
     image: $AWS_ECR_FRONTEND
+    environment:
+      - ADMIN_PERMISSION_KEY=$ADMIN_PERMISSION_KEY
     ports:
       - $REACT_HOST_PORT:$REACT_DOCKER_PORT
     networks:
