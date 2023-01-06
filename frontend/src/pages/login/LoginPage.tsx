@@ -13,7 +13,8 @@ import React, {
     ReactElement,
     useState,
     SyntheticEvent,
-    useContext
+    useContext,
+    useEffect
 } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ const LOGIN_URL = '/auth/login';
 const AUTH_URL = '/auth';
 
 const LoginPage = (): ReactElement => {
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
@@ -33,6 +34,12 @@ const LoginPage = (): ReactElement => {
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(true);
     const [errMsg, setErrMsg] = useState('');
+
+    useEffect(() => {
+        if (auth?.user) {
+            navigate('/');
+        }
+    }, [auth]);
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
