@@ -13,7 +13,6 @@ import React, {
     ReactElement,
     useState,
     SyntheticEvent,
-    useContext,
     useEffect
 } from 'react';
 

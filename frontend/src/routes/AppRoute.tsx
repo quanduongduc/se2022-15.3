@@ -1,10 +1,14 @@
 import { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from '../pages/tsx/Home';
+import Home from '../components/tsx/Home';
 import LoginPage from '../pages/login/LoginPage';
 import PasswordReset from '../pages/password-reset/PasswordResetPage';
 import RegisterPage from '../pages/register/RegisterPage';
 import RequireAuth from '../components/tsx/RequireAuth';
+import Search from '../components/tsx/Search';
+import Collection from '../components/tsx/Collection';
+import Playlist from '../components/tsx/Playlist';
+import Favorite from '../components/tsx/Favorite';
 
 const AppRoute = (): ReactElement => {
     return (
@@ -15,6 +19,10 @@ const AppRoute = (): ReactElement => {
 
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/collection" element={<Collection />} />
+                <Route path="/playlist" element={<Playlist />} />
+                <Route path="/favorite" element={<Favorite />} />
             </Route>
         </Routes>
     );

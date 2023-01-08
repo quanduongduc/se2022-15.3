@@ -9,7 +9,6 @@ const AuthContext = createContext({} as Context);
 
 export const AuthProvider = ({ children }: { children: any }) => {
     const [auth, setAuth] = useState({});
-    console.log(auth);
 
     useEffect(() => {
         axios
