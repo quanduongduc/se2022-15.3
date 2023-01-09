@@ -32,9 +32,10 @@ jobs:
         uses: supercharge/mongodb-github-action@1.8.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-          mongodb-username: admin
+          mongodb-username: root
           mongodb-password: admin
           mongodb-db: admin
+          mongodb-port: 27107
 
       - name: Install dependencies
         run: npm install --prefix ./backend
