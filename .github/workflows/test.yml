@@ -1,0 +1,50 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "backend"
+      - "frontend"
+    pull_request_target:
+      - "main"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        mongodb-version: ["4.2", "4.4", "5.0", "6.0"]
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-username: admin
+          mongodb-password: admin
+          mongodb-db: admin
+
+      - name: Install dependencies
+        run: npm install --prefix ./backend
+
+      - name: Run tests
+        run: npm run test:cov --prefix ./backend
+        env:
+          CI: true
+    steps:
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v3
+      with:
+        fail_ci_if_error: true
