@@ -35,7 +35,7 @@ jobs:
           mongodb-username: root
           mongodb-password: admin
           mongodb-db: admin
-          mongodb-port: 27107
+          mongodb-port: 27017
 
       - name: Install dependencies
         run: npm install --prefix ./backend
