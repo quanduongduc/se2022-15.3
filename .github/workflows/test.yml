@@ -5,8 +5,9 @@ on:
     branches:
       - "backend"
       - "frontend"
-    pull_request_target:
-      - "main"
+    pull_request:
+      - "backend"
+      - "frontend"
 
 permissions:
   contents: read
