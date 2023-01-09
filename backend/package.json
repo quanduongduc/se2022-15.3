@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "jest",
-        "test:cov": "jest --coverage=true",
+        "test": "jest --runInBand",
+        "test:cov": "jest --runInBand --coverage=true",
         "start": "node build/index.js",
         "dev": "tsc-watch --onSuccess \"node ./build/index.js\"",
         "build": "tsc -p tsconfig.build.json",

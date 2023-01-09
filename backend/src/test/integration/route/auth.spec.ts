@@ -1,4 +1,4 @@
-import { HttpStatus } from '';
+import { HttpStatus } from '../../../utils';
 import { jsonHeaders, request } from '../../helpers';
 import { connectDB } from '../../../configs';
 import mongoose from 'mongoose';
