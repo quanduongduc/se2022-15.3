@@ -43,8 +43,7 @@ jobs:
         run: npm run test:cov --prefix ./backend
         env:
           CI: true
-    steps:
-      - name : upload coverage
+      - name: upload coverage
         uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
