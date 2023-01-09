@@ -15,44 +15,36 @@ import {
 
 dotenv.config();
 
-export const getApp = (): Application => {
-    const app: Application = express();
-    const routes = Router();
+const app: Application = express();
+const routes = Router();
 
-    app.use(express.json());
-    app.use(cookieParser());
-    app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
-    app.use(function (req, res, next) {
-        res.header('Content-Type', 'application/json;charset=UTF-8');
-        res.header(
-            'Access-Control-Allow-Headers',
-            'Origin, X-Requested-With, Content-Type, Accept'
-        );
-        next();
-    });
+app.use(function (req, res, next) {
+    res.header('Content-Type', 'application/json;charset=UTF-8');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
+});
 
-    app.use(helmet());
-    app.use(cors(corsOptions));
+app.use(helmet());
+app.use(cors(corsOptions));
 
-    app.get('/', (req: Request, res: Response) => {
-        res.send('Healthy');
-    });
+app.get('/', (req: Request, res: Response) => {
+    res.send({ message: 'healthy' });
+});
 
-    app.get('/api/random', (req: Request, res: Response) => {
-        const randomNumber: number = Math.floor(Math.random() * 100000);
-        return res.json({
-            name: String(randomNumber)
-        });
-    });
+routes.use('/api/user', userRoute);
+routes.use('/api/auth', authRoute);
+routes.use('/api/track', trackRoute);
+routes.use('/api/artist', artistRoute);
+routes.use('/api/playlist', playlistRoute);
+app.use(routes);
 
-    routes.use('/api/user', userRoute);
-    routes.use('/api/auth', authRoute);
-    routes.use('/api/track', trackRoute);
-    routes.use('/api/artist', artistRoute);
-    routes.use('/api/playlist', playlistRoute);
-    app.use(routes);
+app.use(errorHandler);
 
-    app.use(errorHandler);
-    return app;
-};
+export default app;
