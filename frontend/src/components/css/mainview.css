@@ -1,8 +1,0 @@
-.main-view-wrapper {
-    background-color: #292929;
-    width: calc(100% - 250px);
-    height: 660px;
-    display: flex;
-    flex-direction: column;
-    float: right;
-}

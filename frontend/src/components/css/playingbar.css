@@ -26,10 +26,9 @@
     background-color: inherit;
 }
 
-.song-img {
+.track-img {
     width: 56px;
     height: 56px;
-    background-color: #1ed760;
     margin: 0 0 0 15px;
 }
 
@@ -44,7 +43,9 @@
 .song-name {
     width: 100%;
     height: 24px;
-    font-size: 12px;
+    font-size: 14px;
+    color: white
+    
 }
 
 .song-artist {
@@ -93,7 +94,7 @@
     color: #fff;
 }
 
-.random-font:active {
+.random-font-active {
     color: #1ed760;
 }
 
@@ -155,16 +156,21 @@
     color: #fff;
 }
 
-.repeat-font:active {
+.repeat-font-active {
     color: #1ed760;
 }
 
 .playing-progress-bar {
     width: 100%;
-    height: 18px;
-    background-color: #ffffff;
+    height: 16px;
     align-items: center;
     align-content: center;
+}
+
+.progress {
+    width: 80%;
+    height: 16px;
+    background-color: #1ed760;
 }
 
 .other-feature {
