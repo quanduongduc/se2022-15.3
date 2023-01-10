@@ -1,6 +1,6 @@
 .sidebar-wrapper {
     width: 250px;
-    height: 660px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: #121212;
@@ -62,4 +62,13 @@
 
 .scroll-playlist:hover {
     overflow: auto;
+}
+
+.playlist-title {
+    margin-bottom: 0;
+}
+
+.playlist-title:hover {
+    color: #fff;
+    cursor: pointer;
 }

@@ -35,12 +35,12 @@ const RegisterPage = (): ReactElement => {
                 }
             )
             .then(() => {
-                navigate('/login');
                 setUserName('');
                 setPassword('');
                 setFirstName('');
                 setLastName('');
                 setGender('');
+                navigate('/login');
             })
             .catch((err) => {
                 if (err.response) {
@@ -58,7 +58,7 @@ const RegisterPage = (): ReactElement => {
             <div className="register-header">
                 <div className="register-title-wrapper">
                     <div className="logo mb-3">
-                        <img src={Logo} />
+                        <img src={Logo} className="register-logo" />
                     </div>
                     <div className="register-title">Salyr</div>
                 </div>

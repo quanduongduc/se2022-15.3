@@ -8,7 +8,7 @@ const PasswordReset = (): ReactElement => {
             <div className="reset-password-header d-flex flex-wrap align-items-center justify-content-center mb-4">
                 <div className="reset-password-title-wrapper d-flex align-items-center justify-content-center">
                     <div className="logo mb-3">
-                        <img src={Logo} />
+                        <img src={Logo} className="password-reset-logo" />
                     </div>
                     <div className="reset-title mx-4">Salyr</div>
                 </div>

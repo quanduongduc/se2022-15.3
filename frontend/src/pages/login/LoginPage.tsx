@@ -42,7 +42,7 @@ const LoginPage = (): ReactElement => {
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await axios
+        await axios
             .post(LOGIN_URL, JSON.stringify({ userName, password }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
@@ -79,7 +79,7 @@ const LoginPage = (): ReactElement => {
             <div className="login-header mb-5">
                 <div className="login-title-wrapper">
                     <div className="logo mb-3 mx-0">
-                        <img src={Logo} />
+                        <img src={Logo} className="login-logo" />
                     </div>
                     <div className="login-title">Salyr</div>
                 </div>

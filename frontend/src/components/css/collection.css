@@ -1,0 +1,11 @@
+.collection-wrapper {
+    width: calc(100%-250px);
+    height: 100vh;
+}
+
+.collection-content {
+    background-color: #292929;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

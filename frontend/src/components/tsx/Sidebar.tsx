@@ -9,12 +9,31 @@ import {
     faMagnifyingGlass,
     faSquarePlus
 } from '@fortawesome/free-solid-svg-icons';
-import { usePlaylistContext } from '../../context/PlaylistContext';
+import { usePlaylistContext } from '../../context/PlaylistContextProvider';
+import axios from '../../api/axios';
+import { useNavigate } from 'react-router-dom';
+const PLAYLIST_URL = '/playlist/';
 
 const Sidebar = (): ReactElement => {
-    // const {
-    //     playlistContextState: { playlists }
-    // } = usePlaylistContext();
+    const navigate = useNavigate();
+
+    const {
+        playlistContextState: { playlists },
+        updatePlaylistContextState
+    } = usePlaylistContext();
+
+    const setSelectedPlaylist = async (playlistId: any) => {
+        axios
+            .get(`${PLAYLIST_URL}${playlistId}`, { withCredentials: true })
+            .then((response) => {
+                const playlistResponse = response?.data?.playlist;
+                updatePlaylistContextState({
+                    selectedPlaylistId: playlistId,
+                    selectedPlaylist: playlistResponse
+                });
+                navigate(PLAYLIST_URL);
+            });
+    };
 
     return (
         <div className="sidebar-wrapper">
@@ -50,7 +69,7 @@ const Sidebar = (): ReactElement => {
                 <SidebarButton
                     name="playlist-page"
                     title="Tạo playlist"
-                    to="/playlist"
+                    to="/playlist/create"
                     icon={faSquarePlus}
                 />
                 <SidebarButton
@@ -60,16 +79,19 @@ const Sidebar = (): ReactElement => {
                     icon={faHeart}
                 />
                 <div className="scroll-playlist d-flex justify-content-start flex-column ">
-                    <li className="playlist-child">1</li>
-                    <li className="playlist-child">2</li>
-                    <li className="playlist-child">3</li>
-                    <li className="playlist-child">4</li>
-                    <li className="playlist-child">5</li>
-                    <li className="playlist-child">6</li>
-                    <li className="playlist-child">7</li>
-                    <li className="playlist-child">8</li>
-                    <li className="playlist-child">9</li>
-                    <li className="playlist-child">10</li>
+                    <div className="list-playlist-container ms-4">
+                        {playlists.map(({ _id, title }) => (
+                            <p
+                                key={_id}
+                                className="playlist-title"
+                                onClick={() => {
+                                    setSelectedPlaylist(_id);
+                                }}
+                            >
+                                {title}
+                            </p>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

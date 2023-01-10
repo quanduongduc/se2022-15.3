@@ -24,7 +24,7 @@
     justify-content: center;
 }
 
-img {
+.login-logo {
     max-width: 70px;
     max-height: 70px;
     border-radius: 50%;

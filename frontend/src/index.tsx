@@ -5,6 +5,9 @@ import AppRoute from './routes/AppRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './context/AuthProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import TracksContextProvider from './context/TracksContextProvider';
+import PlaylistContextProvider from './context/PlaylistContextProvider';
+import TrackContextProvider from './context/TrackContextProvider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -13,9 +16,15 @@ root.render(
     <React.StrictMode>
         <BrowserRouter>
             <AuthProvider>
-                <Routes>
-                    <Route path="/*" element={<AppRoute />} />
-                </Routes>
+                <PlaylistContextProvider>
+                    <TracksContextProvider>
+                        <TrackContextProvider>
+                            <Routes>
+                                <Route path="/*" element={<AppRoute />} />
+                            </Routes>
+                        </TrackContextProvider>
+                    </TracksContextProvider>
+                </PlaylistContextProvider>
             </AuthProvider>
         </BrowserRouter>
     </React.StrictMode>

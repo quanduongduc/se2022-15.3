@@ -1,19 +1,19 @@
 import { ReactElement } from 'react';
-import PlaylistContextProvider from '../../context/PlaylistContext';
-import MainView from './MainView';
+import '../css/playlist.css';
 import PlayingBar from './PlayingBar';
+import PlaylistView from './PlaylistView';
 import Sidebar from './Sidebar';
+import TopBar from './TopBar';
 
-const Playlist = (): ReactElement => {
-    return (
-        <>
-            <PlaylistContextProvider>
-                <Sidebar></Sidebar>
-                <MainView></MainView>
-                <PlayingBar></PlayingBar>
-            </PlaylistContextProvider>
-        </>
-    );
-};
+const Playlist = (): ReactElement => (
+    <div className="playlist-wrapper">
+        <TopBar />
+        <Sidebar />
+        <PlayingBar />
+        <div className="playlist-content overflow-auto">
+            <PlaylistView />
+        </div>
+    </div>
+);
 
 export default Playlist;

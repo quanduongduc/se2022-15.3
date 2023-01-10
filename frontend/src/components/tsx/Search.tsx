@@ -1,15 +1,15 @@
 import { ReactElement } from 'react';
-import MainView from './MainView';
 import PlayingBar from './PlayingBar';
 import Sidebar from './Sidebar';
+import TopBar from './TopBar';
 
 const Search = (): ReactElement => {
     return (
-        <>
-            <Sidebar></Sidebar>
-            <MainView></MainView>
-            <PlayingBar></PlayingBar>
-        </>
+        <div className="search-wrapper">
+            <TopBar />
+            <Sidebar />
+            <PlayingBar />
+        </div>
     );
 };
 
