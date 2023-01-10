@@ -3,6 +3,8 @@ import { HttpStatus } from './httpStatus';
 import { generateToken, verifyToken } from './jwt.util';
 import { generateFileName } from './generateFileName';
 import { uploadToS3, downloadFromS3, getObjectSignedUrl } from './s3';
+import { generateTrackUrls } from './generateTrackUrls';
+
 export {
     HttpStatus,
     generateToken,
@@ -11,5 +13,6 @@ export {
     generateFileName,
     uploadToS3,
     downloadFromS3,
-    getObjectSignedUrl
+    getObjectSignedUrl,
+    generateTrackUrls
 };
