@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { trackController, userController } from '../controllers';
 import { Playlist } from '../models';
-import { HttpException, HttpStatus } from '../utils';
+import { HttpException, HttpStatus, generateTrackUrls } from '../utils';
 import { BaseController } from './base.controller';
 
 class PlaylistController extends BaseController {
@@ -55,10 +55,21 @@ class PlaylistController extends BaseController {
                 {},
                 10
             );
+            const playlistWithTrackUrls = await Promise.all(
+                playlists.map(async (playlist: any) => {
+                    const tracksWithUrls = await this.generateTracksWithUrl(
+                        playlist.tracks
+                    );
+                    return {
+                        ...playlist.toJSON(),
+                        tracks: tracksWithUrls
+                    };
+                })
+            );
 
             this.res(res, {
                 message: 'get playlist successfully',
-                playlists: playlists
+                playlists: playlistWithTrackUrls
             });
         } catch (error) {
             console.log(error);
@@ -79,10 +90,22 @@ class PlaylistController extends BaseController {
     ) => {
         try {
             const playlists: any = await this.findAll();
+            const playlistWithTrackUrls = await Promise.all(
+                playlists.map(async (playlist: any) => {
+                    const tracksWithUrls = await this.generateTracksWithUrl(
+                        playlist.tracks
+                    );
+                    return {
+                        ...playlist.toJSON(),
+                        tracks: tracksWithUrls
+                    };
+                })
+            );
+            console.log(playlistWithTrackUrls);
 
             this.res(res, {
                 message: 'Get playlists successfully',
-                playlists: playlists
+                playlists: playlistWithTrackUrls
             });
         } catch (error) {
             console.log(error);
@@ -112,10 +135,15 @@ class PlaylistController extends BaseController {
                     )
                 );
             }
-
+            const tracksWithUrls = await this.generateTracksWithUrl(
+                playlist.tracks
+            );
             this.res(res, {
                 message: 'Get playlist successfully',
-                playlist: playlist.toJSON()
+                playlist: {
+                    ...playlist.toJSON(),
+                    tracks: tracksWithUrls
+                }
             });
         } catch (error) {
             console.log(error);
@@ -127,6 +155,24 @@ class PlaylistController extends BaseController {
             );
         }
     };
+
+    private async generateTracksWithUrl(tracks: []) {
+        try {
+            const tracksWithUrl = await Promise.all(
+                tracks.map(async (track: any) => {
+                    const urls = await generateTrackUrls(
+                        track.storageName,
+                        track.theme
+                    );
+                    return {
+                        ...track.toJSON(),
+                        ...urls
+                    };
+                })
+            );
+            return tracksWithUrl;
+        } catch (error) {}
+    }
 
     public deletePlaylistById = async (
         req: Request,
