@@ -6,9 +6,10 @@ import {
     useEffect
 } from 'react';
 import axios from '../api/axios';
+import useAuth from '../hooks/useAuth';
 import { IPlaylistContext, PlaylistContextState } from '../types/type';
 
-const PLAYLIST_URL = '/playlist';
+const USER_URL = '/user';
 
 const defaultPlaylistContextState: PlaylistContextState = {
     playlists: [],
@@ -38,18 +39,26 @@ const PlaylistContextProvider = ({ children }: { children: ReactNode }) => {
         }));
     };
 
+    const { auth } = useAuth();
     useEffect(() => {
         axios
-            .get(PLAYLIST_URL, {
+            .get(USER_URL, {
                 withCredentials: true
             })
             .then((response) => {
-                const userPlaylistResponse = response?.data?.playlists;
-                updatePlaylistContextState({
-                    playlists: userPlaylistResponse
-                });
+                const userResponse = response?.data?.users;
+                if (auth?.user) {
+                    const userIndexResponse = userResponse.findIndex(
+                        (user: any) => user._id === auth?.user._id
+                    );
+                    const userPlaylistResponse =
+                        userResponse[userIndexResponse].playlists;
+                    updatePlaylistContextState({
+                        playlists: userPlaylistResponse
+                    });
+                }
             });
-    }, []);
+    }, [auth]);
 
     const playlistContextProviderData = {
         playlistContextState,
