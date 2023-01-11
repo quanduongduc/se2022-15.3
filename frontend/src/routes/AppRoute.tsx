@@ -10,6 +10,8 @@ import Collection from '../components/tsx/Collection';
 import Playlist from '../components/tsx/Playlist';
 import Favorite from '../components/tsx/Favorite';
 import PlaylistCreate from '../components/tsx/PlaylistCreate';
+import PlaylistView from '../components/tsx/PlaylistView';
+import App from '../App';
 
 const AppRoute = (): ReactElement => {
     return (
@@ -20,15 +22,16 @@ const AppRoute = (): ReactElement => {
                 <Route path="/password-reset" element={<PasswordReset />} />
 
                 <Route element={<RequireAuth />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/collection" element={<Collection />} />
-                    <Route path="/playlist" element={<Playlist />} />
-                    <Route
-                        path="playlist/create"
-                        element={<PlaylistCreate />}
-                    />
-                    <Route path="/favorite" element={<Favorite />} />
+                    <Route path="/" element={<App />}>
+                        <Route path="" element={<Home />} />
+                        <Route path="search" element={<Search />} />
+                        <Route path="collection" element={<Collection />} />
+                        <Route path="playlist/" element={<Playlist />}>
+                            <Route path="" element={<PlaylistView />} />
+                            <Route path="create" element={<PlaylistCreate />} />
+                        </Route>
+                        <Route path="favorite" element={<Favorite />} />
+                    </Route>
                 </Route>
             </Routes>
         </>

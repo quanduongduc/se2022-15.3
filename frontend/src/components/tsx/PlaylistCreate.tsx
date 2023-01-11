@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 import '../css/playlistCreate.css';
-import PlayingBar from './PlayingBar';
-import Sidebar from './Sidebar';
-import TopBar from './TopBar';
 const PLAYLIST_CREATE_URL = '/playlist/create';
 const PLAYLIST_URL = '/playlist/';
 
@@ -46,9 +43,6 @@ const PlaylistCreate = (): ReactElement => {
     };
     return (
         <div className="playlist-view-create-wrapper">
-            <TopBar />
-            <Sidebar />
-            <PlayingBar />
             <div className="playlist-view-create-container d-flex flex-column text-white align-items-center">
                 <div className="playlist-view-create-header">
                     <div className="playlist-view-create-title mt-5">

@@ -7,7 +7,7 @@ interface Props {
 
 const Track = ({ item, itemIndex }: Props) => {
     return (
-        <div className="track-container text-white d-flex align-items-center rounded-3">
+        <div className="track-container text-white d-flex align-items-center rounded-3 mt-3">
             <div className="index-container me-5 d-flex align-items-center">
                 <span className="index-track d-flex align-items-center">
                     {itemIndex + 1}
