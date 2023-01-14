@@ -24,6 +24,15 @@ const Favorite = (): ReactElement => {
         tracksContextState: { tracks }
     } = useTracksContext();
 
+    const trackInFavorite = [];
+    for (const track of tracks) {
+        for (const favoriteTrack of favoriteTracks) {
+            if (track._id === favoriteTrack._id) {
+                trackInFavorite.push(track);
+            }
+        }
+    }
+
     const [title, setTitle] = useState('');
 
     const searchHandler = (e: SyntheticEvent) => {
@@ -77,7 +86,7 @@ const Favorite = (): ReactElement => {
                     </div>
                 </div>
                 <div className="favorite-data-content d-flex flex-column">
-                    {favoriteTracks.map((track, index) => (
+                    {trackInFavorite.map((track, index) => (
                         <div className="favorite-data-show d-flex flex-row">
                             <Track
                                 key={track._id}

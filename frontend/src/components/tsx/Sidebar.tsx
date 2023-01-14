@@ -7,11 +7,13 @@ import {
     faHouse,
     faList,
     faMagnifyingGlass,
-    faSquarePlus
+    faSquarePlus,
+    faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 import axios from '../../api/axios';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const PLAYLIST_URL = '/playlist/';
 
 const Sidebar = (): ReactElement => {
@@ -33,6 +35,12 @@ const Sidebar = (): ReactElement => {
                 });
                 navigate(PLAYLIST_URL);
             });
+    };
+
+    const removePlaylist = (_id: string) => () => {
+        axios.delete(`${PLAYLIST_URL}/delete/${_id}`, {
+            withCredentials: true
+        });
     };
 
     return (
@@ -81,15 +89,24 @@ const Sidebar = (): ReactElement => {
                 <div className="scroll-playlist d-flex justify-content-start flex-column ">
                     <div className="list-playlist-container ms-4">
                         {playlists.map(({ _id, title }) => (
-                            <p
-                                key={_id}
-                                className="playlist-title"
-                                onClick={() => {
-                                    setSelectedPlaylist(_id);
-                                }}
-                            >
-                                {title}
-                            </p>
+                            <div className="list-playlist d-flex flex-row">
+                                <p
+                                    key={_id}
+                                    className="playlist-title"
+                                    onClick={() => {
+                                        setSelectedPlaylist(_id);
+                                    }}
+                                >
+                                    {title}
+                                </p>
+                                <p>
+                                    <FontAwesomeIcon
+                                        icon={faXmark}
+                                        className="x-mark ms-5"
+                                        onClick={removePlaylist(_id)}
+                                    />
+                                </p>
+                            </div>
                         ))}
                     </div>
                 </div>
