@@ -40,6 +40,17 @@ const PlaylistView = () => {
         );
     };
 
+    const removeTrackFromPlaylist = (trackID: string) => () => {
+        axios.patch(
+            `${PLAYLIST_URL}/${selectedPlaylistId}/remove-track/${trackID}`,
+            JSON.stringify({ selectedPlaylistId, trackID }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        );
+    };
+
     if (!selectedPlaylist) return null;
 
     return (
@@ -65,7 +76,19 @@ const PlaylistView = () => {
                 </div>
                 <div className="track-content d-flex flex-column">
                     {selectedPlaylist.tracks.map((track: any, index: any) => (
-                        <Track key={track._id} item={track} itemIndex={index} />
+                        <div className="playlist-show-container d-flex flex-row">
+                            <Track
+                                key={track._id}
+                                item={track}
+                                itemIndex={index}
+                            />
+                            <button
+                                className="playlist-remove-track-btn rounded-5 mt-4 text-white"
+                                onClick={removeTrackFromPlaylist(track._id)}
+                            >
+                                Xóa
+                            </button>
+                        </div>
                     ))}
                 </div>
                 <div className="playlist-add-track-container mt-5">

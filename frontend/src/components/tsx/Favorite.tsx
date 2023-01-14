@@ -11,6 +11,7 @@ import '../css/favorite.css';
 import Track from './Track';
 const SEARCH_URL = '/track/search/?title=';
 const ADD_TRACK_TO_FAVORITE_URL = '/user/add-favourite/';
+const REMOVE_TRACK_FAVORITE_URL = '/user/remove-favourite/';
 
 const Favorite = (): ReactElement => {
     const [favoriteAddTrack, setFavoriteAddTrack] = useState<any[]>([]);
@@ -45,6 +46,17 @@ const Favorite = (): ReactElement => {
         );
     };
 
+    const removeTrackFromFavorite = (trackID: string) => () => {
+        axios.patch(
+            `${REMOVE_TRACK_FAVORITE_URL}${trackID}`,
+            JSON.stringify({ trackID }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        );
+    };
+
     return (
         <div className="favorite-wrapper">
             <div className="favorite-header text-white d-flex align-items-center">
@@ -66,7 +78,19 @@ const Favorite = (): ReactElement => {
                 </div>
                 <div className="favorite-data-content d-flex flex-column">
                     {favoriteTracks.map((track, index) => (
-                        <Track key={track._id} item={track} itemIndex={index} />
+                        <div className="favorite-data-show d-flex flex-row">
+                            <Track
+                                key={track._id}
+                                item={track}
+                                itemIndex={index}
+                            />
+                            <button
+                                className="remove-track-btn rounded-5 text-white mt-4"
+                                onClick={removeTrackFromFavorite(track._id)}
+                            >
+                                Xóa
+                            </button>
+                        </div>
                     ))}
                 </div>
                 <div className="favorite-add-track-container mt-5">

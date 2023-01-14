@@ -50,6 +50,17 @@
     width: 100%;
 }
 
+.playlist-remove-track-btn {
+    width: 70px;
+    height: 40px;
+    background-color: rgba(30,30,30,0.1);
+    border-color: #ffffff;
+}
+
+.playlist-remove-track-btn:hover {
+    transform: scale(1.1);
+}
+
 .playlist-add-track-container {
     width: 96%;
     height: 100vh;
