@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import TracksContextProvider from './context/TracksContextProvider';
 import PlaylistContextProvider from './context/PlaylistContextProvider';
 import TrackContextProvider from './context/TrackContextProvider';
+import FavoriteContextProvider from './context/FavoriteContextProvider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -18,11 +19,13 @@ root.render(
             <AuthProvider>
                 <PlaylistContextProvider>
                     <TracksContextProvider>
-                        <TrackContextProvider>
-                            <Routes>
-                                <Route path="/*" element={<AppRoute />} />
-                            </Routes>
-                        </TrackContextProvider>
+                        <FavoriteContextProvider>
+                            <TrackContextProvider>
+                                <Routes>
+                                    <Route path="/*" element={<AppRoute />} />
+                                </Routes>
+                            </TrackContextProvider>
+                        </FavoriteContextProvider>
                     </TracksContextProvider>
                 </PlaylistContextProvider>
             </AuthProvider>

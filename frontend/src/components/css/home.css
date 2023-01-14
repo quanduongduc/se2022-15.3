@@ -1,8 +1,8 @@
 .home-content {
     background-color: #292929;
-    width: calc(100%-250px);
-    height: 660px;
+    width: calc(100px-250px);
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    float: right;
+    margin-left: 250px;
 }

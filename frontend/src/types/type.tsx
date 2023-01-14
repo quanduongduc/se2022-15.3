@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+
 export interface TracksContextState {
     tracks: any[];
 }
@@ -20,12 +22,31 @@ export interface IPlaylistContext {
 }
 
 export interface TrackContextState {
+    selectedUserId?: string;
     selectedTrackId?: string;
     selectedTrack: any | null;
     isPlaying: boolean;
+    isFavourite: boolean;
 }
 
 export interface ITrackContext {
     trackContextState: TrackContextState;
-    updateTrackContextState: (updatedObj: Partial<TrackContextState>) => void;
+    dispatchTrackAction: Dispatch<TrackReducerAction>;
+}
+
+export enum TrackReducerActionType {
+    ToggleIsPlaying = 'ToggleIsPlaying'
+}
+
+export type TrackReducerAction = {
+    type: TrackReducerActionType.ToggleIsPlaying;
+    payload: boolean;
+};
+
+export interface FavoriteTracksContextState {
+    favoriteTracks: any[];
+}
+
+export interface IFavoriteTracksContext {
+    favoriteTracksContextState: FavoriteTracksContextState;
 }

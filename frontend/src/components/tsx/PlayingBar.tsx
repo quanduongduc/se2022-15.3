@@ -22,9 +22,9 @@ const PlayingBar = (): ReactElement => {
     } = useTracksContext();
 
     const [currentTrack, setcurrentTrack] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
     const [isRandom, setIsRandom] = useState(false);
     const [isRepeat, setIsRepeat] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const title = tracks[currentTrack].title;
     const artists = tracks[currentTrack].artists[0];
@@ -45,7 +45,7 @@ const PlayingBar = (): ReactElement => {
         setTrackInfo({ ...trackInfo, currentTime, duration });
     };
 
-    const songEndHandler = async () => {
+    const trackEndHandler = () => {
         const currentIndex = tracks.findIndex(
             (track) => track._id === tracks[currentTrack]._id
         );
@@ -60,33 +60,16 @@ const PlayingBar = (): ReactElement => {
             nextTrack = Math.floor(Math.random() * tracks.length);
         }
         setcurrentTrack(nextTrack);
-
-        tracks.map((track) => {
-            if (track._id === tracks[nextTrack]._id) {
-                return {
-                    ...track,
-                    active: true
-                };
-            } else {
-                return {
-                    ...track,
-                    active: false
-                };
-            }
-        });
-
-        if (isPlaying) {
-            audioRef.current.play();
-        }
+        audioRef.current.play();
     };
 
     const playTrackHandler = () => {
         if (isPlaying) {
+            setIsPlaying(!isPlaying);
             audioRef.current.pause();
-            setIsPlaying(!isPlaying);
         } else {
-            audioRef.current.play();
             setIsPlaying(!isPlaying);
+            audioRef.current.play();
         }
     };
 
@@ -303,7 +286,7 @@ const PlayingBar = (): ReactElement => {
             <audio
                 onLoadedMetadata={updateTimeHandler}
                 onTimeUpdate={updateTimeHandler}
-                onEnded={songEndHandler}
+                onEnded={trackEndHandler}
                 ref={audioRef}
                 src={tracks[currentTrack].trackUrl}
             />

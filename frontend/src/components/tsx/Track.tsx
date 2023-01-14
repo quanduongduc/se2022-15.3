@@ -15,7 +15,7 @@ const Track = ({ item, itemIndex }: Props) => {
             </div>
             <div className="track-all-info d-flex align-items-center">
                 <img src={item.themeUrl} alt="" className="track-img" />
-                <div className="track-info">
+                <div className="track-info ms-4">
                     <div className="track-title d-flex align-items-center">
                         {item.title}
                     </div>
@@ -23,12 +23,12 @@ const Track = ({ item, itemIndex }: Props) => {
                         {item.artists[0].name}
                     </div>
                 </div>
-            </div>
-            <div className="track-created d-flex align-items-center">
-                {item.created_at}
-            </div>
-            <div className="track-created d-flex align-items-center">
-                {item.duration}
+                <div className="track-created d-flex align-items-center">
+                    {item.created_at}
+                </div>
+                <div className="track-created d-flex align-items-center">
+                    {item.duration}
+                </div>
             </div>
         </div>
     );

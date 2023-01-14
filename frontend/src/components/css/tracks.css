@@ -29,10 +29,12 @@
 }
 
 .title-header {
-    width: 460px;
+    width: 34%;
+    height: 100%;
 }
 
 .created-at {
-    width: 342px;
+    width: 22%;
+    height: 100%;
 }
 

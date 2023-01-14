@@ -17,7 +17,7 @@ const Tracks = (): ReactElement => {
             <div className="playlist-view-content-container d-flex flex-column">
                 <div className="track-data-header d-flex text-white">
                     <div className="index-header me-5">#</div>
-                    <div className="title-header">TIÊU ĐỀ</div>
+                    <div className="title-header ms-3">TIÊU ĐỀ</div>
                     <div className="created-at">NGÀY TẠO</div>
                     <div className="duration">
                         <FontAwesomeIcon

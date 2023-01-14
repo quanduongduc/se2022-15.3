@@ -4,9 +4,7 @@ import '../css/playlist.css';
 
 const Playlist = (): ReactElement => (
     <div className="playlist-wrapper">
-        <div className="playlist-content overflow-auto">
-            <Outlet />
-        </div>
+        <Outlet />
     </div>
 );
 

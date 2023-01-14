@@ -6,14 +6,12 @@ import TopBar from './components/tsx/TopBar';
 
 const App = (): ReactElement => {
     return (
-        <>
-            <div className="App-wrapper">
-                <TopBar />
-                <Sidebar />
-                <PlayingBar />
-                <Outlet />
-            </div>
-        </>
+        <div className="app-wrapper">
+            <TopBar />
+            <Sidebar />
+            <PlayingBar />
+            <Outlet />
+        </div>
     );
 };
 
