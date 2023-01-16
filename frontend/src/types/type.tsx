@@ -24,9 +24,7 @@ export interface IPlaylistContext {
 export interface TrackContextState {
     selectedUserId?: string;
     selectedTrackId?: string;
-    selectedTrack: any | null;
-    isPlaying: boolean;
-    isFavourite: boolean;
+    isFavorite: boolean;
 }
 
 export interface ITrackContext {
@@ -35,13 +33,21 @@ export interface ITrackContext {
 }
 
 export enum TrackReducerActionType {
-    ToggleIsPlaying = 'ToggleIsPlaying'
+    IsFavorite = 'IsFavorite',
+    SetUserId = 'SetUserId',
+    SetCurrentPlayingTrack = 'SetCurrentPlayingTrack'
 }
 
-export type TrackReducerAction = {
-    type: TrackReducerActionType.ToggleIsPlaying;
-    payload: boolean;
-};
+export type TrackReducerAction =
+    | { type: TrackReducerActionType.IsFavorite; payload: boolean }
+    | {
+          type: TrackReducerActionType.SetUserId;
+          payload: Pick<TrackContextState, 'selectedUserId'>;
+      }
+    | {
+          type: TrackReducerActionType.SetCurrentPlayingTrack;
+          payload: Pick<TrackContextState, 'selectedTrackId' | 'isFavorite'>;
+      };
 
 export interface FavoriteTracksContextState {
     favoriteTracks: any[];

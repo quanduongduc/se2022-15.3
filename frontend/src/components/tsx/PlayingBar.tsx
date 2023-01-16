@@ -13,15 +13,37 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactElement, useEffect, useRef, useState } from 'react';
+import axios from '../../api/axios';
 import { useTracksContext } from '../../context/TracksContextProvider';
+import { useTrackContext } from '../../context/TrackContextProvider';
+import useAuth from '../../hooks/useAuth';
 import '../css/playingbar.css';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const PlayingBar = (): ReactElement => {
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
 
-    const [currentTrack, setcurrentTrack] = useState(0);
+    const {
+        trackContextState: { selectedTrackId, isFavorite },
+        dispatchTrackAction
+    } = useTrackContext();
+
+    const { auth } = useAuth();
+
+    const setLastPlaying = (trackId: string) => {
+        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        });
+    };
+
+    const trackIndexDefault = tracks.findIndex(
+        (track: any) => track._id === auth?.user.lastPlay._id
+    );
+
+    const [currentTrack, setcurrentTrack] = useState(trackIndexDefault);
     const [isRandom, setIsRandom] = useState(false);
     const [isRepeat, setIsRepeat] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -37,6 +59,7 @@ const PlayingBar = (): ReactElement => {
         currentTime: 0,
         duration: 0
     });
+    console.log(selectedTrackId);
 
     // Functions
     const updateTimeHandler = (e: any) => {
@@ -69,6 +92,7 @@ const PlayingBar = (): ReactElement => {
             audioRef.current.pause();
         } else {
             setIsPlaying(!isPlaying);
+            setLastPlaying(tracks[currentTrack]._id);
             audioRef.current.play();
         }
     };
@@ -93,11 +117,19 @@ const PlayingBar = (): ReactElement => {
         }
     };
 
-    const randomclasName = () => {
+    const randomclassName = () => {
         if (isRandom) {
             return 'random-font-active';
         } else {
             return 'random-font';
+        }
+    };
+
+    const heartClassName = () => {
+        if (isFavorite) {
+            return 'favorite-font-active';
+        } else {
+            return 'faovorite-font';
         }
     };
 
@@ -161,7 +193,7 @@ const PlayingBar = (): ReactElement => {
                         <FontAwesomeIcon
                             icon={faHeart}
                             color="white"
-                            className="favorite-font"
+                            className={heartClassName()}
                             title="Thêm vào danh sách yêu thích"
                         />
                     </button>
@@ -176,7 +208,7 @@ const PlayingBar = (): ReactElement => {
                                 >
                                     <FontAwesomeIcon
                                         icon={faShuffle}
-                                        className={randomclasName()}
+                                        className={randomclassName()}
                                     />
                                 </button>
                                 <button
