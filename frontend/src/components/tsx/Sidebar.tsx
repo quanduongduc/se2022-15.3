@@ -24,7 +24,7 @@ const Sidebar = (): ReactElement => {
         updatePlaylistContextState
     } = usePlaylistContext();
 
-    const setSelectedPlaylist = async (playlistId: any) => {
+    const setSelectedPlaylist = async (playlistId: string) => {
         axios
             .get(`${PLAYLIST_URL}${playlistId}`, { withCredentials: true })
             .then((response) => {
@@ -89,9 +89,11 @@ const Sidebar = (): ReactElement => {
                 <div className="scroll-playlist d-flex justify-content-start flex-column ">
                     <div className="list-playlist-container ms-4">
                         {playlists.map(({ _id, title }) => (
-                            <div className="list-playlist d-flex flex-row">
+                            <div
+                                className="list-playlist d-flex flex-row"
+                                key={_id}
+                            >
                                 <p
-                                    key={_id}
                                     className="playlist-title"
                                     onClick={() => {
                                         setSelectedPlaylist(_id);

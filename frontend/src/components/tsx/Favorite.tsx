@@ -87,12 +87,11 @@ const Favorite = (): ReactElement => {
                 </div>
                 <div className="favorite-data-content d-flex flex-column">
                     {trackInFavorite.map((track, index) => (
-                        <div className="favorite-data-show d-flex flex-row">
-                            <Track
-                                key={track._id}
-                                item={track}
-                                itemIndex={index}
-                            />
+                        <div
+                            className="favorite-data-show d-flex flex-row"
+                            key={track._id}
+                        >
+                            <Track item={track} itemIndex={index} />
                             <button
                                 className="remove-track-btn rounded-5 text-white mt-4"
                                 onClick={removeTrackFromFavorite(track._id)}
@@ -125,11 +124,7 @@ const Favorite = (): ReactElement => {
                     <div className="find-tracks d-flex flex-column text-white">
                         {favoriteAddTrack.map((track, index) => (
                             <div className="add-track-container d-flex flex-row">
-                                <Track
-                                    key={track._id}
-                                    item={track}
-                                    itemIndex={index}
-                                />
+                                <Track item={track} itemIndex={index} />
                                 <button
                                     className="add-track-btn rounded-5 text-white mt-4"
                                     onClick={addTrackToFavorite(track._id)}

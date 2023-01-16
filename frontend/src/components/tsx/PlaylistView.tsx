@@ -76,12 +76,11 @@ const PlaylistView = () => {
                 </div>
                 <div className="track-content d-flex flex-column">
                     {selectedPlaylist.tracks.map((track: any, index: any) => (
-                        <div className="playlist-show-container d-flex flex-row">
-                            <Track
-                                key={track._id}
-                                item={track}
-                                itemIndex={index}
-                            />
+                        <div
+                            className="playlist-show-container d-flex flex-row"
+                            key={track._id}
+                        >
+                            <Track item={track} itemIndex={index} />
                             <button
                                 className="playlist-remove-track-btn rounded-5 mt-4 text-white"
                                 onClick={removeTrackFromPlaylist(track._id)}
@@ -113,12 +112,11 @@ const PlaylistView = () => {
                     </form>
                     <div className="playlist-find-tracks d-flex flex-column text-white">
                         {playlistAddTrack.map((track, index) => (
-                            <div className="playlist-track-container d-flex flex-row">
-                                <Track
-                                    key={track._id}
-                                    item={track}
-                                    itemIndex={index}
-                                />
+                            <div
+                                className="playlist-track-container d-flex flex-row"
+                                key={track._id}
+                            >
+                                <Track item={track} itemIndex={index} />
                                 <button
                                     className="playlist-add-track-btn rounded-5 mt-4 text-white"
                                     onClick={addTrackToPlaylist(track._id)}

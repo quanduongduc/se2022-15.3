@@ -1,3 +1,4 @@
+import dateFormat from 'dateformat';
 import '../css/track.css';
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 const Track = ({ item, itemIndex }: Props) => {
+    const dateCreated = dateFormat(item.created_at, 'dd/mm/yyyy h:MM:ss TT');
     return (
         <div className="track-container text-white d-flex align-items-center rounded-3 mt-3">
             <div className="index-container me-5 d-flex align-items-center">
@@ -24,7 +26,7 @@ const Track = ({ item, itemIndex }: Props) => {
                     </div>
                 </div>
                 <div className="track-created d-flex align-items-center">
-                    {item.created_at}
+                    {dateCreated}
                 </div>
                 <div className="track-created d-flex align-items-center">
                     {item.duration}
