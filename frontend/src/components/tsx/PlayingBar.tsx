@@ -183,6 +183,9 @@ const PlayingBar = (): ReactElement => {
             nextTrack = Math.floor(Math.random() * tracks.length);
         }
         setcurrentTrack(nextTrack);
+        setSelectedTrack(tracks[nextTrack]._id);
+        setIsFavorite(checkIsFavorite(tracks[nextTrack]._id));
+        setLastPlaying(tracks[nextTrack]._id);
         autoPlay();
     };
 
