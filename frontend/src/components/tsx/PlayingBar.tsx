@@ -37,12 +37,11 @@ const PlayingBar = (): ReactElement => {
         (track: any) => track._id === auth?.user.lastPlay._id
     );
 
-    const trackInFavoriteLastPlay = auth?.user.favouriteTracks.findIndex(
-        (track: any) => track._id === auth?.user.lastPlay._id
-    );
-
-    const checkIsFavorite = (trackIdIndex: number) => {
-        if (trackIdIndex !== -1) return true;
+    const checkIsFavorite = (trackId: string | any) => {
+        const trackIndex = auth?.user?.favouriteTracks.findIndex(
+            (track: any) => track._id === trackId
+        );
+        if (trackIndex !== -1) return true;
         return false;
     };
 
@@ -52,7 +51,7 @@ const PlayingBar = (): ReactElement => {
     const [isPlaying, setIsPlaying] = useState(false);
 
     const [isFavorite, setIsFavorite] = useState(
-        checkIsFavorite(trackInFavoriteLastPlay)
+        checkIsFavorite(auth?.user.lastPlay._id)
     );
     const title = tracks[currentTrack].title;
     const artists = tracks[currentTrack].artists[0];
@@ -64,7 +63,7 @@ const PlayingBar = (): ReactElement => {
         duration: 0
     });
 
-    const setLastPlaying = (trackId: string) => {
+    const setLastPlaying = (trackId: string | any) => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true
@@ -73,65 +72,6 @@ const PlayingBar = (): ReactElement => {
 
     const setSelectedTrack = (trackId: string) => {
         updateTrackContextState({ selectedTrackId: trackId });
-    };
-
-    const setTrackIndex = (trackId: string | undefined) => {
-        return tracks.findIndex((track: any) => track._id === trackId);
-    };
-
-    const updateTimeHandler = (e: any) => {
-        const currentTime = e.target.currentTime;
-        const duration = e.target.duration;
-        setTrackInfo({ ...trackInfo, currentTime, duration });
-    };
-
-    const trackEndHandler = () => {
-        const currentIndex = tracks.findIndex(
-            (track) => track._id === tracks[currentTrack]._id
-        );
-
-        let nextTrack = (currentIndex + 1) % tracks.length;
-
-        if (isRepeat) {
-            nextTrack = currentIndex;
-        }
-
-        if (isRandom) {
-            nextTrack = Math.floor(Math.random() * tracks.length);
-        }
-
-        setcurrentTrack(nextTrack);
-        audioRef.current.play();
-    };
-
-    const playTrackHandler = () => {
-        if (isPlaying) {
-            setIsPlaying(!isPlaying);
-            audioRef.current.pause();
-        } else {
-            setIsPlaying(!isPlaying);
-            setLastPlaying(tracks[currentTrack]._id);
-            audioRef.current.play();
-        }
-    };
-
-    const togglePlayPauseIcon = () => {
-        if (isPlaying) return faPause;
-        return faPlay;
-    };
-
-    const playRepeatHandler = () => {
-        setIsRepeat(!isRepeat);
-    };
-
-    const repeatclasName = () => {
-        if (isRepeat) return 'repeat-font-active';
-        return 'repeat-font';
-    };
-
-    const randomclassName = () => {
-        if (isRandom) return 'random-font-active';
-        return 'random-font';
     };
 
     const addTrackToFavorite = (trackID: string) => {
@@ -156,6 +96,68 @@ const PlayingBar = (): ReactElement => {
         );
     };
 
+    const updateTimeHandler = (e: any) => {
+        const currentTime = e.target.currentTime;
+        const duration = e.target.duration;
+        setTrackInfo({ ...trackInfo, currentTime, duration });
+    };
+
+    const getTime = (time: any) => {
+        const minute = Math.floor(time / 60);
+        const second = ('0' + Math.floor(time % 60)).slice(-2);
+        return `${minute}:${second}`;
+    };
+
+    const autoPlay = () => {
+        const play = audioRef.current.play();
+        if (play != undefined) {
+            play.then(() => {
+                audioRef.current.play();
+            }).catch(() => {
+                audioRef.current.play();
+            });
+        }
+    };
+
+    const togglePlayPauseIcon = () => {
+        if (isPlaying) return faPause;
+        return faPlay;
+    };
+
+    const playTrackHandler = () => {
+        if (isPlaying) {
+            setIsPlaying(!isPlaying);
+            audioRef.current.pause();
+        } else {
+            setIsPlaying(!isPlaying);
+            setLastPlaying(tracks[currentTrack]._id);
+            audioRef.current.play();
+        }
+    };
+
+    const repeatclasName = () => {
+        if (isRepeat) return 'repeat-font-active';
+        return 'repeat-font';
+    };
+
+    const playRepeatHandler = () => {
+        setIsRepeat(!isRepeat);
+    };
+
+    const randomclassName = () => {
+        if (isRandom) return 'random-font-active';
+        return 'random-font';
+    };
+
+    const playRandomHandler = () => {
+        setIsRandom(!isRandom);
+    };
+
+    const heartClassName = () => {
+        if (isFavorite) return 'favorite-font-active';
+        return 'favorite-font';
+    };
+
     const favoriteHandler = () => {
         if (isFavorite) {
             removeTrackFromFavorite(tracks[currentTrack]._id);
@@ -166,19 +168,22 @@ const PlayingBar = (): ReactElement => {
         }
     };
 
-    const heartClassName = () => {
-        if (isFavorite) return 'favorite-font-active';
-        return 'favorite-font';
-    };
+    const trackEndHandler = () => {
+        const currentIndex = tracks.findIndex(
+            (track) => track._id === tracks[currentTrack]._id
+        );
 
-    const playRandomHandler = () => {
-        setIsRandom(!isRandom);
-    };
+        let nextTrack = (currentIndex + 1) % tracks.length;
 
-    const getTime = (time: any) => {
-        const minute = Math.floor(time / 60);
-        const second = ('0' + Math.floor(time % 60)).slice(-2);
-        return `${minute}:${second}`;
+        if (isRepeat) {
+            nextTrack = currentIndex;
+        }
+
+        if (isRandom) {
+            nextTrack = Math.floor(Math.random() * tracks.length);
+        }
+        setcurrentTrack(nextTrack);
+        autoPlay();
     };
 
     const dragHandler = (e: any) => {
@@ -191,23 +196,27 @@ const PlayingBar = (): ReactElement => {
         );
 
         if (direction === 'forward-step-btn') {
-            setLastPlaying(tracks[(currentIndex + 1) % tracks.length]._id);
-            setSelectedTrack(tracks[(currentIndex + 1) % tracks.length]._id);
+            const nextTrack = tracks[(currentIndex + 1) % tracks.length]._id;
+            setSelectedTrack(nextTrack);
             setcurrentTrack((currentIndex + 1) % tracks.length);
+            setIsFavorite(checkIsFavorite(nextTrack));
+            setLastPlaying(nextTrack);
         } else if (direction === 'backward-step-btn') {
+            let backTrack = tracks[tracks.length - 1]._id;
+
             if (currentIndex - 1 === -1) {
-                setLastPlaying(tracks[tracks.length - 1]._id);
-                setSelectedTrack(tracks[tracks.length - 1]._id);
+                setSelectedTrack(backTrack);
                 setcurrentTrack(tracks.length - 1);
             } else {
-                setLastPlaying(tracks[(currentIndex - 1) % tracks.length]._id);
-                setSelectedTrack(
-                    tracks[(currentIndex - 1) % tracks.length]._id
-                );
+                backTrack = tracks[(currentIndex - 1) % tracks.length]._id;
+                setSelectedTrack(backTrack);
                 setcurrentTrack((currentIndex - 1) % tracks.length);
             }
+            setIsFavorite(checkIsFavorite(backTrack));
+            setLastPlaying(backTrack);
         }
-        if (isPlaying) audioRef.current.play();
+
+        if (isPlaying) autoPlay();
     };
 
     useEffect(() => {

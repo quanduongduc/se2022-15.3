@@ -10,10 +10,7 @@ const Tracks = (): ReactElement => {
         tracksContextState: { tracks }
     } = useTracksContext();
 
-    const {
-        trackContextState: { selectedTrackId },
-        updateTrackContextState
-    } = useTrackContext();
+    const { updateTrackContextState } = useTrackContext();
 
     const setSelectedTrack = (trackId: string) => () => {
         updateTrackContextState({ selectedTrackId: trackId });

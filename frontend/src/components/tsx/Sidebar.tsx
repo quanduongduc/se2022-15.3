@@ -24,8 +24,6 @@ const Sidebar = (): ReactElement => {
         updatePlaylistContextState
     } = usePlaylistContext();
 
-    console.log(playlists);
-
     const setSelectedPlaylist = async (playlistId: string) => {
         axios
             .get(`${PLAYLIST_URL}${playlistId}`, { withCredentials: true })
