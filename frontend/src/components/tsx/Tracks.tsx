@@ -5,47 +5,18 @@ import '../css/tracks.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClockFour } from '@fortawesome/free-solid-svg-icons';
 import { useTrackContext } from '../../context/TrackContextProvider';
-import axios from '../../api/axios';
-import { TrackReducerActionType } from '../../types/type';
-import useAuth from '../../hooks/useAuth';
-const USER_URL = '/user';
 const Tracks = (): ReactElement => {
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
 
-    const { dispatchTrackAction } = useTrackContext();
-
-    const { auth } = useAuth();
+    const {
+        trackContextState: { selectedTrackId },
+        updateTrackContextState
+    } = useTrackContext();
 
     const setSelectedTrack = (trackId: string) => () => {
-        axios.get(USER_URL, { withCredentials: true }).then((response) => {
-            const userResponse = response?.data?.users;
-
-            if (auth?.user) {
-                const userIndexResponse = userResponse.findIndex(
-                    (user: any) => user._id === auth?.user._id
-                );
-                const trackIndexFavorite = userResponse[
-                    userIndexResponse
-                ].favouriteTracks.findIndex(
-                    (track: any) => track._id === trackId
-                );
-
-                let isTrackFavorite = false;
-                if (trackIndexFavorite !== -1) {
-                    isTrackFavorite = true;
-                }
-
-                dispatchTrackAction({
-                    type: TrackReducerActionType.SetCurrentPlayingTrack,
-                    payload: {
-                        selectedTrackId: trackId,
-                        isFavorite: isTrackFavorite
-                    }
-                });
-            }
-        });
+        updateTrackContextState({ selectedTrackId: trackId });
     };
 
     return (

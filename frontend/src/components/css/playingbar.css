@@ -62,6 +62,14 @@
     border: 0;
 }
 
+.favorite-font {
+    color: #ffffff;
+}
+
+.favorite-font-active {
+    color: #1ed760;
+}
+
 .favorite-btn:hover {
     transform: scale(1.1);
 }

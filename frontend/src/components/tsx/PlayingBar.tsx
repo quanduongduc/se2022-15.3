@@ -14,23 +14,55 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import axios from '../../api/axios';
-import { useTracksContext } from '../../context/TracksContextProvider';
 import { useTrackContext } from '../../context/TrackContextProvider';
+import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
 import '../css/playingbar.css';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
+const ADD_TRACK_TO_FAVORITE_URL = '/user/add-favourite/';
+const REMOVE_TRACK_FAVORITE_URL = '/user/remove-favourite/';
 
 const PlayingBar = (): ReactElement => {
+    const { auth } = useAuth();
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
 
     const {
-        trackContextState: { selectedTrackId, isFavorite },
-        dispatchTrackAction
+        trackContextState: { selectedTrackId },
+        updateTrackContextState
     } = useTrackContext();
 
-    const { auth } = useAuth();
+    const trackIndexLastPlay = tracks.findIndex(
+        (track: any) => track._id === auth?.user.lastPlay._id
+    );
+
+    const trackInFavoriteLastPlay = auth?.user.favouriteTracks.findIndex(
+        (track: any) => track._id === auth?.user.lastPlay._id
+    );
+
+    const checkIsFavorite = (trackIdIndex: number) => {
+        if (trackIdIndex !== -1) return true;
+        return false;
+    };
+
+    const [currentTrack, setcurrentTrack] = useState(trackIndexLastPlay);
+    const [isRandom, setIsRandom] = useState(false);
+    const [isRepeat, setIsRepeat] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const [isFavorite, setIsFavorite] = useState(
+        checkIsFavorite(trackInFavoriteLastPlay)
+    );
+    const title = tracks[currentTrack].title;
+    const artists = tracks[currentTrack].artists[0];
+    const themeUrl = tracks[currentTrack].themeUrl;
+    const trackUrl = tracks[currentTrack].trackUrl;
+    const audioRef = useRef(new Audio(trackUrl));
+    const [trackInfo, setTrackInfo] = useState({
+        currentTime: 0,
+        duration: 0
+    });
 
     const setLastPlaying = (trackId: string) => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
@@ -39,29 +71,14 @@ const PlayingBar = (): ReactElement => {
         });
     };
 
-    const trackIndexDefault = tracks.findIndex(
-        (track: any) => track._id === auth?.user.lastPlay._id
-    );
+    const setSelectedTrack = (trackId: string) => {
+        updateTrackContextState({ selectedTrackId: trackId });
+    };
 
-    const [currentTrack, setcurrentTrack] = useState(trackIndexDefault);
-    const [isRandom, setIsRandom] = useState(false);
-    const [isRepeat, setIsRepeat] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const setTrackIndex = (trackId: string | undefined) => {
+        return tracks.findIndex((track: any) => track._id === trackId);
+    };
 
-    const title = tracks[currentTrack].title;
-    const artists = tracks[currentTrack].artists[0];
-    const themeUrl = tracks[currentTrack].themeUrl;
-    const trackUrl = tracks[currentTrack].trackUrl;
-
-    const audioRef = useRef(new Audio(trackUrl));
-
-    const [trackInfo, setTrackInfo] = useState({
-        currentTime: 0,
-        duration: 0
-    });
-    console.log(selectedTrackId);
-
-    // Functions
     const updateTimeHandler = (e: any) => {
         const currentTime = e.target.currentTime;
         const duration = e.target.duration;
@@ -82,6 +99,7 @@ const PlayingBar = (): ReactElement => {
         if (isRandom) {
             nextTrack = Math.floor(Math.random() * tracks.length);
         }
+
         setcurrentTrack(nextTrack);
         audioRef.current.play();
     };
@@ -98,11 +116,8 @@ const PlayingBar = (): ReactElement => {
     };
 
     const togglePlayPauseIcon = () => {
-        if (isPlaying) {
-            return faPause;
-        } else {
-            return faPlay;
-        }
+        if (isPlaying) return faPause;
+        return faPlay;
     };
 
     const playRepeatHandler = () => {
@@ -110,27 +125,50 @@ const PlayingBar = (): ReactElement => {
     };
 
     const repeatclasName = () => {
-        if (isRepeat) {
-            return 'repeat-font-active';
-        } else {
-            return 'repeat-font';
-        }
+        if (isRepeat) return 'repeat-font-active';
+        return 'repeat-font';
     };
 
     const randomclassName = () => {
-        if (isRandom) {
-            return 'random-font-active';
+        if (isRandom) return 'random-font-active';
+        return 'random-font';
+    };
+
+    const addTrackToFavorite = (trackID: string) => {
+        axios.patch(
+            `${ADD_TRACK_TO_FAVORITE_URL}${trackID}`,
+            JSON.stringify({ trackID }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        );
+    };
+
+    const removeTrackFromFavorite = (trackID: string) => {
+        axios.patch(
+            `${REMOVE_TRACK_FAVORITE_URL}${trackID}`,
+            JSON.stringify({ trackID }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        );
+    };
+
+    const favoriteHandler = () => {
+        if (isFavorite) {
+            removeTrackFromFavorite(tracks[currentTrack]._id);
+            setIsFavorite(!isFavorite);
         } else {
-            return 'random-font';
+            addTrackToFavorite(tracks[currentTrack]._id);
+            setIsFavorite(!isFavorite);
         }
     };
 
     const heartClassName = () => {
-        if (isFavorite) {
-            return 'favorite-font-active';
-        } else {
-            return 'faovorite-font';
-        }
+        if (isFavorite) return 'favorite-font-active';
+        return 'favorite-font';
     };
 
     const playRandomHandler = () => {
@@ -149,21 +187,27 @@ const PlayingBar = (): ReactElement => {
 
     const skipTrackHandler = async (direction: any) => {
         const currentIndex = tracks.findIndex(
-            (track) => track._id === tracks[currentTrack]._id
+            (track) => track._id === selectedTrackId
         );
 
         if (direction === 'forward-step-btn') {
+            setLastPlaying(tracks[(currentIndex + 1) % tracks.length]._id);
+            setSelectedTrack(tracks[(currentIndex + 1) % tracks.length]._id);
             setcurrentTrack((currentIndex + 1) % tracks.length);
         } else if (direction === 'backward-step-btn') {
             if (currentIndex - 1 === -1) {
+                setLastPlaying(tracks[tracks.length - 1]._id);
+                setSelectedTrack(tracks[tracks.length - 1]._id);
                 setcurrentTrack(tracks.length - 1);
             } else {
+                setLastPlaying(tracks[(currentIndex - 1) % tracks.length]._id);
+                setSelectedTrack(
+                    tracks[(currentIndex - 1) % tracks.length]._id
+                );
                 setcurrentTrack((currentIndex - 1) % tracks.length);
             }
         }
-        if (isPlaying) {
-            audioRef.current.play();
-        }
+        if (isPlaying) audioRef.current.play();
     };
 
     useEffect(() => {
@@ -189,12 +233,13 @@ const PlayingBar = (): ReactElement => {
                             <span className="song-artist">{artists.name}</span>
                         </div>
                     </div>
-                    <button className="favorite-btn justify-content-center">
+                    <button
+                        className="favorite-btn justify-content-center"
+                        onClick={favoriteHandler}
+                    >
                         <FontAwesomeIcon
                             icon={faHeart}
-                            color="white"
                             className={heartClassName()}
-                            title="Thêm vào danh sách yêu thích"
                         />
                     </button>
                 </div>
