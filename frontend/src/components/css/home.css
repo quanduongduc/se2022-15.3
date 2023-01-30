@@ -62,6 +62,10 @@
 }
 
 .new-track-wrapper:hover {
+    cursor: pointer;
+}
+
+.new-track-wrapper:hover {
     background-color: hsla(0,0%,100%,.2);
 }
 

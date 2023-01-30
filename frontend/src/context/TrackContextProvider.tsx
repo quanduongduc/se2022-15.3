@@ -51,9 +51,14 @@ const TrackContextProvider = ({ children }: { children: ReactNode }) => {
                     if (userResponse[userIndexResponse].lastPlay) {
                         const userTrackResponse =
                             userResponse[userIndexResponse].lastPlay._id;
-                        updateTrackContextState({
-                            selectedTrackId: userTrackResponse
-                        });
+                        if (
+                            trackContextState.selectedTrackId !==
+                            userTrackResponse
+                        ) {
+                            updateTrackContextState({
+                                selectedTrackId: userTrackResponse
+                            });
+                        }
                     }
                 }
             });

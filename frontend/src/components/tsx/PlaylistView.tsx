@@ -5,7 +5,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SyntheticEvent, useState } from 'react';
 import axios from '../../api/axios';
-
+import { useTrackContext } from '../../context/TrackContextProvider';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 import '../css/playlistView.css';
 import Track from './Track';
@@ -17,8 +18,16 @@ const PlaylistView = () => {
     const {
         playlistContextState: { selectedPlaylist, selectedPlaylistId }
     } = usePlaylistContext();
-
+    const { updateTrackContextState } = useTrackContext();
     const [title, setTitle] = useState('');
+
+    const setLastPlaying = (trackId: string | any) => () => {
+        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        });
+        updateTrackContextState({ selectedTrackId: trackId });
+    };
 
     const searchHandler = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -79,6 +88,7 @@ const PlaylistView = () => {
                         <div
                             className="playlist-show-container d-flex flex-row"
                             key={track._id}
+                            onClick={setLastPlaying(track._id)}
                         >
                             <Track item={track} itemIndex={index} />
                             <button

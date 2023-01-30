@@ -1,5 +1,3 @@
-import { Dispatch } from 'react';
-
 export interface TracksContextState {
     tracks: any[];
 }
@@ -22,7 +20,6 @@ export interface IPlaylistContext {
 }
 
 export interface TrackContextState {
-    selectedUserId?: string;
     selectedTrackId?: string;
 }
 
@@ -36,15 +33,10 @@ export enum TrackReducerActionType {
     SetLastPlayingTrack = 'SetLastPlayingTrack'
 }
 
-export type TrackReducerAction =
-    | {
-          type: TrackReducerActionType.SetUserId;
-          payload: Pick<TrackContextState, 'selectedUserId'>;
-      }
-    | {
-          type: TrackReducerActionType.SetLastPlayingTrack;
-          payload: Pick<TrackContextState, 'selectedTrackId'>;
-      };
+export type TrackReducerAction = {
+    type: TrackReducerActionType.SetLastPlayingTrack;
+    payload: Pick<TrackContextState, 'selectedTrackId'>;
+};
 
 export interface FavoriteTracksContextState {
     favoriteTracks: any[];

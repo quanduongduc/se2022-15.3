@@ -64,6 +64,18 @@ const PlayingBar = (): ReactElement => {
             duration: 0
         });
 
+        useEffect(() => {
+            if (selectedTrackId !== undefined) {
+                const trackPlay = tracks.findIndex(
+                    (track: any) => track._id === selectedTrackId
+                );
+                setcurrentTrack(trackPlay);
+                setIsFavorite(checkIsFavorite(tracks[trackPlay]._id));
+                setLastPlaying(tracks[trackPlay]._id);
+                if (isPlaying) autoPlay();
+            }
+        }, [selectedTrackId]);
+
         const setLastPlaying = (trackId: string | any) => {
             axios.patch(
                 `${LAST_PLAY_URL}${trackId}`,
@@ -115,7 +127,7 @@ const PlayingBar = (): ReactElement => {
 
         const autoPlay = () => {
             const play = audioRef.current.play();
-            if (play != undefined) {
+            if (play !== undefined) {
                 play.then(() => {
                     audioRef.current.play();
                 }).catch(() => {
@@ -173,11 +185,7 @@ const PlayingBar = (): ReactElement => {
             }
         };
 
-        const trackEndHandler = () => {
-            const currentIndex = tracks.findIndex(
-                (track) => track._id === tracks[currentTrack]._id
-            );
-
+        const setFeaturePlaying = (currentIndex: number) => {
             let nextTrack = (currentIndex + 1) % tracks.length;
 
             if (isRepeat) {
@@ -187,11 +195,14 @@ const PlayingBar = (): ReactElement => {
             if (isRandom) {
                 nextTrack = Math.floor(Math.random() * tracks.length);
             }
-            setcurrentTrack(nextTrack);
             setSelectedTrack(tracks[nextTrack]._id);
-            setIsFavorite(checkIsFavorite(tracks[nextTrack]._id));
-            setLastPlaying(tracks[nextTrack]._id);
-            autoPlay();
+        };
+
+        const trackEndHandler = () => {
+            const currentIndex = tracks.findIndex(
+                (track) => track._id === tracks[currentTrack]._id
+            );
+            setFeaturePlaying(currentIndex);
         };
 
         const dragHandler = (e: any) => {
@@ -204,28 +215,19 @@ const PlayingBar = (): ReactElement => {
             );
 
             if (direction === 'forward-step-btn') {
-                const nextTrack =
-                    tracks[(currentIndex + 1) % tracks.length]._id;
-                setSelectedTrack(nextTrack);
-                setcurrentTrack((currentIndex + 1) % tracks.length);
-                setIsFavorite(checkIsFavorite(nextTrack));
-                setLastPlaying(nextTrack);
+                setFeaturePlaying(currentIndex);
             } else if (direction === 'backward-step-btn') {
                 let backTrack = tracks[tracks.length - 1]._id;
 
                 if (currentIndex - 1 === -1) {
                     setSelectedTrack(backTrack);
-                    setcurrentTrack(tracks.length - 1);
                 } else {
                     backTrack = tracks[(currentIndex - 1) % tracks.length]._id;
                     setSelectedTrack(backTrack);
-                    setcurrentTrack((currentIndex - 1) % tracks.length);
                 }
                 setIsFavorite(checkIsFavorite(backTrack));
                 setLastPlaying(backTrack);
             }
-
-            if (isPlaying) autoPlay();
         };
 
         useEffect(() => {

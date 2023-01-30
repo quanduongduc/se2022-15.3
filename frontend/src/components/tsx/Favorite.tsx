@@ -12,9 +12,12 @@ import Track from './Track';
 const SEARCH_URL = '/track/search/?title=';
 const ADD_TRACK_TO_FAVORITE_URL = '/user/add-favourite/';
 const REMOVE_TRACK_FAVORITE_URL = '/user/remove-favourite/';
+import { useTrackContext } from '../../context/TrackContextProvider';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Favorite = (): ReactElement => {
     const [favoriteAddTrack, setFavoriteAddTrack] = useState<any[]>([]);
+    const { updateTrackContextState } = useTrackContext();
 
     const {
         favoriteTracksContextState: { favoriteTracks }
@@ -32,6 +35,14 @@ const Favorite = (): ReactElement => {
             }
         }
     }
+
+    const setLastPlaying = (trackId: string | any) => () => {
+        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        });
+        updateTrackContextState({ selectedTrackId: trackId });
+    };
 
     const [title, setTitle] = useState('');
 
@@ -90,6 +101,7 @@ const Favorite = (): ReactElement => {
                         <div
                             className="favorite-data-show d-flex flex-row"
                             key={track._id}
+                            onClick={setLastPlaying(track._id)}
                         >
                             <Track item={track} itemIndex={index} />
                             <button

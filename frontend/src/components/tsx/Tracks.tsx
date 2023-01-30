@@ -14,16 +14,12 @@ const Tracks = (): ReactElement => {
 
     const { updateTrackContextState } = useTrackContext();
 
-    const setSelectedTrack = (trackId: string) => () => {
-        updateTrackContextState({ selectedTrackId: trackId });
-    };
-
     const setLastPlaying = (trackId: string | any) => () => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true
         });
-        setSelectedTrack(trackId);
+        updateTrackContextState({ selectedTrackId: trackId });
     };
 
     return (

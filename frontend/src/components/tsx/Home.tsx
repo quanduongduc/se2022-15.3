@@ -1,14 +1,34 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
 import '../css/home.css';
+import axios from '../../api/axios';
+import { useTrackContext } from '../../context/TrackContextProvider';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Home = (): ReactElement => {
     const { auth } = useAuth();
-    const lastTrackId = auth?.user?.lastPlay?._id;
+    const [lastTrackId, setLastTrackId] = useState(undefined);
+    const [lastTrackActive, setLastTrackActive] = useState(false);
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
+    const { updateTrackContextState } = useTrackContext();
+
+    useEffect(() => {
+        setLastTrackId(auth?.user?.lastPlay?._id);
+        if (lastTrackId !== undefined) {
+            setLastTrackActive(true);
+        }
+    });
+
+    const setLastPlaying = (trackId: string | any) => () => {
+        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        });
+        updateTrackContextState({ selectedTrackId: trackId });
+    };
 
     const lastTrackIndex = tracks.findIndex(
         (track: any) => track._id === lastTrackId
@@ -32,30 +52,35 @@ const Home = (): ReactElement => {
         }
     };
     recentTracks(tracks, 0);
-
     return (
         <div className="home-wrapper">
             <div className="home-content overflow-auto">
-                <div className="last-play-track-container text-white">
-                    <div className="last-play-title">Bài hát gần đây</div>
-                    <div className="last-play-track-wrapper d-flex flex-row align-items-center rounded-3">
-                        <div className="last-play-track-image-wrapper">
-                            <img
-                                src={lastTrack.themeUrl}
-                                alt=""
-                                className="last-play-track-img rounded-1"
-                            />
+                {lastTrackActive ? (
+                    <div className="last-track-container">
+                        <div className="last-play-title text-white">
+                            Bài hát gần đây
                         </div>
-                        <div className="last-play-track-info ms-4 d-flex flex-column">
-                            <div className="last-play-track-title">
-                                {lastTrack.title}
+                        <div className="last-play-track-wrapper d-flex flex-row align-items-center rounded-3">
+                            <div className="last-play-track-image-wrapper">
+                                <img
+                                    src={lastTrack.themeUrl}
+                                    alt=""
+                                    className="last-play-track-img rounded-1"
+                                />
                             </div>
-                            <div className="last-play-track-artist">
-                                {lastTrack.artists[0].name}
+                            <div className="last-play-track-info ms-4 d-flex flex-column">
+                                <div className="last-play-track-title text-white">
+                                    {lastTrack.title}
+                                </div>
+                                <div className="last-play-track-artist">
+                                    {lastTrack.artists[0].name}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="lastTrack"></div>
+                )}
                 <div className="new-track-container text-white mt-5 d-flex flex-column">
                     <div className="new-tracks-title">Những bài hát mới</div>
                     <div className="new-tracks-container d-flex flex-row mt-3">
@@ -63,6 +88,7 @@ const Home = (): ReactElement => {
                             <div
                                 className="new-track-wrapper d-flex flex-column rounded-3"
                                 key={track._id}
+                                onClick={setLastPlaying(track._id)}
                             >
                                 <div className="new-track-home-img-wrapper d-flex">
                                     <img
