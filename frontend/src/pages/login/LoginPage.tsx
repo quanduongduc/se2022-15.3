@@ -16,7 +16,7 @@ import React, {
     useEffect
 } from 'react';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './login.css';
 import Logo from '../../image/logo.png';
 import axios from '../../api/axios';
@@ -27,8 +27,6 @@ const AUTH_URL = '/auth';
 const LoginPage = (): ReactElement => {
     const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || '/';
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [isChecked, setIsChecked] = useState(true);
@@ -40,9 +38,9 @@ const LoginPage = (): ReactElement => {
         }
     }, [auth]);
 
-    const handleSubmit = async (e: SyntheticEvent) => {
+    const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        await axios
+        axios
             .post(LOGIN_URL, JSON.stringify({ userName, password }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
@@ -55,11 +53,11 @@ const LoginPage = (): ReactElement => {
                     .then((res) => {
                         const user = res?.data?.user;
                         setAuth({ user });
-                        navigate(from, { replace: true });
+                        navigate(0);
                     })
-                    .catch(function (err) {
+                    .catch((err) => {
                         if (err.response) {
-                            console.log(err.response);
+                            console.log(err.response?.data?.message);
                         }
                     });
             })

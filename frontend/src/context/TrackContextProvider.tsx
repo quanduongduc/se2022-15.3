@@ -48,11 +48,13 @@ const TrackContextProvider = ({ children }: { children: ReactNode }) => {
                     const userIndexResponse = userResponse.findIndex(
                         (user: any) => user._id === auth?.user._id
                     );
-                    const userTrackResponse =
-                        userResponse[userIndexResponse].lastPlay._id;
-                    updateTrackContextState({
-                        selectedTrackId: userTrackResponse
-                    });
+                    if (userResponse[userIndexResponse].lastPlay) {
+                        const userTrackResponse =
+                            userResponse[userIndexResponse].lastPlay._id;
+                        updateTrackContextState({
+                            selectedTrackId: userTrackResponse
+                        });
+                    }
                 }
             });
     }, [auth]);

@@ -19,6 +19,10 @@
     font-weight: 600;
 }
 
+.last-play-track-container-hidden {
+    display: none;
+}
+
 .last-play-track-wrapper {
     background-color: hsla(0,0%,100%,.1);
     margin-top: 20px;
@@ -27,8 +31,9 @@
     background-color: hsla(0,0%,100%,.2);
     margin-top: 20px;
     cursor: pointer;
-
 }
+
+
 .last-play-track-img {
     width: 70px;
     height: 70px;

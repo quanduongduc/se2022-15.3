@@ -5,6 +5,8 @@ import '../css/tracks.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClockFour } from '@fortawesome/free-solid-svg-icons';
 import { useTrackContext } from '../../context/TrackContextProvider';
+import axios from '../../api/axios';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 const Tracks = (): ReactElement => {
     const {
         tracksContextState: { tracks }
@@ -14,6 +16,14 @@ const Tracks = (): ReactElement => {
 
     const setSelectedTrack = (trackId: string) => () => {
         updateTrackContextState({ selectedTrackId: trackId });
+    };
+
+    const setLastPlaying = (trackId: string | any) => () => {
+        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+        });
+        setSelectedTrack(trackId);
     };
 
     return (
@@ -39,7 +49,7 @@ const Tracks = (): ReactElement => {
                     {tracks.map((track, index) => (
                         <div
                             className="set-track"
-                            onClick={setSelectedTrack(track._id)}
+                            onClick={setLastPlaying(track._id)}
                             key={track._id}
                         >
                             <Track item={track} itemIndex={index} />
