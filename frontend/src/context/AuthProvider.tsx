@@ -11,17 +11,10 @@ export const AuthProvider = ({ children }: { children: any }) => {
     const [auth, setAuth] = useState({});
 
     useEffect(() => {
-        axios
-            .get(AUTH_URL, { withCredentials: true })
-            .then((res) => {
-                const user = res?.data?.user;
-                setAuth({ user });
-            })
-            .catch(function (err) {
-                if (err.response) {
-                    console.log(err.response);
-                }
-            });
+        axios.get(AUTH_URL, { withCredentials: true }).then((res) => {
+            const user = res?.data?.user;
+            setAuth({ user });
+        });
     }, []);
 
     return (

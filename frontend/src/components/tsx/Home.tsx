@@ -8,12 +8,12 @@ const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Home = (): ReactElement => {
     const { auth } = useAuth();
+    const { updateTrackContextState } = useTrackContext();
     const [lastTrackId, setLastTrackId] = useState(undefined);
     const [lastTrackActive, setLastTrackActive] = useState(false);
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
-    const { updateTrackContextState } = useTrackContext();
 
     useEffect(() => {
         setLastTrackId(auth?.user?.lastPlay?._id);

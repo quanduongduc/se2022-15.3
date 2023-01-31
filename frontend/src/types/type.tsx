@@ -10,6 +10,7 @@ export interface PlaylistContextState {
     playlists: any[];
     selectedPlaylistId: string | null;
     selectedPlaylist: any | null;
+    playlistTracks: any[];
 }
 
 export interface IPlaylistContext {

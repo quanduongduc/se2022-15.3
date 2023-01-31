@@ -8,11 +8,10 @@ import { useTrackContext } from '../../context/TrackContextProvider';
 import axios from '../../api/axios';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 const Tracks = (): ReactElement => {
+    const { updateTrackContextState } = useTrackContext();
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
-
-    const { updateTrackContextState } = useTrackContext();
 
     const setLastPlaying = (trackId: string | any) => () => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {

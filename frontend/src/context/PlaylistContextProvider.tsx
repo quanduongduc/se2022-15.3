@@ -14,7 +14,8 @@ const USER_URL = '/user';
 const defaultPlaylistContextState: PlaylistContextState = {
     playlists: [],
     selectedPlaylistId: null,
-    selectedPlaylist: null
+    selectedPlaylist: null,
+    playlistTracks: []
 };
 
 export const PlaylistContext = createContext<IPlaylistContext>({

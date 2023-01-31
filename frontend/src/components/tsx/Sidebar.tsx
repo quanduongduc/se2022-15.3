@@ -37,9 +37,11 @@ const Sidebar = (): ReactElement => {
             .get(`${PLAYLIST_URL}${playlistId}`, { withCredentials: true })
             .then((response) => {
                 const playlistResponse = response?.data?.playlist;
+                const tracksResponse = response?.data?.playlist?.tracks;
                 updatePlaylistContextState({
                     selectedPlaylistId: playlistId,
-                    selectedPlaylist: playlistResponse
+                    selectedPlaylist: playlistResponse,
+                    playlistTracks: tracksResponse
                 });
                 navigate(PLAYLIST_URL);
             });
@@ -54,9 +56,7 @@ const Sidebar = (): ReactElement => {
         );
         updatePlaylistContextState({ playlists: newPlaylistShow });
         setPlaylistShow(newPlaylistShow);
-        if (newPlaylistShow.length === 0) {
-            navigate('/playlist/create');
-        }
+        navigate('/playlist/create');
     };
 
     return (

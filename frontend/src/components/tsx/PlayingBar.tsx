@@ -28,12 +28,10 @@ const PlayingBar = (): ReactElement => {
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
-
     const {
         trackContextState: { selectedTrackId },
         updateTrackContextState
     } = useTrackContext();
-
     const {
         favoriteTracksContextState: { favoriteTracks },
         updateFavoriteTracksContextState

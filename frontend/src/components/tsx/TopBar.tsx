@@ -6,26 +6,60 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, SyntheticEvent } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from '../../api/axios';
+import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
 import '../css/topbar.css';
 const SEARCH_URL = '/track/search/?title=';
+const SEARCH_ARTIST_URL = '/artist/search/?name=';
 
 const TopBar = () => {
     const { auth } = useAuth();
     const firstName = auth?.user?.firstName;
     const lastName = auth?.user?.lastName;
     const [title, setTitle] = useState('');
+    const {
+        tracksContextState: { tracks }
+    } = useTracksContext();
 
     const searchHandler = (e: SyntheticEvent) => {
+        const listTrack: any = [];
         e.preventDefault();
         axios
             .get(`${SEARCH_URL}${title}`, { withCredentials: true })
             .then((response) => {
-                console.log(response?.data);
+                const tracks = response?.data?.tracks;
+                for (const track of tracks) {
+                    listTrack.push(track);
+                }
             });
+        axios
+            .get(`${SEARCH_ARTIST_URL}${title}`, { withCredentials: true })
+            .then((response) => {
+                const users = response?.data?.users;
+                for (const user of users) {
+                    for (const trackInTracks in user.tracks) {
+                        const trackIndex = tracks.findIndex(
+                            (track: any) =>
+                                track._id === user.tracks[trackInTracks]
+                        );
+                        listTrack.push(tracks[trackIndex]);
+                    }
+                }
+            });
+        console.log(listTrack);
     };
-
+    const location = useLocation().pathname;
+    const isActive = location === '/search';
+    const searchFormShow = isActive
+        ? 'search-container-active'
+        : 'search-container-hidden';
+    const logout = () => () => {
+        console.log(document.cookie);
+        document.cookie =
+            'accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    };
     return (
         <div className="topbar-wrapper">
             <div className="topbar-container d-flex flex-row align-items-center">
@@ -39,7 +73,7 @@ const TopBar = () => {
                         />
                     </button>
                 </div>
-                <div className="search-container d-flex align-items-center">
+                <div className={searchFormShow}>
                     <form
                         className="search-form d-flex form-control rounded-5 align-items-center border-dark"
                         onSubmit={searchHandler}
@@ -61,7 +95,10 @@ const TopBar = () => {
                     </form>
                 </div>
                 <div className="topbar-account d-flex align-items-center">
-                    <button className="account-btn d-flex flex-row rounded-4">
+                    <button
+                        className="account-btn d-flex flex-row rounded-4"
+                        onClick={logout()}
+                    >
                         <div className="icon-container d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon
                                 icon={faUser}

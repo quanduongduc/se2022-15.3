@@ -3,23 +3,33 @@ import {
     faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import axios from '../../api/axios';
 import { useTrackContext } from '../../context/TrackContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 import '../css/playlistView.css';
 import Track from './Track';
+import { useTracksContext } from '../../context/TracksContextProvider';
 const SEARCH_URL = '/track/search/?title=';
 const PLAYLIST_URL = '/playlist';
 
 const PlaylistView = () => {
-    const [playlistAddTrack, setPlaylistAddTrack] = useState<any[]>([]);
-    const {
-        playlistContextState: { selectedPlaylist, selectedPlaylistId }
-    } = usePlaylistContext();
+    const [tracksSearch, settracksSearch] = useState<any[]>([]);
+    const [playlistShowTracks, setPlaylistShowTracks] = useState<any[]>([]);
     const { updateTrackContextState } = useTrackContext();
     const [title, setTitle] = useState('');
+    const {
+        tracksContextState: { tracks }
+    } = useTracksContext();
+    const {
+        playlistContextState: {
+            selectedPlaylist,
+            selectedPlaylistId,
+            playlistTracks
+        },
+        updatePlaylistContextState
+    } = usePlaylistContext();
 
     const setLastPlaying = (trackId: string | any) => () => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
@@ -34,8 +44,23 @@ const PlaylistView = () => {
         axios
             .get(`${SEARCH_URL}${title}`, { withCredentials: true })
             .then((response) => {
-                setPlaylistAddTrack(response?.data?.tracks);
+                settracksSearch(response?.data?.tracks);
             });
+    };
+
+    useEffect(() => {
+        const listTrack: any = [];
+        for (const track of playlistTracks) {
+            listTrack.push(track);
+        }
+        setPlaylistShowTracks(listTrack);
+    }, [playlistTracks]);
+
+    const newPlaylistTrack = (trackID: string) => {
+        const trackIndex = tracks.findIndex(
+            (track: any) => track._id === trackID
+        );
+        return tracks[trackIndex];
     };
 
     const addTrackToPlaylist = (trackID: string) => () => {
@@ -47,6 +72,17 @@ const PlaylistView = () => {
                 withCredentials: true
             }
         );
+
+        const newPlaylistTracks = playlistTracks.concat(
+            newPlaylistTrack(trackID)
+        );
+
+        updatePlaylistContextState({ playlistTracks: newPlaylistTracks });
+        setPlaylistShowTracks(newPlaylistTracks);
+        const newtracksSearch = tracksSearch.filter(
+            (track) => track._id !== trackID
+        );
+        settracksSearch(newtracksSearch);
     };
 
     const removeTrackFromPlaylist = (trackID: string) => () => {
@@ -58,6 +94,12 @@ const PlaylistView = () => {
                 withCredentials: true
             }
         );
+
+        const newPlaylistTracks = playlistTracks.filter(
+            (track: any) => track._id !== trackID
+        );
+        updatePlaylistContextState({ playlistTracks: newPlaylistTracks });
+        setPlaylistShowTracks(newPlaylistTracks);
     };
 
     if (!selectedPlaylist) return null;
@@ -84,7 +126,7 @@ const PlaylistView = () => {
                     </div>
                 </div>
                 <div className="track-content d-flex flex-column">
-                    {selectedPlaylist.tracks.map((track: any, index: any) => (
+                    {playlistShowTracks.map((track: any, index: any) => (
                         <div
                             className="playlist-show-container d-flex flex-row"
                             key={track._id}
@@ -121,7 +163,7 @@ const PlaylistView = () => {
                         />
                     </form>
                     <div className="playlist-find-tracks d-flex flex-column text-white">
-                        {playlistAddTrack.map((track, index) => (
+                        {tracksSearch.map((track, index) => (
                             <div
                                 className="playlist-track-container d-flex flex-row"
                                 key={track._id}

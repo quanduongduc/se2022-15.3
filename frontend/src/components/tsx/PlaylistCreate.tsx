@@ -29,9 +29,12 @@ const PlaylistCreate = (): ReactElement => {
                         })
                         .then((response) => {
                             const playlistResponse = response?.data?.playlist;
+                            const tracksResponse =
+                                playListResponse?.data?.playlist.tracks;
                             updatePlaylistContextState({
                                 selectedPlaylistId: playlistId,
-                                selectedPlaylist: playlistResponse
+                                selectedPlaylist: playlistResponse,
+                                playlistTracks: tracksResponse
                             });
                             navigate(PLAYLIST_URL);
                         });

@@ -16,15 +16,13 @@ import { useTrackContext } from '../../context/TrackContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Favorite = (): ReactElement => {
+    const { updateTrackContextState } = useTrackContext();
     const [tracksSearch, settracksSearch] = useState<any[]>([]);
     const [trackInFavorite, setTrackInFavorite] = useState<any[]>([]);
-    const { updateTrackContextState } = useTrackContext();
-
     const {
         favoriteTracksContextState: { favoriteTracks },
         updateFavoriteTracksContextState
     } = useFavoriteTracksContext();
-
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
