@@ -63,6 +63,7 @@ const PlayingBar = (): ReactElement => {
         const themeUrl = tracks[currentTrack].themeUrl;
         const trackUrl = tracks[currentTrack].trackUrl;
         const audioRef = useRef(new Audio(trackUrl));
+        const [volume, setVolume] = useState(audioRef.current.volume);
         const [trackInfo, setTrackInfo] = useState({
             currentTime: 0,
             duration: 0
@@ -76,7 +77,6 @@ const PlayingBar = (): ReactElement => {
                 setcurrentTrack(trackPlay);
                 setIsFavorite(checkIsFavorite(tracks[trackPlay]._id));
                 setLastPlaying(tracks[trackPlay]._id);
-                if (isPlaying) autoPlay();
             }
         }, [selectedTrackId]);
 
@@ -148,17 +148,6 @@ const PlayingBar = (): ReactElement => {
             return `${minute}:${second}`;
         };
 
-        const autoPlay = () => {
-            const play = audioRef.current.play();
-            if (play !== undefined) {
-                play.then(() => {
-                    audioRef.current.play();
-                }).catch(() => {
-                    audioRef.current.play();
-                });
-            }
-        };
-
         const togglePlayPauseIcon = () => {
             if (isPlaying) return faPause;
             return faPlay;
@@ -167,11 +156,9 @@ const PlayingBar = (): ReactElement => {
         const playTrackHandler = () => {
             if (isPlaying) {
                 setIsPlaying(!isPlaying);
-                audioRef.current.pause();
             } else {
                 setIsPlaying(!isPlaying);
                 setLastPlaying(tracks[currentTrack]._id);
-                audioRef.current.play();
             }
         };
 
@@ -259,7 +246,8 @@ const PlayingBar = (): ReactElement => {
             } else {
                 audioRef.current.pause();
             }
-        }, [isPlaying]);
+            audioRef.current.volume = volume;
+        }, [trackUrl, isPlaying, volume]);
 
         return (
             <div className="playingbar-wrapper">
@@ -401,8 +389,11 @@ const PlayingBar = (): ReactElement => {
                             <input
                                 type="range"
                                 min={0}
-                                max={100}
+                                max={1}
+                                step={0.01}
                                 className="volume"
+                                value={volume}
+                                onChange={(e) => setVolume(+e.target.value)}
                             />
                         </div>
                     </div>

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, SyntheticEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from '../../api/axios';
+import { useSearchTracksContext } from '../../context/SearchContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
 import '../css/topbar.css';
@@ -23,8 +24,10 @@ const TopBar = () => {
         tracksContextState: { tracks }
     } = useTracksContext();
 
+    const { updateSearchTracksContextState } = useSearchTracksContext();
+
     const searchHandler = (e: SyntheticEvent) => {
-        const listTrack: any = [];
+        const listTrack: any[] = [];
         e.preventDefault();
         axios
             .get(`${SEARCH_URL}${title}`, { withCredentials: true })
@@ -49,17 +52,15 @@ const TopBar = () => {
                 }
             });
         console.log(listTrack);
+        updateSearchTracksContextState({
+            searchTracksContextState: { searchTracks: listTrack }
+        });
     };
     const location = useLocation().pathname;
     const isActive = location === '/search';
     const searchFormShow = isActive
         ? 'search-container-active'
         : 'search-container-hidden';
-    const logout = () => () => {
-        console.log(document.cookie);
-        document.cookie =
-            'accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    };
     return (
         <div className="topbar-wrapper">
             <div className="topbar-container d-flex flex-row align-items-center">
@@ -95,10 +96,7 @@ const TopBar = () => {
                     </form>
                 </div>
                 <div className="topbar-account d-flex align-items-center">
-                    <button
-                        className="account-btn d-flex flex-row rounded-4"
-                        onClick={logout()}
-                    >
+                    <button className="account-btn d-flex flex-row rounded-4">
                         <div className="icon-container d-flex align-items-center justify-content-center">
                             <FontAwesomeIcon
                                 icon={faUser}

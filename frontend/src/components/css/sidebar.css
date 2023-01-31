@@ -65,15 +65,25 @@
     overflow: auto;
 }
 
-.playlist-title {
-    margin-bottom: 0;
+.list-playlist {
+    height: 30px;
 }
 
-.playlist-title:hover {
+.playlist-title-active:hover {
     color: #fff;
     cursor: pointer;
 }
 
+.playlist-title-unactive:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+.x-mark {
+    margin-top: 8px;
+}
+
 .x-mark:hover {
     color: #fff;
+    cursor: pointer;
 }

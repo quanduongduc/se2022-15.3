@@ -1,3 +1,5 @@
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dateFormat from 'dateformat';
 import '../css/track.css';
 

@@ -20,7 +20,7 @@ const Sidebar = (): ReactElement => {
     const navigate = useNavigate();
     const [playlistShow, setPlaylistShow] = useState<any[]>([]);
     const {
-        playlistContextState: { playlists },
+        playlistContextState: { playlists, selectedPlaylistId },
         updatePlaylistContextState
     } = usePlaylistContext();
 
@@ -57,6 +57,14 @@ const Sidebar = (): ReactElement => {
         updatePlaylistContextState({ playlists: newPlaylistShow });
         setPlaylistShow(newPlaylistShow);
         navigate('/playlist/create');
+    };
+
+    const checkPlaylistActive = (_id: string) => {
+        if (_id === selectedPlaylistId) {
+            return 'playlist-title-active text-white';
+        } else {
+            return 'playlist-title-unactive';
+        }
     };
 
     return (
@@ -106,11 +114,11 @@ const Sidebar = (): ReactElement => {
                     <div className="list-playlist-container ms-4">
                         {playlistShow.map(({ _id, title }) => (
                             <div
-                                className="list-playlist d-flex flex-row"
+                                className="list-playlist d-flex flex-row align-items-center"
                                 key={_id}
                             >
                                 <p
-                                    className="playlist-title"
+                                    className={checkPlaylistActive(_id)}
                                     onClick={() => {
                                         setSelectedPlaylist(_id);
                                     }}
