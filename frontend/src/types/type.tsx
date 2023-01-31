@@ -44,4 +44,7 @@ export interface FavoriteTracksContextState {
 
 export interface IFavoriteTracksContext {
     favoriteTracksContextState: FavoriteTracksContextState;
+    updateFavoriteTracksContextState: (
+        updatedObj: Partial<FavoriteTracksContextState>
+    ) => void;
 }

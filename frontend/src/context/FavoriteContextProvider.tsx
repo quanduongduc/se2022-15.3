@@ -18,7 +18,9 @@ const defaultFavoriteTracksContextState: FavoriteTracksContextState = {
 };
 
 export const FavoriteTracksContext = createContext<IFavoriteTracksContext>({
-    favoriteTracksContextState: defaultFavoriteTracksContextState
+    favoriteTracksContextState: defaultFavoriteTracksContextState,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    updateFavoriteTracksContextState: () => {}
 });
 
 export const useFavoriteTracksContext = () => useContext(FavoriteTracksContext);
@@ -30,6 +32,15 @@ const FavoriteTracksContextProvider = ({
 }) => {
     const [favoriteTracksContextState, setFavoriteTracksContextState] =
         useState(defaultFavoriteTracksContextState);
+
+    const updateFavoriteTracksContextState = (
+        updatedObj: Partial<FavoriteTracksContextState>
+    ) => {
+        setFavoriteTracksContextState((previousTrackContextState) => ({
+            ...previousTrackContextState,
+            ...updatedObj
+        }));
+    };
 
     const { auth } = useAuth();
     useEffect(() => {
@@ -45,15 +56,21 @@ const FavoriteTracksContextProvider = ({
                     );
                     const userFavoriteTracksResponse =
                         userResponse[userIndexResponse].favouriteTracks;
-                    setFavoriteTracksContextState({
-                        favoriteTracks: userFavoriteTracksResponse
-                    });
+                    if (
+                        favoriteTracksContextState.favoriteTracks !==
+                        userFavoriteTracksResponse
+                    ) {
+                        updateFavoriteTracksContextState({
+                            favoriteTracks: userFavoriteTracksResponse
+                        });
+                    }
                 }
             });
     }, [auth]);
 
     const favoriteTracksContextProviderData = {
-        favoriteTracksContextState
+        favoriteTracksContextState,
+        updateFavoriteTracksContextState
     };
 
     return (

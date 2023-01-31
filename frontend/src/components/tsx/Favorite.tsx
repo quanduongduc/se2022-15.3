@@ -3,7 +3,7 @@ import {
     faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ReactElement, SyntheticEvent, useState } from 'react';
+import { ReactElement, SyntheticEvent, useState, useEffect } from 'react';
 import axios from '../../api/axios';
 import { useFavoriteTracksContext } from '../../context/FavoriteContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
@@ -16,25 +16,37 @@ import { useTrackContext } from '../../context/TrackContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Favorite = (): ReactElement => {
-    const [favoriteAddTrack, setFavoriteAddTrack] = useState<any[]>([]);
+    const [tracksSearch, settracksSearch] = useState<any[]>([]);
+    const [trackInFavorite, setTrackInFavorite] = useState<any[]>([]);
     const { updateTrackContextState } = useTrackContext();
 
     const {
-        favoriteTracksContextState: { favoriteTracks }
+        favoriteTracksContextState: { favoriteTracks },
+        updateFavoriteTracksContextState
     } = useFavoriteTracksContext();
 
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
 
-    const trackInFavorite = [];
-    for (const track of tracks) {
-        for (const favoriteTrack of favoriteTracks) {
-            if (track._id === favoriteTrack._id) {
-                trackInFavorite.push(track);
+    const newFavoriteTrack = (trackID: string) => {
+        const trackIndex = tracks.findIndex(
+            (track: any) => track._id === trackID
+        );
+        return tracks[trackIndex];
+    };
+
+    useEffect(() => {
+        const ListFavoriteTrack = [];
+        for (const track of tracks) {
+            for (const favoriteTrack of favoriteTracks) {
+                if (track._id === favoriteTrack._id) {
+                    ListFavoriteTrack.push(track);
+                }
             }
         }
-    }
+        setTrackInFavorite(ListFavoriteTrack);
+    }, [favoriteTracks]);
 
     const setLastPlaying = (trackId: string | any) => () => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
@@ -51,7 +63,7 @@ const Favorite = (): ReactElement => {
         axios
             .get(`${SEARCH_URL}${title}`, { withCredentials: true })
             .then((response) => {
-                setFavoriteAddTrack(response?.data?.tracks);
+                settracksSearch(response?.data?.tracks);
             });
     };
 
@@ -64,6 +76,17 @@ const Favorite = (): ReactElement => {
                 withCredentials: true
             }
         );
+
+        const newFavoriteTracks = favoriteTracks.concat(
+            newFavoriteTrack(trackID)
+        );
+        updateFavoriteTracksContextState({
+            favoriteTracks: newFavoriteTracks
+        });
+        const newtracksSearch = tracksSearch.filter(
+            (track) => track._id !== trackID
+        );
+        settracksSearch(newtracksSearch);
     };
 
     const removeTrackFromFavorite = (trackID: string) => () => {
@@ -75,6 +98,12 @@ const Favorite = (): ReactElement => {
                 withCredentials: true
             }
         );
+        const newFavoriteTracks = favoriteTracks.filter(
+            (track) => track._id !== trackID
+        );
+        updateFavoriteTracksContextState({
+            favoriteTracks: newFavoriteTracks
+        });
     };
 
     return (
@@ -134,8 +163,11 @@ const Favorite = (): ReactElement => {
                         />
                     </form>
                     <div className="find-tracks d-flex flex-column text-white">
-                        {favoriteAddTrack.map((track, index) => (
-                            <div className="add-track-container d-flex flex-row">
+                        {tracksSearch.map((track, index) => (
+                            <div
+                                className="add-track-container d-flex flex-row"
+                                key={track._id}
+                            >
                                 <Track item={track} itemIndex={index} />
                                 <button
                                     className="add-track-btn rounded-5 text-white mt-4"

@@ -14,6 +14,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import axios from '../../api/axios';
+import { useFavoriteTracksContext } from '../../context/FavoriteContextProvider';
 import { useTrackContext } from '../../context/TrackContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
@@ -32,6 +33,11 @@ const PlayingBar = (): ReactElement => {
         trackContextState: { selectedTrackId },
         updateTrackContextState
     } = useTrackContext();
+
+    const {
+        favoriteTracksContextState: { favoriteTracks },
+        updateFavoriteTracksContextState
+    } = useFavoriteTracksContext();
 
     if (auth?.user.lastPlay !== undefined) {
         const trackIndexLastPlay = tracks.findIndex(
@@ -91,6 +97,13 @@ const PlayingBar = (): ReactElement => {
             updateTrackContextState({ selectedTrackId: trackId });
         };
 
+        const newFavoriteTrack = (trackID: string) => {
+            const trackIndex = tracks.findIndex(
+                (track: any) => track._id === trackID
+            );
+            return tracks[trackIndex];
+        };
+
         const addTrackToFavorite = (trackID: string) => {
             axios.patch(
                 `${ADD_TRACK_TO_FAVORITE_URL}${trackID}`,
@@ -100,6 +113,12 @@ const PlayingBar = (): ReactElement => {
                     withCredentials: true
                 }
             );
+            const newFavoriteTracks = favoriteTracks.concat(
+                newFavoriteTrack(trackID)
+            );
+            updateFavoriteTracksContextState({
+                favoriteTracks: newFavoriteTracks
+            });
         };
 
         const removeTrackFromFavorite = (trackID: string) => {
@@ -111,6 +130,12 @@ const PlayingBar = (): ReactElement => {
                     withCredentials: true
                 }
             );
+            const newFavoriteTracks = favoriteTracks.filter(
+                (track) => track._id !== trackID
+            );
+            updateFavoriteTracksContextState({
+                favoriteTracks: newFavoriteTracks
+            });
         };
 
         const updateTimeHandler = (e: any) => {
