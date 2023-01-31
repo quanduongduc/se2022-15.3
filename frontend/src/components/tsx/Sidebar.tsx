@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import '../css/sidebar.css';
 import Logo from '../../image/logo.png';
 import SidebarButton from './SidebarButton';
@@ -18,11 +18,19 @@ const PLAYLIST_URL = '/playlist/';
 
 const Sidebar = (): ReactElement => {
     const navigate = useNavigate();
-
+    const [playlistShow, setPlaylistShow] = useState<any[]>([]);
     const {
         playlistContextState: { playlists },
         updatePlaylistContextState
     } = usePlaylistContext();
+
+    useEffect(() => {
+        const listPlaylist: any = [];
+        for (const playlist of playlists) {
+            listPlaylist.push(playlist);
+        }
+        setPlaylistShow(listPlaylist);
+    }, [playlists]);
 
     const setSelectedPlaylist = async (playlistId: string) => {
         axios
@@ -41,6 +49,14 @@ const Sidebar = (): ReactElement => {
         axios.delete(`${PLAYLIST_URL}/delete/${_id}`, {
             withCredentials: true
         });
+        const newPlaylistShow = playlistShow.filter(
+            (playlist) => playlist._id !== _id
+        );
+        updatePlaylistContextState({ playlists: newPlaylistShow });
+        setPlaylistShow(newPlaylistShow);
+        if (newPlaylistShow.length === 0) {
+            navigate('/playlist/create');
+        }
     };
 
     return (
@@ -88,7 +104,7 @@ const Sidebar = (): ReactElement => {
                 />
                 <div className="scroll-playlist d-flex justify-content-start flex-column ">
                     <div className="list-playlist-container ms-4">
-                        {playlists.map(({ _id, title }) => (
+                        {playlistShow.map(({ _id, title }) => (
                             <div
                                 className="list-playlist d-flex flex-row"
                                 key={_id}

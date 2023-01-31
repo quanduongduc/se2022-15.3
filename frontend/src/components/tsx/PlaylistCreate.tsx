@@ -9,7 +9,10 @@ const PLAYLIST_URL = '/playlist/';
 const PlaylistCreate = (): ReactElement => {
     const [title, setTitle] = useState('');
     const navigate = useNavigate();
-    const { updatePlaylistContextState } = usePlaylistContext();
+    const {
+        playlistContextState: { playlists },
+        updatePlaylistContextState
+    } = usePlaylistContext();
 
     const createPlaylistHandler = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -33,6 +36,10 @@ const PlaylistCreate = (): ReactElement => {
                             navigate(PLAYLIST_URL);
                         });
                 };
+                const newPlaylists = playlists.concat(
+                    playListResponse?.data?.playlist
+                );
+                updatePlaylistContextState({ playlists: newPlaylists });
                 setSelectedPlaylist(playListResponse?.data?.playlist._id);
                 setTitle('');
                 navigate('/playlist');
