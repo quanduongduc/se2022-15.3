@@ -51,7 +51,7 @@ const PlaylistCreate = (): ReactElement => {
     return (
         <div className="playlist-view-create-container d-flex flex-column text-white align-items-center">
             <div className="playlist-view-create-header">
-                <div className="playlist-view-create-title mt-5">
+                <div className="playlist-view-create-title mt-5 ms-2">
                     tạo playlist
                 </div>
             </div>

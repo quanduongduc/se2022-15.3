@@ -9,6 +9,7 @@ import TracksContextProvider from './context/TracksContextProvider';
 import PlaylistContextProvider from './context/PlaylistContextProvider';
 import TrackContextProvider from './context/TrackContextProvider';
 import FavoriteContextProvider from './context/FavoriteContextProvider';
+import SearchTracksContextProvider from './context/SearchTracksContextProvider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -21,9 +22,14 @@ root.render(
                     <TracksContextProvider>
                         <FavoriteContextProvider>
                             <TrackContextProvider>
-                                <Routes>
-                                    <Route path="/*" element={<AppRoute />} />
-                                </Routes>
+                                <SearchTracksContextProvider>
+                                    <Routes>
+                                        <Route
+                                            path="/*"
+                                            element={<AppRoute />}
+                                        />
+                                    </Routes>
+                                </SearchTracksContextProvider>
                             </TrackContextProvider>
                         </FavoriteContextProvider>
                     </TracksContextProvider>

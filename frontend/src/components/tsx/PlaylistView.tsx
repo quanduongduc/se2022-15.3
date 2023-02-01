@@ -159,19 +159,19 @@ const PlaylistView = () => {
                         className="playlist-add-tracks-form d-flex rounded-5 align-items-center border-dark"
                         onSubmit={(e) => e.preventDefault()}
                     >
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            color="black"
+                            className="playlist-add-tracks-icon rounded ms-1 border-dark ms-3"
+                        />
                         <input
-                            type="text"
+                            type="search"
                             className="playlist-add-tracks-input border-0"
                             placeholder="Bạn muốn nghe gì?"
                             aria-invalid="false"
                             autoCapitalize="off"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                        />
-                        <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
-                            color="black"
-                            className="playlist-add-tracks-icon rounded ms-1 border-dark"
                         />
                     </form>
                     <div className="playlist-find-tracks d-flex flex-column text-white">

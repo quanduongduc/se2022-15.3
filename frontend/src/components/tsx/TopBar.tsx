@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from '../../api/axios';
+import { useSearchTracksContext } from '../../context/SearchTracksContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
 import '../css/topbar.css';
@@ -19,10 +20,11 @@ const TopBar = () => {
     const firstName = auth?.user?.firstName;
     const lastName = auth?.user?.lastName;
     const [title, setTitle] = useState('');
-    const [searchTracks, setSearchTracks] = useState<any[]>([]);
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
+
+    const { updateSearchTracksContextState } = useSearchTracksContext();
 
     useEffect(() => {
         const listTrack: any[] = [];
@@ -50,9 +52,8 @@ const TopBar = () => {
                     }
                 });
         }
-        setSearchTracks(listTrack);
+        updateSearchTracksContextState({ searchTracks: listTrack });
     }, [title]);
-    // console.log(searchTracks);
 
     const location = useLocation().pathname;
     const isActive = location === '/search';
@@ -79,19 +80,19 @@ const TopBar = () => {
                         className="search-form d-flex form-control rounded-5 align-items-center border-dark"
                         onSubmit={(e) => e.preventDefault()}
                     >
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            color="black"
+                            className="search-icon rounded ms-1 me-2 border-dark"
+                        />
                         <input
-                            type="text"
+                            type="search"
                             className="search-input border-0"
                             placeholder="Bạn muốn nghe gì?"
                             aria-invalid="false"
                             autoCapitalize="off"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                        />
-                        <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
-                            color="black"
-                            className="search-icon rounded ms-1 border-dark"
                         />
                     </form>
                 </div>

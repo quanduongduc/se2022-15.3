@@ -115,7 +115,7 @@ const Favorite = (): ReactElement => {
     return (
         <div className="favorite-wrapper">
             <div className="favorite-header text-white d-flex align-items-center">
-                <span className="favorite-title">Danh sách yêu thích</span>
+                <span className="favorite-title ms-2">Danh sách yêu thích</span>
             </div>
             <div className="favorite-content">
                 <div className="favorite-data-header d-flex text-white border-bottom">
@@ -157,19 +157,19 @@ const Favorite = (): ReactElement => {
                         className="favorite-add-tracks-form d-flex rounded-5 align-items-center border-dark"
                         onSubmit={(e) => e.preventDefault()}
                     >
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            color="black"
+                            className="favorite-add-tracks-icon rounded ms-3 border-dark"
+                        />
                         <input
-                            type="text"
+                            type="search"
                             className="favorite-add-tracks-input border-0"
                             placeholder="Bạn muốn nghe gì?"
                             aria-invalid="false"
                             autoCapitalize="off"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                        />
-                        <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
-                            color="black"
-                            className="favorite-add-tracks-icon rounded ms-1 border-dark"
                         />
                     </form>
                     <div className="find-tracks d-flex flex-column text-white">
