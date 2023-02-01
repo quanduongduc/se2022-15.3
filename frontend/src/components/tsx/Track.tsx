@@ -1,5 +1,3 @@
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dateFormat from 'dateformat';
 import '../css/track.css';
 
@@ -20,8 +18,8 @@ const Track = ({ item, itemIndex }: Props) => {
             <div className="track-all-info d-flex align-items-center">
                 <img src={item.themeUrl} alt="" className="track-img" />
                 <div className="track-info ms-4">
-                    <div className="track-title d-flex align-items-center">
-                        {item.title}
+                    <div className="track-title-wrapper d-flex align-items-center">
+                        <span className="track-title">{item.title}</span>
                     </div>
                     <div className="track-artist d-flex align-items-center">
                         {item.artists[0].name}

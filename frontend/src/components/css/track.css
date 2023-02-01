@@ -37,18 +37,22 @@
 }
 
 .track-info {
-    width: 50%;
+    width: 500px;
     min-width: 110px;
     height: 48px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
-.track-title {
-    width: 100%;
+.track-title-wrapper {
+    width: 74%;
     height: 26px;
     font-weight: 600;
     font-size: 18px;
+}
+
+.track-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .track-artist {

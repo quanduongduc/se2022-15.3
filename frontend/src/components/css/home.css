@@ -1,7 +1,7 @@
 .home-wrapper {
     background-color: #292929;
     background-image: linear-gradient(#0f2b28,rgb(44, 35, 35));
-    width: calc(100vw-250px);
+    width: calc(100vw - 250px);
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -12,6 +12,7 @@
 .home-content {
     margin-top: 100px;
     margin-left: 50px;
+    margin-bottom: 100px;
 }
 
 .last-play-title {
@@ -51,7 +52,7 @@
 
 .new-tracks-title{
     font-size: 30px;
-    font-weight: 600;   
+    font-weight: 600;
 }
 
 .new-track-wrapper {
@@ -79,6 +80,13 @@
     width: 170px;
     height: 150px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.new-track-home-title {
+    width: 155px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .new-track-home-artist {

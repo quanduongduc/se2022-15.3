@@ -53,8 +53,8 @@ const Home = (): ReactElement => {
     };
     recentTracks(tracks, 0);
     return (
-        <div className="home-wrapper">
-            <div className="home-content overflow-auto">
+        <div className="home-wrapper overflow-auto">
+            <div className="home-content">
                 {lastTrackActive ? (
                     <div className="last-track-container">
                         <div className="last-play-title text-white">
@@ -98,7 +98,7 @@ const Home = (): ReactElement => {
                                     />
                                 </div>
                                 <div className="new-track-home-info mt-3 d-flex flex-column ms-3">
-                                    <div className="new-track-home-title d-flex">
+                                    <div className="new-track-home-title">
                                         {track.title}
                                     </div>
                                     <div className="new-track-home-artist mt-2">
