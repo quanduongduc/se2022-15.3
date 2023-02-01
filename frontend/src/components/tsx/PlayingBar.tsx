@@ -37,10 +37,14 @@ const PlayingBar = (): ReactElement => {
         updateFavoriteTracksContextState
     } = useFavoriteTracksContext();
 
+    console.log(selectedTrackId);
+
     if (auth?.user.lastPlay !== undefined) {
         const trackIndexLastPlay = tracks.findIndex(
             (track: any) => track._id === auth?.user.lastPlay._id
         );
+
+        console.log(trackIndexLastPlay);
 
         const checkIsFavorite = (trackId: string | any) => {
             const trackIndex = auth?.user?.favouriteTracks.findIndex(

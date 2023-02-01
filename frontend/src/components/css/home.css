@@ -71,15 +71,20 @@
 }
 
 .new-track-home-img-wrapper {
-    width: 100%;
+    width: 170px;
+    height: 150px;
     justify-content: center;
+    overflow: hidden;
 }
 
 .track-home-img {
     margin-top: 20px;
-    width: 170px;
-    height: 150px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transition: transform .5s ease;
+}
+
+.track-home-img:hover {
+    transform: scale(1.1);
 }
 
 .new-track-home-title {

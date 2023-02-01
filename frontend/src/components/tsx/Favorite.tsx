@@ -56,14 +56,22 @@ const Favorite = (): ReactElement => {
 
     const [title, setTitle] = useState('');
 
-    const searchHandler = (e: SyntheticEvent) => {
-        e.preventDefault();
-        axios
-            .get(`${SEARCH_URL}${title}`, { withCredentials: true })
-            .then((response) => {
-                settracksSearch(response?.data?.tracks);
-            });
-    };
+    useEffect(() => {
+        if (title !== '') {
+            axios
+                .get(`${SEARCH_URL}${title}`, { withCredentials: true })
+                .then((response) => {
+                    let searchTracks = response?.data?.tracks;
+                    for (const track of trackInFavorite) {
+                        searchTracks = searchTracks.filter(
+                            (trackInSearch: any) =>
+                                trackInSearch._id !== track._id
+                        );
+                    }
+                    settracksSearch(searchTracks);
+                });
+        }
+    }, [title]);
 
     const addTrackToFavorite = (trackID: string) => () => {
         axios.patch(
@@ -128,9 +136,13 @@ const Favorite = (): ReactElement => {
                         <div
                             className="favorite-data-show d-flex flex-row"
                             key={track._id}
-                            onClick={setLastPlaying(track._id)}
                         >
-                            <Track item={track} itemIndex={index} />
+                            <div
+                                className="favorite-data-track-container"
+                                onClick={setLastPlaying(track._id)}
+                            >
+                                <Track item={track} itemIndex={index} />
+                            </div>
                             <button
                                 className="remove-track-btn rounded-5 text-white mt-4"
                                 onClick={removeTrackFromFavorite(track._id)}
@@ -143,7 +155,7 @@ const Favorite = (): ReactElement => {
                 <div className="favorite-add-track-container mt-5">
                     <form
                         className="favorite-add-tracks-form d-flex rounded-5 align-items-center border-dark"
-                        onSubmit={searchHandler}
+                        onSubmit={(e) => e.preventDefault()}
                     >
                         <input
                             type="text"

@@ -86,7 +86,7 @@ const Home = (): ReactElement => {
                     <div className="new-tracks-container d-flex flex-row mt-3">
                         {listRecentTrack.map((track: any) => (
                             <div
-                                className="new-track-wrapper d-flex flex-column rounded-3"
+                                className="new-track-wrapper d-flex flex-column rounded-3 align-items-center"
                                 key={track._id}
                                 onClick={setLastPlaying(track._id)}
                             >

@@ -60,7 +60,8 @@ const Sidebar = (): ReactElement => {
     };
 
     const checkPlaylistActive = (_id: string) => {
-        if (_id === selectedPlaylistId) {
+        const path = window.location.pathname;
+        if (_id === selectedPlaylistId && path === '/playlist/') {
             return 'playlist-title-active text-white';
         } else {
             return 'playlist-title-unactive';
@@ -93,7 +94,7 @@ const Sidebar = (): ReactElement => {
                 <SidebarButton
                     name="library-page"
                     title="Thư viện"
-                    to="/collection"
+                    to="/tracks"
                     icon={faList}
                 />
             </div>

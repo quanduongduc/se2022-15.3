@@ -49,14 +49,3 @@ export interface IFavoriteTracksContext {
         updatedObj: Partial<FavoriteTracksContextState>
     ) => void;
 }
-
-export interface SearchTracksContextState {
-    searchTracks: any[];
-}
-
-export interface ISearchTracksContext {
-    searchTracksContextState: SearchTracksContextState;
-    updateSearchTracksContextState: (
-        updatedObj: Partial<ISearchTracksContext>
-    ) => void;
-}

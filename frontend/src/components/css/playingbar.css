@@ -46,6 +46,7 @@
     font-size: 14px;
     color: white;
     overflow-x: hidden;
+    white-space: nowrap;
 }
 
 .song-name {

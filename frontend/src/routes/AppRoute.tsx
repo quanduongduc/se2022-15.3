@@ -6,12 +6,12 @@ import PasswordReset from '../pages/password-reset/PasswordResetPage';
 import RegisterPage from '../pages/register/RegisterPage';
 import RequireAuth from '../components/tsx/RequireAuth';
 import Search from '../components/tsx/Search';
-import Collection from '../components/tsx/Collection';
 import Playlist from '../components/tsx/Playlist';
 import Favorite from '../components/tsx/Favorite';
 import PlaylistCreate from '../components/tsx/PlaylistCreate';
 import PlaylistView from '../components/tsx/PlaylistView';
 import App from '../App';
+import Tracks from '../components/tsx/Tracks';
 
 const AppRoute = (): ReactElement => {
     return (
@@ -25,7 +25,7 @@ const AppRoute = (): ReactElement => {
                     <Route path="/" element={<App />}>
                         <Route path="" element={<Home />} />
                         <Route path="search" element={<Search />} />
-                        <Route path="collection" element={<Collection />} />
+                        <Route path="tracks" element={<Tracks />} />
                         <Route path="playlist/" element={<Playlist />}>
                             <Route path="" element={<PlaylistView />} />
                             <Route path="create" element={<PlaylistCreate />} />

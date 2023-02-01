@@ -38,7 +38,7 @@
 }
 
 .playlist-view-created-at {
-    width: 22%;
+    width: 24%;
     height: 100%;
 }
 
@@ -48,6 +48,10 @@
 
 .favorite-data-content {
     width: 100%;
+}
+
+.playlist-track-data-container {
+    width: 80%;
 }
 
 .playlist-remove-track-btn {
@@ -62,7 +66,7 @@
 }
 
 .playlist-add-track-container {
-    width: 96%;
+    width: 80%;
     height: 100vh;
 }
 

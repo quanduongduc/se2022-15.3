@@ -22,7 +22,7 @@ const Tracks = (): ReactElement => {
     };
 
     return (
-        <div className="tracks-container">
+        <div className="tracks-container overflow-auto">
             <div className="tracks-header d-flex flex-column text-white align-items-center">
                 <div className="tracks-title mt-5">Thư viện</div>
             </div>
@@ -40,7 +40,7 @@ const Tracks = (): ReactElement => {
                         />
                     </div>
                 </div>
-                <div className="playlist-track-content d-flex flex-column">
+                <div className="playlist-track-content d-flex flex-column mb-5">
                     {tracks.map((track, index) => (
                         <div
                             className="set-track"

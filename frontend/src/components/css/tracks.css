@@ -1,6 +1,8 @@
 .tracks-container {
-    width: 100%;
+    width: calc(100vw- 250px);
     height: 100%;
+    margin-left: 250px;
+    margin-bottom: 80px;
 }
 
 .tracks-header {

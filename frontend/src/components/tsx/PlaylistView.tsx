@@ -39,14 +39,22 @@ const PlaylistView = () => {
         updateTrackContextState({ selectedTrackId: trackId });
     };
 
-    const searchHandler = (e: SyntheticEvent) => {
-        e.preventDefault();
-        axios
-            .get(`${SEARCH_URL}${title}`, { withCredentials: true })
-            .then((response) => {
-                settracksSearch(response?.data?.tracks);
-            });
-    };
+    useEffect(() => {
+        if (title !== '') {
+            axios
+                .get(`${SEARCH_URL}${title}`, { withCredentials: true })
+                .then((response) => {
+                    let searchTracks = response?.data?.tracks;
+                    for (const track of playlistShowTracks) {
+                        searchTracks = searchTracks.filter(
+                            (trackInSearch: any) =>
+                                trackInSearch._id !== track._id
+                        );
+                    }
+                    settracksSearch(searchTracks);
+                });
+        }
+    }, [title]);
 
     useEffect(() => {
         const listTrack: any = [];
@@ -130,9 +138,13 @@ const PlaylistView = () => {
                         <div
                             className="playlist-show-container d-flex flex-row"
                             key={track._id}
-                            onClick={setLastPlaying(track._id)}
                         >
-                            <Track item={track} itemIndex={index} />
+                            <div
+                                className="playlist-track-data-container"
+                                onClick={setLastPlaying(track._id)}
+                            >
+                                <Track item={track} itemIndex={index} />
+                            </div>
                             <button
                                 className="playlist-remove-track-btn rounded-5 mt-4 text-white"
                                 onClick={removeTrackFromPlaylist(track._id)}
@@ -145,7 +157,7 @@ const PlaylistView = () => {
                 <div className="playlist-add-track-container mt-5">
                     <form
                         className="playlist-add-tracks-form d-flex rounded-5 align-items-center border-dark"
-                        onSubmit={searchHandler}
+                        onSubmit={(e) => e.preventDefault()}
                     >
                         <input
                             type="text"

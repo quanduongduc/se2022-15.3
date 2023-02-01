@@ -5,10 +5,9 @@ import {
     faUser
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, SyntheticEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from '../../api/axios';
-import { useSearchTracksContext } from '../../context/SearchContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import useAuth from '../../hooks/useAuth';
 import '../css/topbar.css';
@@ -20,47 +19,48 @@ const TopBar = () => {
     const firstName = auth?.user?.firstName;
     const lastName = auth?.user?.lastName;
     const [title, setTitle] = useState('');
+    const [searchTracks, setSearchTracks] = useState<any[]>([]);
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
 
-    const { updateSearchTracksContextState } = useSearchTracksContext();
-
-    const searchHandler = (e: SyntheticEvent) => {
+    useEffect(() => {
         const listTrack: any[] = [];
-        e.preventDefault();
-        axios
-            .get(`${SEARCH_URL}${title}`, { withCredentials: true })
-            .then((response) => {
-                const tracks = response?.data?.tracks;
-                for (const track of tracks) {
-                    listTrack.push(track);
-                }
-            });
-        axios
-            .get(`${SEARCH_ARTIST_URL}${title}`, { withCredentials: true })
-            .then((response) => {
-                const users = response?.data?.users;
-                for (const user of users) {
-                    for (const trackInTracks in user.tracks) {
-                        const trackIndex = tracks.findIndex(
-                            (track: any) =>
-                                track._id === user.tracks[trackInTracks]
-                        );
-                        listTrack.push(tracks[trackIndex]);
+        if (title !== '') {
+            axios
+                .get(`${SEARCH_URL}${title}`, { withCredentials: true })
+                .then((response) => {
+                    const tracks = response?.data?.tracks;
+                    for (const track of tracks) {
+                        listTrack.push(track);
                     }
-                }
-            });
-        console.log(listTrack);
-        updateSearchTracksContextState({
-            searchTracksContextState: { searchTracks: listTrack }
-        });
-    };
+                });
+            axios
+                .get(`${SEARCH_ARTIST_URL}${title}`, { withCredentials: true })
+                .then((response) => {
+                    const users = response?.data?.users;
+                    for (const user of users) {
+                        for (const trackInTracks in user.tracks) {
+                            const trackIndex = tracks.findIndex(
+                                (track: any) =>
+                                    track._id === user.tracks[trackInTracks]
+                            );
+                            listTrack.push(tracks[trackIndex]);
+                        }
+                    }
+                });
+        }
+        setSearchTracks(listTrack);
+    }, [title]);
+    // console.log(searchTracks);
+
     const location = useLocation().pathname;
     const isActive = location === '/search';
+
     const searchFormShow = isActive
         ? 'search-container-active'
         : 'search-container-hidden';
+
     return (
         <div className="topbar-wrapper">
             <div className="topbar-container d-flex flex-row align-items-center">
@@ -77,7 +77,7 @@ const TopBar = () => {
                 <div className={searchFormShow}>
                     <form
                         className="search-form d-flex form-control rounded-5 align-items-center border-dark"
-                        onSubmit={searchHandler}
+                        onSubmit={(e) => e.preventDefault()}
                     >
                         <input
                             type="text"

@@ -9,7 +9,6 @@ import TracksContextProvider from './context/TracksContextProvider';
 import PlaylistContextProvider from './context/PlaylistContextProvider';
 import TrackContextProvider from './context/TrackContextProvider';
 import FavoriteContextProvider from './context/FavoriteContextProvider';
-import SearchTracksContextProvider from './context/SearchContextProvider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -18,22 +17,17 @@ root.render(
     <React.StrictMode>
         <BrowserRouter>
             <AuthProvider>
-                <SearchTracksContextProvider>
-                    <PlaylistContextProvider>
-                        <TracksContextProvider>
-                            <FavoriteContextProvider>
-                                <TrackContextProvider>
-                                    <Routes>
-                                        <Route
-                                            path="/*"
-                                            element={<AppRoute />}
-                                        />
-                                    </Routes>
-                                </TrackContextProvider>
-                            </FavoriteContextProvider>
-                        </TracksContextProvider>
-                    </PlaylistContextProvider>
-                </SearchTracksContextProvider>
+                <PlaylistContextProvider>
+                    <TracksContextProvider>
+                        <FavoriteContextProvider>
+                            <TrackContextProvider>
+                                <Routes>
+                                    <Route path="/*" element={<AppRoute />} />
+                                </Routes>
+                            </TrackContextProvider>
+                        </FavoriteContextProvider>
+                    </TracksContextProvider>
+                </PlaylistContextProvider>
             </AuthProvider>
         </BrowserRouter>
     </React.StrictMode>
