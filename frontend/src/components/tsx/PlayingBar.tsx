@@ -191,6 +191,9 @@ const PlayingBar = (): ReactElement => {
 
         if (isRepeat) {
             nextTrack = currentIndex;
+            if (audioRef.current !== null) {
+                if (isPlaying) audioRef.current.play();
+            }
         }
 
         if (isRandom) {
@@ -242,7 +245,7 @@ const PlayingBar = (): ReactElement => {
             }
             audioRef.current.volume = volume;
         }
-    }, [isPlaying, volume]);
+    }, [currentTrack, isPlaying, volume]);
     if (!hidden) {
         return (
             <div className="playingbar-wrapper">
