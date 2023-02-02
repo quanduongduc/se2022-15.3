@@ -1,18 +1,18 @@
+import { useEffect, useState } from 'react';
 import {
     faClockFour,
     faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
-import axios from '../../api/axios';
 import { useTrackContext } from '../../context/TrackContextProvider';
-const LAST_PLAY_URL = '/user/tracking/lastPlay/';
+import { useTracksContext } from '../../context/TracksContextProvider';
 import { usePlaylistContext } from '../../context/PlaylistContextProvider';
+import axios from '../../api/axios';
 import '../css/playlistView.css';
 import Track from './Track';
-import { useTracksContext } from '../../context/TracksContextProvider';
-const SEARCH_URL = '/track/search/?title=';
 const PLAYLIST_URL = '/playlist';
+const SEARCH_URL = '/track/search/?title=';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const PlaylistView = () => {
     const [tracksSearch, settracksSearch] = useState<any[]>([]);

@@ -1,10 +1,10 @@
-import { ReactElement, SyntheticEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios';
+import { ReactElement, SyntheticEvent, useState } from 'react';
 import { usePlaylistContext } from '../../context/PlaylistContextProvider';
+import axios from '../../api/axios';
 import '../css/playlistCreate.css';
-const PLAYLIST_CREATE_URL = '/playlist/create';
 const PLAYLIST_URL = '/playlist/';
+const PLAYLIST_CREATE_URL = '/playlist/create';
 
 const PlaylistCreate = (): ReactElement => {
     const [title, setTitle] = useState('');

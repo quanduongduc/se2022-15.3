@@ -1,11 +1,11 @@
-import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement, SyntheticEvent, useState } from 'react';
-import './register.css';
-import Logo from '../../image/logo.png';
-import { useNavigate } from 'react-router-dom';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import Logo from '../../image/logo.png';
 import axios from '../../api/axios';
+import './register.css';
 const REGISTER_URL = 'auth/register';
 
 const RegisterPage = (): ReactElement => {

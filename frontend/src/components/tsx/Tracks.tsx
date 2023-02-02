@@ -1,12 +1,13 @@
-import { ReactElement } from 'react';
-import { useTracksContext } from '../../context/TracksContextProvider';
 import Track from './Track';
-import '../css/tracks.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ReactElement } from 'react';
 import { faClockFour } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTrackContext } from '../../context/TrackContextProvider';
+import { useTracksContext } from '../../context/TracksContextProvider';
 import axios from '../../api/axios';
+import '../css/tracks.css';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
+
 const Tracks = (): ReactElement => {
     const { updateTrackContextState } = useTrackContext();
     const {

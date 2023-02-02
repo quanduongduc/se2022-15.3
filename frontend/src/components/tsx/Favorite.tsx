@@ -2,18 +2,17 @@ import {
     faClockFour,
     faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactElement, useState, useEffect } from 'react';
-import axios from '../../api/axios';
-import { useFavoriteTracksContext } from '../../context/FavoriteContextProvider';
+import { useTrackContext } from '../../context/TrackContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
+import { useFavoriteTracksContext } from '../../context/FavoriteContextProvider';
 import '../css/favorite.css';
 import Track from './Track';
+import axios from '../../api/axios';
 const SEARCH_URL = '/track/search/?title=';
+const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 const ADD_TRACK_TO_FAVORITE_URL = '/user/add-favourite/';
 const REMOVE_TRACK_FAVORITE_URL = '/user/remove-favourite/';
-import { useTrackContext } from '../../context/TrackContextProvider';
-const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Favorite = (): ReactElement => {
     const { updateTrackContextState } = useTrackContext();

@@ -5,12 +5,12 @@ import {
     useState,
     useEffect
 } from 'react';
-import axios from '../api/axios';
-import useAuth from '../hooks/useAuth';
 import {
     FavoriteTracksContextState,
     IFavoriteTracksContext
 } from '../types/type';
+import useAuth from '../hooks/useAuth';
+import axios from '../api/axios';
 const USER_URL = '/user';
 
 const defaultFavoriteTracksContextState: FavoriteTracksContextState = {

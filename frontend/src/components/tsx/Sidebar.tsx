@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
-import '../css/sidebar.css';
-import Logo from '../../image/logo.png';
 import SidebarButton from './SidebarButton';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 import {
     faHeart,
     faHouse,
@@ -10,10 +11,9 @@ import {
     faSquarePlus,
     faXmark
 } from '@fortawesome/free-solid-svg-icons';
-import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 import axios from '../../api/axios';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Logo from '../../image/logo.png';
+import '../css/sidebar.css';
 const PLAYLIST_URL = '/playlist/';
 
 const Sidebar = (): ReactElement => {

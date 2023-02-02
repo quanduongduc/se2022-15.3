@@ -15,14 +15,13 @@ import React, {
     SyntheticEvent,
     useEffect
 } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-import './login.css';
-import Logo from '../../image/logo.png';
-import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-const LOGIN_URL = '/auth/login';
+import axios from '../../api/axios';
+import Logo from '../../image/logo.png';
+import './login.css';
 const AUTH_URL = '/auth';
+const LOGIN_URL = '/auth/login';
 
 const LoginPage = (): ReactElement => {
     const { auth, setAuth } = useAuth();

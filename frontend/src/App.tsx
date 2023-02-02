@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Outlet } from 'react-router-dom';
-import PlayingBar from './components/tsx/PlayingBar';
-import Sidebar from './components/tsx/Sidebar';
 import TopBar from './components/tsx/TopBar';
+import Sidebar from './components/tsx/Sidebar';
+import PlayingBar from './components/tsx/PlayingBar';
 
 const App = (): ReactElement => {
     return (

@@ -4,13 +4,13 @@ import {
     faMagnifyingGlass,
     faUser
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from '../../api/axios';
-import { useSearchTracksContext } from '../../context/SearchTracksContextProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTracksContext } from '../../context/TracksContextProvider';
+import { useSearchTracksContext } from '../../context/SearchTracksContextProvider';
 import useAuth from '../../hooks/useAuth';
+import axios from '../../api/axios';
 import '../css/topbar.css';
 const SEARCH_URL = '/track/search/?title=';
 const SEARCH_ARTIST_URL = '/artist/search/?name=';

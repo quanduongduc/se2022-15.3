@@ -1,18 +1,18 @@
 import { ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from '../components/tsx/Home';
-import LoginPage from '../pages/login/LoginPage';
-import PasswordReset from '../pages/password-reset/PasswordResetPage';
-import RegisterPage from '../pages/register/RegisterPage';
-import RequireAuth from '../components/tsx/RequireAuth';
-import Search from '../components/tsx/Search';
-import Playlist from '../components/tsx/Playlist';
-import Favorite from '../components/tsx/Favorite';
-import PlaylistCreate from '../components/tsx/PlaylistCreate';
-import PlaylistView from '../components/tsx/PlaylistView';
 import App from '../App';
+import Home from '../components/tsx/Home';
+import Search from '../components/tsx/Search';
 import Tracks from '../components/tsx/Tracks';
+import LoginPage from '../pages/login/LoginPage';
+import Favorite from '../components/tsx/Favorite';
+import Playlist from '../components/tsx/Playlist';
+import RequireAuth from '../components/tsx/RequireAuth';
+import RegisterPage from '../pages/register/RegisterPage';
+import PlaylistView from '../components/tsx/PlaylistView';
+import PlaylistCreate from '../components/tsx/PlaylistCreate';
 import PageNotFound from '../pages/page-not-found/PageNotFound';
+import PasswordReset from '../pages/password-reset/PasswordResetPage';
 
 const AppRoute = (): ReactElement => {
     return (

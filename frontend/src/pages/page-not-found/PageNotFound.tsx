@@ -1,4 +1,5 @@
 import './page-not-found.css';
+
 const PageNotFound = () => (
     <div className="not-found-container">
         <img

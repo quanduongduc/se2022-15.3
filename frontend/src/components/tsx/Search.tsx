@@ -1,9 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { useSearchTracksContext } from '../../context/SearchTracksContextProvider';
-import '../css/search.css';
-import axios from '../../api/axios';
 import { useTrackContext } from '../../context/TrackContextProvider';
+import { useSearchTracksContext } from '../../context/SearchTracksContextProvider';
+import axios from '../../api/axios';
+import '../css/search.css';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
+
 const Search = (): ReactElement => {
     const { updateTrackContextState } = useTrackContext();
     const [searchTracksShow, setSearchTracksShow] = useState<any[]>([]);

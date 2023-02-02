@@ -1,9 +1,8 @@
 import { ReactElement, useState, useEffect } from 'react';
-import { useTracksContext } from '../../context/TracksContextProvider';
-import useAuth from '../../hooks/useAuth';
-import '../css/home.css';
-import axios from '../../api/axios';
 import { useTrackContext } from '../../context/TrackContextProvider';
+import { useTracksContext } from '../../context/TracksContextProvider';
+import axios from '../../api/axios';
+import '../css/home.css';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Home = (): ReactElement => {
