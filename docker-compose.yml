@@ -48,6 +48,7 @@ services:
       - app-network
 
   frontend:
+    restart: unless-stopped
     depends_on:
       - backend
     build:
@@ -59,6 +60,7 @@ services:
     networks:
       - app-network
   nginx:
+    restart: unless-stopped
     depends_on:
       - backend
       - frontend
