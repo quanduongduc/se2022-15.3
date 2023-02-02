@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useSearchTracksContext } from '../../context/SearchTracksContextProvider';
 import '../css/search.css';
 import axios from '../../api/axios';
@@ -6,6 +6,7 @@ import { useTrackContext } from '../../context/TrackContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 const Search = (): ReactElement => {
     const { updateTrackContextState } = useTrackContext();
+    const [searchTracksShow, setSearchTracksShow] = useState<any[]>([]);
     const {
         searchTracksContextState: { searchTracks }
     } = useSearchTracksContext();
@@ -18,10 +19,24 @@ const Search = (): ReactElement => {
         updateTrackContextState({ selectedTrackId: trackId });
     };
 
+    useEffect(() => {
+        const newTracksSearch: any = [];
+        for (const track of searchTracks) {
+            if (
+                newTracksSearch.findIndex(
+                    (trackE: any) => trackE._id === track._id
+                ) === -1
+            ) {
+                newTracksSearch.push(track);
+            }
+        }
+        setSearchTracksShow(newTracksSearch);
+    }, [searchTracks]);
+
     return (
         <div className="search-wrapper overflow-auto">
             <div className="search-content-container d-flex flex-column">
-                {searchTracks.map((track, index) => (
+                {searchTracksShow.map((track, index) => (
                     <div className="search-track-container" key={index}>
                         <div
                             className="search-track-content d-flex flex-row text-white align-items-center rounded-3"

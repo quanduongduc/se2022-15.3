@@ -3,7 +3,7 @@ import {
     faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
 import { useTrackContext } from '../../context/TrackContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';

@@ -20,6 +20,11 @@ const TopBar = () => {
     const firstName = auth?.user?.firstName;
     const lastName = auth?.user?.lastName;
     const [title, setTitle] = useState('');
+    const location = useLocation().pathname;
+    const isActive = location === '/search';
+    const searchFormShow = isActive
+        ? 'search-container-active'
+        : 'search-container-hidden';
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
@@ -54,13 +59,6 @@ const TopBar = () => {
         }
         updateSearchTracksContextState({ searchTracks: listTrack });
     }, [title]);
-
-    const location = useLocation().pathname;
-    const isActive = location === '/search';
-
-    const searchFormShow = isActive
-        ? 'search-container-active'
-        : 'search-container-hidden';
 
     return (
         <div className="topbar-wrapper">
