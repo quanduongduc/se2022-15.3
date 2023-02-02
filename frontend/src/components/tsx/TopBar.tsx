@@ -33,7 +33,7 @@ const TopBar = () => {
 
     useEffect(() => {
         const listTrack: any[] = [];
-        if (title !== '') {
+        if (title !== '' && listTrack.length < 10) {
             axios
                 .get(`${SEARCH_URL}${title}`, { withCredentials: true })
                 .then((response) => {
@@ -41,6 +41,7 @@ const TopBar = () => {
                     for (const track of tracks) {
                         listTrack.push(track);
                     }
+                    updateSearchTracksContextState({ searchTracks: listTrack });
                 });
             axios
                 .get(`${SEARCH_ARTIST_URL}${title}`, { withCredentials: true })
@@ -54,10 +55,20 @@ const TopBar = () => {
                             );
                             listTrack.push(tracks[trackIndex]);
                         }
+                        updateSearchTracksContextState({
+                            searchTracks: listTrack
+                        });
                     }
                 });
+        } else {
+            axios
+                .get(`${SEARCH_ARTIST_URL}${title}`, { withCredentials: true })
+                .then(() => {
+                    updateSearchTracksContextState({
+                        searchTracks: []
+                    });
+                });
         }
-        updateSearchTracksContextState({ searchTracks: listTrack });
     }, [title]);
 
     return (

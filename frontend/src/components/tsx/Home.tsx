@@ -7,16 +7,19 @@ import { useTrackContext } from '../../context/TrackContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 
 const Home = (): ReactElement => {
-    const { auth } = useAuth();
     const { updateTrackContextState } = useTrackContext();
-    const [lastTrackId, setLastTrackId] = useState(undefined);
     const [lastTrackActive, setLastTrackActive] = useState(false);
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
 
+    const {
+        trackContextState: { selectedTrackId }
+    } = useTrackContext();
+    const [lastTrackId, setLastTrackId] = useState(selectedTrackId);
+
     useEffect(() => {
-        setLastTrackId(auth?.user?.lastPlay?._id);
+        setLastTrackId(selectedTrackId);
         if (lastTrackId !== undefined) {
             setLastTrackActive(true);
         }

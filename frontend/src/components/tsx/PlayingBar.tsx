@@ -36,233 +36,234 @@ const PlayingBar = (): ReactElement => {
         favoriteTracksContextState: { favoriteTracks },
         updateFavoriteTracksContextState
     } = useFavoriteTracksContext();
+    const [hidden, setHidden] = useState(selectedTrackId === undefined);
+    const trackIndexLastPlay = tracks.findIndex(
+        (track: any) => track._id === selectedTrackId
+    );
 
-    if (auth?.user.lastPlay !== undefined) {
-        const trackIndexLastPlay = tracks.findIndex(
-            (track: any) => track._id === auth?.user.lastPlay._id
+    const checkIsFavorite = (trackId: string | any) => {
+        const trackIndex = auth?.user?.favouriteTracks.findIndex(
+            (track: any) => track._id === trackId
         );
+        if (trackIndex !== -1) return true;
+        return false;
+    };
 
-        const checkIsFavorite = (trackId: string | any) => {
-            const trackIndex = auth?.user?.favouriteTracks.findIndex(
-                (track: any) => track._id === trackId
+    const [currentTrack, setcurrentTrack] = useState(trackIndexLastPlay);
+    const [isRandom, setIsRandom] = useState(false);
+    const [isRepeat, setIsRepeat] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const [isFavorite, setIsFavorite] = useState(selectedTrackId === undefined);
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const [volume, setVolume] = useState(1);
+    const [trackInfo, setTrackInfo] = useState({
+        currentTime: 0,
+        duration: 0
+    });
+
+    useEffect(() => {
+        if (selectedTrackId !== undefined) {
+            const trackPlay = tracks.findIndex(
+                (track: any) => track._id === selectedTrackId
             );
-            if (trackIndex !== -1) return true;
-            return false;
-        };
+            setcurrentTrack(trackPlay);
+            setIsFavorite(checkIsFavorite(tracks[trackPlay]._id));
+            setLastPlaying(tracks[trackPlay]._id);
+            setHidden(false);
+            setIsPlaying(true);
+        }
+    }, [selectedTrackId]);
 
-        const [currentTrack, setcurrentTrack] = useState(trackIndexLastPlay);
-        const [isRandom, setIsRandom] = useState(false);
-        const [isRepeat, setIsRepeat] = useState(false);
-        const [isPlaying, setIsPlaying] = useState(false);
-
-        const [isFavorite, setIsFavorite] = useState(
-            checkIsFavorite(auth?.user.lastPlay._id)
-        );
-        const title = tracks[currentTrack].title;
-        const artists = tracks[currentTrack].artists[0];
-        const themeUrl = tracks[currentTrack].themeUrl;
-        const trackUrl = tracks[currentTrack].trackUrl;
-        const audioRef = useRef(new Audio(trackUrl));
-        const [volume, setVolume] = useState(audioRef.current.volume);
-        const [trackInfo, setTrackInfo] = useState({
-            currentTime: 0,
-            duration: 0
+    const setLastPlaying = (trackId: string | any) => {
+        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
         });
+    };
 
-        useEffect(() => {
-            if (selectedTrackId !== undefined) {
-                const trackPlay = tracks.findIndex(
-                    (track: any) => track._id === selectedTrackId
-                );
-                setcurrentTrack(trackPlay);
-                setIsFavorite(checkIsFavorite(tracks[trackPlay]._id));
-                setLastPlaying(tracks[trackPlay]._id);
+    const setSelectedTrack = (trackId: string) => {
+        updateTrackContextState({ selectedTrackId: trackId });
+    };
+
+    const newFavoriteTrack = (trackID: string) => {
+        const trackIndex = tracks.findIndex(
+            (track: any) => track._id === trackID
+        );
+        return tracks[trackIndex];
+    };
+
+    const addTrackToFavorite = (trackID: string) => {
+        axios.patch(
+            `${ADD_TRACK_TO_FAVORITE_URL}${trackID}`,
+            JSON.stringify({ trackID }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             }
-        }, [selectedTrackId]);
+        );
+        const newFavoriteTracks = favoriteTracks.concat(
+            newFavoriteTrack(trackID)
+        );
+        updateFavoriteTracksContextState({
+            favoriteTracks: newFavoriteTracks
+        });
+    };
 
-        const setLastPlaying = (trackId: string | any) => {
-            axios.patch(
-                `${LAST_PLAY_URL}${trackId}`,
-                JSON.stringify({ trackId }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-        };
-
-        const setSelectedTrack = (trackId: string) => {
-            updateTrackContextState({ selectedTrackId: trackId });
-        };
-
-        const newFavoriteTrack = (trackID: string) => {
-            const trackIndex = tracks.findIndex(
-                (track: any) => track._id === trackID
-            );
-            return tracks[trackIndex];
-        };
-
-        const addTrackToFavorite = (trackID: string) => {
-            axios.patch(
-                `${ADD_TRACK_TO_FAVORITE_URL}${trackID}`,
-                JSON.stringify({ trackID }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-            const newFavoriteTracks = favoriteTracks.concat(
-                newFavoriteTrack(trackID)
-            );
-            updateFavoriteTracksContextState({
-                favoriteTracks: newFavoriteTracks
-            });
-        };
-
-        const removeTrackFromFavorite = (trackID: string) => {
-            axios.patch(
-                `${REMOVE_TRACK_FAVORITE_URL}${trackID}`,
-                JSON.stringify({ trackID }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-            const newFavoriteTracks = favoriteTracks.filter(
-                (track) => track._id !== trackID
-            );
-            updateFavoriteTracksContextState({
-                favoriteTracks: newFavoriteTracks
-            });
-        };
-
-        const updateTimeHandler = (e: any) => {
-            const currentTime = e.target.currentTime;
-            const duration = e.target.duration;
-            setTrackInfo({ ...trackInfo, currentTime, duration });
-        };
-
-        const getTime = (time: any) => {
-            const minute = Math.floor(time / 60);
-            const second = ('0' + Math.floor(time % 60)).slice(-2);
-            return `${minute}:${second}`;
-        };
-
-        const togglePlayPauseIcon = () => {
-            if (isPlaying) return faPause;
-            return faPlay;
-        };
-
-        const playTrackHandler = () => {
-            if (isPlaying) {
-                setIsPlaying(!isPlaying);
-            } else {
-                setIsPlaying(!isPlaying);
-                setLastPlaying(tracks[currentTrack]._id);
+    const removeTrackFromFavorite = (trackID: string) => {
+        axios.patch(
+            `${REMOVE_TRACK_FAVORITE_URL}${trackID}`,
+            JSON.stringify({ trackID }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             }
-        };
+        );
+        const newFavoriteTracks = favoriteTracks.filter(
+            (track) => track._id !== trackID
+        );
+        updateFavoriteTracksContextState({
+            favoriteTracks: newFavoriteTracks
+        });
+    };
 
-        const repeatclasName = () => {
-            if (isRepeat) return 'repeat-font-active';
-            return 'repeat-font';
-        };
+    const updateTimeHandler = (e: any) => {
+        const currentTime = e.target.currentTime;
+        const duration = e.target.duration;
+        setTrackInfo({ ...trackInfo, currentTime, duration });
+    };
 
-        const playRepeatHandler = () => {
-            setIsRepeat(!isRepeat);
-        };
+    const getTime = (time: any) => {
+        const minute = Math.floor(time / 60);
+        const second = ('0' + Math.floor(time % 60)).slice(-2);
+        return `${minute}:${second}`;
+    };
 
-        const randomclassName = () => {
-            if (isRandom) return 'random-font-active';
-            return 'random-font';
-        };
+    const togglePlayPauseIcon = () => {
+        if (isPlaying) return faPause;
+        return faPlay;
+    };
 
-        const playRandomHandler = () => {
-            setIsRandom(!isRandom);
-        };
+    const playTrackHandler = () => {
+        if (isPlaying) {
+            setIsPlaying(!isPlaying);
+        } else {
+            setIsPlaying(!isPlaying);
+            setLastPlaying(tracks[currentTrack]._id);
+        }
+    };
 
-        const heartClassName = () => {
-            if (isFavorite) return 'favorite-font-active';
-            return 'favorite-font';
-        };
+    const repeatclasName = () => {
+        if (isRepeat) return 'repeat-font-active';
+        return 'repeat-font';
+    };
 
-        const favoriteHandler = () => {
-            if (isFavorite) {
-                removeTrackFromFavorite(tracks[currentTrack]._id);
-                setIsFavorite(!isFavorite);
-            } else {
-                addTrackToFavorite(tracks[currentTrack]._id);
-                setIsFavorite(!isFavorite);
-            }
-        };
+    const playRepeatHandler = () => {
+        setIsRepeat(!isRepeat);
+    };
 
-        const setFeaturePlaying = (currentIndex: number) => {
-            let nextTrack = (currentIndex + 1) % tracks.length;
+    const randomclassName = () => {
+        if (isRandom) return 'random-font-active';
+        return 'random-font';
+    };
 
-            if (isRepeat) {
-                nextTrack = currentIndex;
-            }
+    const playRandomHandler = () => {
+        setIsRandom(!isRandom);
+    };
 
-            if (isRandom) {
-                nextTrack = Math.floor(Math.random() * tracks.length);
-            }
-            setSelectedTrack(tracks[nextTrack]._id);
-        };
+    const heartClassName = () => {
+        if (isFavorite) return 'favorite-font-active';
+        return 'favorite-font';
+    };
 
-        const trackEndHandler = () => {
-            const currentIndex = tracks.findIndex(
-                (track) => track._id === tracks[currentTrack]._id
-            );
-            setFeaturePlaying(currentIndex);
-        };
+    const favoriteHandler = () => {
+        if (isFavorite) {
+            removeTrackFromFavorite(tracks[currentTrack]._id);
+            setIsFavorite(!isFavorite);
+        } else {
+            addTrackToFavorite(tracks[currentTrack]._id);
+            setIsFavorite(!isFavorite);
+        }
+    };
 
-        const dragHandler = (e: any) => {
+    const setFeaturePlaying = (currentIndex: number) => {
+        let nextTrack = (currentIndex + 1) % tracks.length;
+
+        if (isRepeat) {
+            nextTrack = currentIndex;
+        }
+
+        if (isRandom) {
+            nextTrack = Math.floor(Math.random() * tracks.length);
+        }
+        setSelectedTrack(tracks[nextTrack]._id);
+    };
+
+    const trackEndHandler = () => {
+        const currentIndex = tracks.findIndex(
+            (track) => track._id === tracks[currentTrack]._id
+        );
+        setFeaturePlaying(currentIndex);
+    };
+
+    const dragHandler = (e: any) => {
+        if (audioRef.current !== null) {
             audioRef.current.currentTime = e.target.value;
-        };
+        }
+    };
 
-        const skipTrackHandler = async (direction: any) => {
-            const currentIndex = tracks.findIndex(
-                (track) => track._id === selectedTrackId
-            );
+    const skipTrackHandler = async (direction: any) => {
+        const currentIndex = tracks.findIndex(
+            (track) => track._id === selectedTrackId
+        );
 
-            if (direction === 'forward-step-btn') {
-                setFeaturePlaying(currentIndex);
-            } else if (direction === 'backward-step-btn') {
-                let backTrack = tracks[tracks.length - 1]._id;
+        if (direction === 'forward-step-btn') {
+            setFeaturePlaying(currentIndex);
+        } else if (direction === 'backward-step-btn') {
+            let backTrack = tracks[tracks.length - 1]._id;
 
-                if (currentIndex - 1 === -1) {
-                    setSelectedTrack(backTrack);
-                } else {
-                    backTrack = tracks[(currentIndex - 1) % tracks.length]._id;
-                    setSelectedTrack(backTrack);
-                }
-                setIsFavorite(checkIsFavorite(backTrack));
-                setLastPlaying(backTrack);
-            }
-        };
-
-        useEffect(() => {
-            if (isPlaying) {
-                audioRef.current.play();
+            if (currentIndex - 1 === -1) {
+                setSelectedTrack(backTrack);
             } else {
-                audioRef.current.pause();
+                backTrack = tracks[(currentIndex - 1) % tracks.length]._id;
+                setSelectedTrack(backTrack);
+            }
+            setIsFavorite(checkIsFavorite(backTrack));
+            setLastPlaying(backTrack);
+        }
+    };
+
+    useEffect(() => {
+        if (currentTrack !== undefined && audioRef.current !== null) {
+            if (isPlaying) {
+                audioRef?.current?.play();
+            } else {
+                audioRef?.current?.pause();
             }
             audioRef.current.volume = volume;
-        }, [trackUrl, isPlaying, volume]);
-
+        }
+    }, [isPlaying, volume]);
+    if (!hidden) {
         return (
             <div className="playingbar-wrapper">
                 <div className="playingbar-form">
                     <div className="playing-widget d-flex align-items-center">
                         <div className="widget-container">
-                            <img src={themeUrl} alt="" className="track-img" />
+                            <img
+                                src={tracks[currentTrack].themeUrl}
+                                alt=""
+                                className="track-img"
+                            />
                         </div>
                         <div className="song-info d-flex flex-column align-items-center text-white">
                             <div className="song-name-wrapper  d-flex align-items-center">
-                                <span className="song-name">{title}</span>
+                                <span className="song-name">
+                                    {tracks[currentTrack].title}
+                                </span>
                             </div>
                             <div className="song-artist d-flex align-items-center">
                                 <span className="song-artist">
-                                    {artists.name}
+                                    {tracks[currentTrack].artists[0].name}
                                 </span>
                             </div>
                         </div>
