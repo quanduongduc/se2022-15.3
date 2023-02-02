@@ -1,6 +1,5 @@
 import dateFormat from 'dateformat';
 import '../css/track.css';
-
 interface Props {
     item: any;
     itemIndex: number;
