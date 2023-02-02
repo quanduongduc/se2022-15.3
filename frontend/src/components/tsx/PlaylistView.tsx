@@ -54,7 +54,13 @@ const PlaylistView = () => {
                                 trackInSearch._id !== track._id
                         );
                     }
-                    settracksSearch(searchTracks);
+                    const newSearchTracks: any = [];
+                    for (const track of searchTracks) {
+                        if (newSearchTracks.length < 10) {
+                            newSearchTracks.push(track);
+                        }
+                    }
+                    settracksSearch(newSearchTracks);
                 });
         }
     }, [title]);
