@@ -32,11 +32,14 @@ const PlaylistView = () => {
     } = usePlaylistContext();
 
     const setLastPlaying = (trackId: string | any) => () => {
-        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true
-        });
-        updateTrackContextState({ selectedTrackId: trackId });
+        axios
+            .patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            })
+            .then(() => {
+                updateTrackContextState({ selectedTrackId: trackId });
+            });
     };
 
     useEffect(() => {
@@ -72,42 +75,50 @@ const PlaylistView = () => {
     };
 
     const addTrackToPlaylist = (trackID: string) => () => {
-        axios.patch(
-            `${PLAYLIST_URL}/${selectedPlaylistId}/add-track/${trackID}`,
-            JSON.stringify({ selectedPlaylistId, trackID }),
-            {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-        );
+        axios
+            .patch(
+                `${PLAYLIST_URL}/${selectedPlaylistId}/add-track/${trackID}`,
+                JSON.stringify({ selectedPlaylistId, trackID }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            .then(() => {
+                const newPlaylistTracks = playlistTracks.concat(
+                    newPlaylistTrack(trackID)
+                );
 
-        const newPlaylistTracks = playlistTracks.concat(
-            newPlaylistTrack(trackID)
-        );
-
-        updatePlaylistContextState({ playlistTracks: newPlaylistTracks });
-        setPlaylistShowTracks(newPlaylistTracks);
-        const newtracksSearch = tracksSearch.filter(
-            (track) => track._id !== trackID
-        );
-        settracksSearch(newtracksSearch);
+                updatePlaylistContextState({
+                    playlistTracks: newPlaylistTracks
+                });
+                setPlaylistShowTracks(newPlaylistTracks);
+                const newtracksSearch = tracksSearch.filter(
+                    (track) => track._id !== trackID
+                );
+                settracksSearch(newtracksSearch);
+            });
     };
 
     const removeTrackFromPlaylist = (trackID: string) => () => {
-        axios.patch(
-            `${PLAYLIST_URL}/${selectedPlaylistId}/remove-track/${trackID}`,
-            JSON.stringify({ selectedPlaylistId, trackID }),
-            {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-        );
-
-        const newPlaylistTracks = playlistTracks.filter(
-            (track: any) => track._id !== trackID
-        );
-        updatePlaylistContextState({ playlistTracks: newPlaylistTracks });
-        setPlaylistShowTracks(newPlaylistTracks);
+        axios
+            .patch(
+                `${PLAYLIST_URL}/${selectedPlaylistId}/remove-track/${trackID}`,
+                JSON.stringify({ selectedPlaylistId, trackID }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            .then(() => {
+                const newPlaylistTracks = playlistTracks.filter(
+                    (track: any) => track._id !== trackID
+                );
+                updatePlaylistContextState({
+                    playlistTracks: newPlaylistTracks
+                });
+                setPlaylistShowTracks(newPlaylistTracks);
+            });
     };
 
     if (!selectedPlaylist) return null;

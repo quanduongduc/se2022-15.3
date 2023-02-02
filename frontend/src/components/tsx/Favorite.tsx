@@ -47,11 +47,14 @@ const Favorite = (): ReactElement => {
     }, [favoriteTracks]);
 
     const setLastPlaying = (trackId: string | any) => () => {
-        axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true
-        });
-        updateTrackContextState({ selectedTrackId: trackId });
+        axios
+            .patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            })
+            .then(() => {
+                updateTrackContextState({ selectedTrackId: trackId });
+            });
     };
 
     const [title, setTitle] = useState('');
@@ -74,42 +77,47 @@ const Favorite = (): ReactElement => {
     }, [title]);
 
     const addTrackToFavorite = (trackID: string) => () => {
-        axios.patch(
-            `${ADD_TRACK_TO_FAVORITE_URL}${trackID}`,
-            JSON.stringify({ trackID }),
-            {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-        );
-
-        const newFavoriteTracks = favoriteTracks.concat(
-            newFavoriteTrack(trackID)
-        );
-        updateFavoriteTracksContextState({
-            favoriteTracks: newFavoriteTracks
-        });
-        const newtracksSearch = tracksSearch.filter(
-            (track) => track._id !== trackID
-        );
-        settracksSearch(newtracksSearch);
+        axios
+            .patch(
+                `${ADD_TRACK_TO_FAVORITE_URL}${trackID}`,
+                JSON.stringify({ trackID }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            .then(() => {
+                const newFavoriteTracks = favoriteTracks.concat(
+                    newFavoriteTrack(trackID)
+                );
+                updateFavoriteTracksContextState({
+                    favoriteTracks: newFavoriteTracks
+                });
+                const newtracksSearch = tracksSearch.filter(
+                    (track) => track._id !== trackID
+                );
+                settracksSearch(newtracksSearch);
+            });
     };
 
     const removeTrackFromFavorite = (trackID: string) => () => {
-        axios.patch(
-            `${REMOVE_TRACK_FAVORITE_URL}${trackID}`,
-            JSON.stringify({ trackID }),
-            {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-        );
-        const newFavoriteTracks = favoriteTracks.filter(
-            (track) => track._id !== trackID
-        );
-        updateFavoriteTracksContextState({
-            favoriteTracks: newFavoriteTracks
-        });
+        axios
+            .patch(
+                `${REMOVE_TRACK_FAVORITE_URL}${trackID}`,
+                JSON.stringify({ trackID }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            )
+            .then(() => {
+                const newFavoriteTracks = favoriteTracks.filter(
+                    (track) => track._id !== trackID
+                );
+                updateFavoriteTracksContextState({
+                    favoriteTracks: newFavoriteTracks
+                });
+            });
     };
 
     return (
