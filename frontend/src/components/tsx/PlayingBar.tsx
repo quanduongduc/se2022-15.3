@@ -71,7 +71,6 @@ const PlayingBar = (): ReactElement => {
             setIsFavorite(checkIsFavorite(tracks[trackPlay]._id));
             setLastPlaying(tracks[trackPlay]._id);
             setHidden(false);
-            setIsPlaying(true);
         }
     }, [selectedTrackId]);
 

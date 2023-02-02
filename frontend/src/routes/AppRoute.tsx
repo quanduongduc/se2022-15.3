@@ -12,6 +12,7 @@ import PlaylistCreate from '../components/tsx/PlaylistCreate';
 import PlaylistView from '../components/tsx/PlaylistView';
 import App from '../App';
 import Tracks from '../components/tsx/Tracks';
+import PageNotFound from '../pages/page-not-found/PageNotFound';
 
 const AppRoute = (): ReactElement => {
     return (
@@ -33,6 +34,7 @@ const AppRoute = (): ReactElement => {
                         <Route path="favorite" element={<Favorite />} />
                     </Route>
                 </Route>
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </>
     );
