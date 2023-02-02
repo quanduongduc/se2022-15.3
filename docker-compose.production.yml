@@ -30,6 +30,7 @@ services:
     depends_on:
       - backend
     image: $AWS_ECR_FRONTEND
+    restart: unless-stopped
     environment:
       - ADMIN_PERMISSION_KEY=$ADMIN_PERMISSION_KEY
     ports:
@@ -41,6 +42,7 @@ services:
       - backend
       - frontend
     image: $AWS_ECR_NGINX
+    restart: unless-stopped
     ports:
       - $NGINX_HOST_PORT:$NGINX_DOCKER_PORT
     networks:
