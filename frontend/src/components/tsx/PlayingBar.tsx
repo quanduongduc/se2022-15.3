@@ -39,7 +39,7 @@ const PlayingBar = (): ReactElement => {
         (track: any) => track._id === selectedTrackId
     );
 
-    const checkIsFavorite = (trackId: string | any) => {
+    const checkIsFavorite = (trackId: string) => {
         const trackIndex = favoriteTracks.findIndex(
             (track: any) => track._id === trackId
         );

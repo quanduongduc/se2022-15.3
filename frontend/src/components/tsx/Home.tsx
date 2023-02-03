@@ -24,7 +24,7 @@ const Home = (): ReactElement => {
         }
     });
 
-    const setLastPlaying = (trackId: string | any) => () => {
+    const setLastPlaying = (trackId: string) => () => {
         axios
             .patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
                 headers: { 'Content-Type': 'application/json' },

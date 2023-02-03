@@ -14,7 +14,7 @@ const Tracks = (): ReactElement => {
         tracksContextState: { tracks }
     } = useTracksContext();
 
-    const setLastPlaying = (trackId: string | any) => () => {
+    const setLastPlaying = (trackId: string) => () => {
         axios
             .patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
                 headers: { 'Content-Type': 'application/json' },
@@ -45,7 +45,7 @@ const Tracks = (): ReactElement => {
                     </div>
                 </div>
                 <div className="playlist-track-content">
-                    {tracks.map((track, index) => (
+                    {tracks.map((track: any, index: number) => (
                         <div
                             className="set-track"
                             onClick={setLastPlaying(track._id)}
