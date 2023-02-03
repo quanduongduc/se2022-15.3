@@ -42,7 +42,7 @@ const PlayingBar = (): ReactElement => {
     );
 
     const checkIsFavorite = (trackId: string | any) => {
-        const trackIndex = auth?.user?.favouriteTracks.findIndex(
+        const trackIndex = favoriteTracks.findIndex(
             (track: any) => track._id === trackId
         );
         if (trackIndex !== -1) return true;
