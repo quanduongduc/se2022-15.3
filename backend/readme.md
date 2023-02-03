@@ -54,7 +54,23 @@ Return access token as httponly cookies if login success
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2E4NTU5ZTFhNTFjYmVmMmFkM2ViM2EiLCJ1c2VyTmFtZSI6InF1YW4xMjMiLCJwYXNzd29yZCI6IiQyYiQxMCRBVG01MGVUNEE1VDVvQ2EzZW0yOWRPa3R0M0NVNXNicU1hajM4akhZN05scnc2S095QXBtRyIsInJvbGUiOnsibmFtZSI6InVzZXIiLCJfaWQiOiI2M2E4NTU5ZTFhNTFjYmVmMmFkM2ViMzkifSwiZmlyc3ROYW1lIjoiSGVsbG8iLCJsYXN0TmFtZSI6IldvcmxkIiwiZ2VuZGVyIjoiZmVtYWxlIiwicGxheWxpc3RzIjpbXSwiZmF2b3VyaXRlVHJhY2tzIjpbXSwiaXNEZWxldGVkIjpmYWxzZSwiY3JlYXRlZF9hdCI6IjIwMjItMTItMjVUMTM6NTI6MzAuNDg1WiIsInVwZGF0ZWRfYXQiOiIyMDIyLTEyLTI1VDEzOjUyOjMwLjQ4NVoiLCJfX3YiOjAsImlhdCI6MTY3MTk3ODc1OX0.nVzzwE5baqi-JBwdhBGOHnPR4Wu2S_rdzNrDwt0LHB8"
 }
 ```
+## User Logout
 
+logout by clearing httpCookie
+
+### Request
+
+`POST /api/auth/logout`
+
+### Response Example
+
+Clear accessToken cookies of client
+
+```json
+{
+    "message": "Logout successfully"
+}
+```
 ## Authenticate User
 
 Authenticate user using accessToken as cookies
