@@ -166,6 +166,11 @@ const PlayingBar = (): ReactElement => {
         return 'random-font';
     };
 
+    const runSongName = () => {
+        if (isPlaying) return 'song-name-active';
+        return 'song-name';
+    };
+
     const playRandomHandler = () => {
         setIsRandom(!isRandom);
     };
@@ -259,7 +264,7 @@ const PlayingBar = (): ReactElement => {
                         </div>
                         <div className="song-info d-flex flex-column align-items-center text-white">
                             <div className="song-name-wrapper  d-flex align-items-center">
-                                <span className="song-name">
+                                <span className={runSongName()}>
                                     {tracks[currentTrack].title}
                                 </span>
                             </div>

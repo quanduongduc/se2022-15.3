@@ -49,7 +49,7 @@
     white-space: nowrap;
 }
 
-.song-name {
+.song-name-active {
     animation-name: leftToRight;
     animation-duration: 4.5s;
     animation-timing-function: linear;
