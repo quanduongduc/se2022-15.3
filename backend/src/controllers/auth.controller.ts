@@ -61,7 +61,27 @@ export const login = async (
         );
     }
 };
+export const logout = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.clearCookie('accessToken');
+        res.json({
+            message: 'Logout successfully'
+        });
+    } catch (error) {
+        console.log(error);
 
+        next(
+            new HttpException(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                'Intenal Server Error'
+            )
+        );
+    }
+};
 export const register = userController.createUser;
 
 export const registerAdmin = userController.createAdminUser;

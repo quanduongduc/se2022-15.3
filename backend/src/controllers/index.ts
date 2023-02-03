@@ -1,4 +1,4 @@
-import { login, register, registerAdmin } from './auth.controller';
+import { login, register, registerAdmin, logout } from './auth.controller';
 import { userController } from './user.controller';
 import { trackController } from './track.controller';
 import { artistController } from './artist.controller';
@@ -11,5 +11,6 @@ export {
     register,
     registerAdmin,
     artistController,
-    playlistController
+    playlistController,
+    logout
 };

@@ -243,7 +243,7 @@ class UserController extends BaseController {
                 );
             }
             this.res(res, {
-                message: 'get user successfully',
+                message: 'update last playing track successfully',
                 user: {
                     ...user.toJSON(),
                     password: undefined
@@ -283,7 +283,7 @@ class UserController extends BaseController {
                 );
             }
             this.res(res, {
-                message: 'add track from favourite successfully',
+                message: 'add track to favourite successfully',
                 user: {
                     ...user.toJSON(),
                     password: undefined
@@ -323,7 +323,7 @@ class UserController extends BaseController {
                 );
             }
             this.res(res, {
-                message: 'remove track to favourite successfully',
+                message: 'remove track from favourite successfully',
                 user: {
                     ...user.toJSON(),
                     password: undefined
