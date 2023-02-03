@@ -14,7 +14,10 @@ export const authRequire = async (
         const { accessToken } = req.cookies;
         if (!accessToken) {
             return next(
-                new HttpException(HttpStatus.BAD_REQUEST, 'Authenticate fail')
+                new HttpException(
+                    HttpStatus.UNAUTHORIZED_ERROR,
+                    'Authenticate fail'
+                )
             );
         }
         const verifiedUser: any = jwt.verify(accessToken, config.JWT_SECRET);
@@ -23,7 +26,7 @@ export const authRequire = async (
             res.clearCookie('accessToken');
             return next(
                 new HttpException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpStatus.UNAUTHORIZED_ERROR,
                     'Authenticate fail'
                 )
             );
@@ -36,7 +39,7 @@ export const authRequire = async (
             res.clearCookie('accessToken');
             return next(
                 new HttpException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpStatus.UNAUTHORIZED_ERROR,
                     'Authenticate fail'
                 )
             );

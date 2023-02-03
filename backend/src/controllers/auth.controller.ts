@@ -17,6 +17,7 @@ export const login = async (
         const user: any = await userController.findOne({
             userName: userName
         });
+
         if (!user) {
             return next(
                 new HttpException(
@@ -32,7 +33,7 @@ export const login = async (
         if (!isMatchedPassword) {
             return next(
                 new HttpException(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.NOT_IMPLEMENTED,
                     'User or Password is incorrect'
                 )
             );
