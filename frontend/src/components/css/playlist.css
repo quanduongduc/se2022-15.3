@@ -1,0 +1,5 @@
+.playlist-wrapper {
+    width: calc(100vh-250px);
+    height: 100vh;
+    margin-left: 250px
+}

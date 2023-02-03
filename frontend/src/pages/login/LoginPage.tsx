@@ -13,19 +13,18 @@ import React, {
     ReactElement,
     useState,
     SyntheticEvent,
-    useContext,
     useEffect
 } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-import './login.css';
-import Logo from '../../image/logo.png';
+import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
-import AuthContext from '../../context/AuthProvider';
+import Logo from '../../image/logo.png';
+import './login.css';
+const AUTH_URL = '/auth';
 const LOGIN_URL = '/auth/login';
 
 const LoginPage = (): ReactElement => {
-    const { setAuth } = useContext(AuthContext);
+    const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -33,23 +32,35 @@ const LoginPage = (): ReactElement => {
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
-        setErrMsg('');
-    }, [userName, password]);
+        if (auth?.user) {
+            navigate('/');
+        }
+    }, [auth]);
 
-    const handleSubmit = async (e: SyntheticEvent) => {
+    const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await axios
+        axios
             .post(LOGIN_URL, JSON.stringify({ userName, password }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             })
-            .then((response) => {
-                navigate('/');
-                setAuth({ userName, password });
+            .then(() => {
                 setUserName('');
                 setPassword('');
+                axios
+                    .get(AUTH_URL, { withCredentials: true })
+                    .then((res) => {
+                        const user = res?.data?.user;
+                        setAuth({ user });
+                        navigate(0);
+                    })
+                    .catch((err) => {
+                        if (err.response) {
+                            console.log(err.response?.data?.message);
+                        }
+                    });
             })
-            .catch(function (err) {
+            .catch((err) => {
                 if (err.response) {
                     setErrMsg(err.response.data.message);
                 }
@@ -65,7 +76,7 @@ const LoginPage = (): ReactElement => {
             <div className="login-header mb-5">
                 <div className="login-title-wrapper">
                     <div className="logo mb-3 mx-0">
-                        <img src={Logo} />
+                        <img src={Logo} className="login-logo" />
                     </div>
                     <div className="login-title">Salyr</div>
                 </div>

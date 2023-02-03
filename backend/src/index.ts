@@ -1,8 +1,6 @@
-import { Application } from 'express';
-import { getApp } from './app';
+import app from './app';
 import { config, connectDB } from './configs';
 
-const app: Application = getApp();
 const PORT = config.PORT || 8000;
 
 connectDB();

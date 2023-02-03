@@ -1,13 +1,12 @@
-import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement, SyntheticEvent, useState } from 'react';
-import './register.css';
-import Logo from '../../image/logo.png';
-import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-
-const REGISTER_URL = '/auth/register';
+import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import Logo from '../../image/logo.png';
+import axios from '../../api/axios';
+import './register.css';
+const REGISTER_URL = 'auth/register';
 
 const RegisterPage = (): ReactElement => {
     const navigate = useNavigate();
@@ -20,7 +19,7 @@ const RegisterPage = (): ReactElement => {
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await axios
+        await axios
             .post(
                 REGISTER_URL,
                 JSON.stringify({
@@ -35,15 +34,15 @@ const RegisterPage = (): ReactElement => {
                     withCredentials: true
                 }
             )
-            .then((response) => {
-                navigate('/login');
+            .then(() => {
                 setUserName('');
                 setPassword('');
                 setFirstName('');
                 setLastName('');
                 setGender('');
+                navigate('/login');
             })
-            .catch(function (err) {
+            .catch((err) => {
                 if (err.response) {
                     setErrMsg(err.response.data.message);
                 }
@@ -59,7 +58,7 @@ const RegisterPage = (): ReactElement => {
             <div className="register-header">
                 <div className="register-title-wrapper">
                     <div className="logo mb-3">
-                        <img src={Logo} />
+                        <img src={Logo} className="register-logo" />
                     </div>
                     <div className="register-title">Salyr</div>
                 </div>

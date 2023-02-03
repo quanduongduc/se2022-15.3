@@ -1,6 +1,5 @@
 .login-wrapper {
-    width: 100vw;
-    height: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
@@ -13,7 +12,7 @@
     text-align: center;
     align-items: center;
     border: 1px;
-    border-style:dotted;
+    border-style: dotted;
 }
 
 .login-title-wrapper {
@@ -25,7 +24,7 @@
     justify-content: center;
 }
 
-img {
+.login-logo {
     max-width: 70px;
     max-height: 70px;
     border-radius: 50%;
@@ -45,7 +44,7 @@ img {
     display: flex;
 }
 
-.login-container{
+.login-container {
     width: 100%;
     height: 100%;
     display: flex;
@@ -66,8 +65,10 @@ img {
     height: 24px;
 }
 
-.face-login,.apple-login,
-.google-login,.sdt-login {
+.face-login,
+.apple-login,
+.google-login,
+.sdt-login {
     width: 450px;
     height: 48px;
 }
@@ -109,7 +110,7 @@ p {
 }
 
 .login-btn > .btn {
-    background-color: #1ED760;
+    background-color: #1ed760;
     margin-left: 200px;
     font-weight: 600;
 }

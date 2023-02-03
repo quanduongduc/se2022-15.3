@@ -17,6 +17,7 @@ export const login = async (
         const user: any = await userController.findOne({
             userName: userName
         });
+
         if (!user) {
             return next(
                 new HttpException(
@@ -32,7 +33,7 @@ export const login = async (
         if (!isMatchedPassword) {
             return next(
                 new HttpException(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.NOT_IMPLEMENTED,
                     'User or Password is incorrect'
                 )
             );
@@ -60,7 +61,27 @@ export const login = async (
         );
     }
 };
+export const logout = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        res.clearCookie('accessToken');
+        res.json({
+            message: 'Logout successfully'
+        });
+    } catch (error) {
+        console.log(error);
 
+        next(
+            new HttpException(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                'Intenal Server Error'
+            )
+        );
+    }
+};
 export const register = userController.createUser;
 
 export const registerAdmin = userController.createAdminUser;

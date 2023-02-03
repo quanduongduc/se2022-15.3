@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { Track } from '../models';
 import {
-    getObjectSignedUrl,
     HttpException,
     HttpStatus,
-    uploadToS3
+    uploadToS3,
+    generateTrackUrls
 } from '../utils';
 import { BaseController } from './base.controller';
 
@@ -74,7 +74,7 @@ class TrackController extends BaseController {
 
             const tracksWithUrl = await Promise.all(
                 tracks?.map(async (track: any) => {
-                    const urls = await this.generateTrackUrls(
+                    const urls = await generateTrackUrls(
                         track.storageName,
                         track.theme
                     );
@@ -111,7 +111,7 @@ class TrackController extends BaseController {
 
             const tracksWithUrl = await Promise.all(
                 tracks?.map(async (track: any) => {
-                    const urls = await this.generateTrackUrls(
+                    const urls = await generateTrackUrls(
                         track.storageName,
                         track.theme
                     );
@@ -151,7 +151,7 @@ class TrackController extends BaseController {
                     new HttpException(HttpStatus.BAD_REQUEST, 'Track not found')
                 );
             }
-            const urls = await this.generateTrackUrls(
+            const urls = await generateTrackUrls(
                 track.storageName,
                 track.theme
             );
@@ -171,26 +171,6 @@ class TrackController extends BaseController {
                     'Some error Occour please try again'
                 )
             );
-        }
-    };
-
-    private generateTrackUrls = async (
-        audioStorageName: string,
-        themeStorageName: string
-    ) => {
-        try {
-            const trackUrlPromise = getObjectSignedUrl(audioStorageName);
-            const themeUrlPromise = getObjectSignedUrl(themeStorageName);
-            const [trackUrl, themeUrl] = await Promise.all([
-                trackUrlPromise,
-                themeUrlPromise
-            ]);
-            return {
-                trackUrl,
-                themeUrl
-            };
-        } catch (error) {
-            console.log(error);
         }
     };
 

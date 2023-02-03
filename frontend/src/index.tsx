@@ -4,15 +4,38 @@ import reportWebVitals from './reportWebVitals';
 import AppRoute from './routes/AppRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './context/AuthProvider';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import TracksContextProvider from './context/TracksContextProvider';
+import PlaylistContextProvider from './context/PlaylistContextProvider';
+import TrackContextProvider from './context/TrackContextProvider';
+import FavoriteContextProvider from './context/FavoriteContextProvider';
+import SearchTracksContextProvider from './context/SearchTracksContextProvider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <AuthProvider>
-            <AppRoute></AppRoute>
-        </AuthProvider>
+        <BrowserRouter>
+            <AuthProvider>
+                <PlaylistContextProvider>
+                    <TracksContextProvider>
+                        <FavoriteContextProvider>
+                            <TrackContextProvider>
+                                <SearchTracksContextProvider>
+                                    <Routes>
+                                        <Route
+                                            path="/*"
+                                            element={<AppRoute />}
+                                        />
+                                    </Routes>
+                                </SearchTracksContextProvider>
+                            </TrackContextProvider>
+                        </FavoriteContextProvider>
+                    </TracksContextProvider>
+                </PlaylistContextProvider>
+            </AuthProvider>
+        </BrowserRouter>
     </React.StrictMode>
 );
 

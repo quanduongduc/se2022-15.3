@@ -1,0 +1,11 @@
+{
+    "preset": "ts-jest",
+    "verbose": true,
+    "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+    },
+    "coverageDirectory": "./coverage",
+    "testMatch": ["**/?(*.)+(spec).ts"],
+    "resetMocks": true,
+    "clearMocks": true
+}

@@ -1,28 +1,33 @@
 .sidebar-wrapper {
     width: 250px;
-    height: 660px;
+    height: 100vh;
     display: flex;
+    position: fixed;
     flex-direction: column;
-    background-color: #000;
+    background-color: #121212;
     float: left;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.title-wrapper {
+.sidebar-title-wrapper {
     width: 100%;
     height: 50px;
     justify-content: center;
     align-items: center;
-}
-
-.logo {
-    width: 50px;
-    height: 50px;
-    float: left;
-    padding: 0;
     justify-items: center;
 }
 
-.title {
+.sidebar-logo {
+    width: 50px;
+    height: 50px;
+    float: left;
+    justify-items: center;
+    align-items: center;
+    margin-right: 0px;
+    margin-left: 1.5rem;
+}
+
+.sidebar-title {
     width: 150px;
     height: 50px;
     justify-items: center;
@@ -30,7 +35,55 @@
     font-weight: 600;
 }
 
-.img {
+.sidebar-img {
     width: 50px;
     height: 50px;
+}
+
+.menu-item {
+    list-style-type: none;
+}
+
+.menu-item > li > a{
+    text-decoration: none;
+    color: white;
+}
+
+.playlist-bar {
+    width: 100%;
+    height: 400px;
+}
+
+.scroll-playlist {
+    width: 100%;
+    height: 343px;
+    background-color: inherit;
+    overflow: hidden;
+}
+
+.scroll-playlist:hover {
+    overflow: auto;
+}
+
+.list-playlist {
+    height: 30px;
+}
+
+.playlist-title-active:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+.playlist-title-unactive:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+.x-mark {
+    margin-top: 8px;
+}
+
+.x-mark:hover {
+    color: #fff;
+    cursor: pointer;
 }
