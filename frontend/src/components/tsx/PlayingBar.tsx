@@ -16,7 +16,6 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 import { useFavoriteTracksContext } from '../../context/FavoriteContextProvider';
 import { useTrackContext } from '../../context/TrackContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
-import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
 import '../css/playingbar.css';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
@@ -24,7 +23,6 @@ const ADD_TRACK_TO_FAVORITE_URL = '/user/add-favourite/';
 const REMOVE_TRACK_FAVORITE_URL = '/user/remove-favourite/';
 
 const PlayingBar = (): ReactElement => {
-    const { auth } = useAuth();
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
