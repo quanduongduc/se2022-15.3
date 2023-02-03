@@ -26,26 +26,6 @@
     border-bottom: 1px solid;
 }
 
-.playlist-view-index-header {
-    width: 2%;
-    height: 100%;
-    margin-left: 60px;
-}
-
-.playlist-view-title-header {
-    width: 32%;
-    height: 100%;
-}
-
-.playlist-view-created-at {
-    width: 24%;
-    height: 100%;
-}
-
-.playlist-view-duration {
-    width: 10%;
-}
-
 .favorite-data-content {
     width: 100%;
 }

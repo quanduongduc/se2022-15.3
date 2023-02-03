@@ -31,11 +31,11 @@ const Tracks = (): ReactElement => {
                 <div className="tracks-title mt-5">Thư viện</div>
             </div>
             <div className="playlist-view-content-container d-flex flex-column">
-                <div className="track-data-header d-flex text-white">
-                    <div className="index-header me-5">#</div>
-                    <div className="title-header ms-3">TIÊU ĐỀ</div>
-                    <div className="created-at">NGÀY TẠO</div>
-                    <div className="duration">
+                <div className="track-data-header d-flex text-white row-cols-4">
+                    <div className="index-header col-1">#</div>
+                    <div className="title-header ms-3 col-5">TIÊU ĐỀ</div>
+                    <div className="created-at col-3">NGÀY TẠO</div>
+                    <div className="duration col-1">
                         <FontAwesomeIcon
                             icon={faClockFour}
                             color="white"
@@ -44,7 +44,7 @@ const Tracks = (): ReactElement => {
                         />
                     </div>
                 </div>
-                <div className="playlist-track-content d-flex flex-column mb-5">
+                <div className="playlist-track-content">
                     {tracks.map((track, index) => (
                         <div
                             className="set-track"

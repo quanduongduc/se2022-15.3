@@ -131,11 +131,17 @@ const Favorite = (): ReactElement => {
             <div className="favorite-header text-white d-flex align-items-center">
                 <span className="favorite-title ms-2">Danh sách yêu thích</span>
             </div>
-            <div className="favorite-content">
-                <div className="favorite-data-header d-flex text-white border-bottom">
-                    <div className="favorite-index-header ms-5 me-5">#</div>
-                    <div className="favorite-title-header ms-3">TIÊU ĐỀ</div>
-                    <div className="favorite-created-at">NGÀY TẠO</div>
+            <div className="favorite-content d-flex flex-column">
+                <div className="favorite-data-header d-flex text-white border-bottom row-cols-4">
+                    <div className="favorite-index-header d-flex ms-2 me-4 col-1 justify-content-center">
+                        #
+                    </div>
+                    <div className="favorite-title-header ms-4 col-4">
+                        TIÊU ĐỀ
+                    </div>
+                    <div className="favorite-created-at col-2 me-5">
+                        NGÀY TẠO
+                    </div>
                     <div className="favorite-duration">
                         <FontAwesomeIcon
                             icon={faClockFour}

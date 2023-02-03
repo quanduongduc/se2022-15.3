@@ -43,7 +43,7 @@ const Search = (): ReactElement => {
                             className="search-track-content d-flex flex-row text-white align-items-center rounded-3"
                             onClick={setLastPlaying(track._id)}
                         >
-                            <span className="search-track-index ms-5 me-3">
+                            <span className="search-track-index ms-5 me-5">
                                 {index + 1}
                             </span>
                             <img

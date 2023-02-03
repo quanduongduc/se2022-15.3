@@ -22,21 +22,6 @@
     background-image: linear-gradient(rgb(44, 35, 35),#000);
 }
 
-.favorite-index-header {
-    width: 2%;
-    height: 100%;
-}
-
-.favorite-title-header {
-    width: 34%;
-    height: 100%;
-}
-
-.favorite-created-at {
-    width: 22%;
-    height: 100%;
-}
-
 .favorite-data-track-container {
     width: 80%;
     margin-right: 0;

@@ -137,11 +137,17 @@ const PlaylistView = () => {
                 </div>
             </div>
             <div className="playlist-view-content-container d-flex flex-column">
-                <div className="playlist-data-header d-flex text-white">
-                    <div className="playlist-view-index-header me-5">#</div>
-                    <div className="playlist-view-title-header">TIÊU ĐỀ</div>
-                    <div className="playlist-view-created-at">NGÀY TẠO</div>
-                    <div className="playlist-view-duration">
+                <div className="playlist-data-header d-flex text-white row-cols-4">
+                    <div className="playlist-view-index-header ms-2 d-flex col-1 justify-content-center">
+                        #
+                    </div>
+                    <div className="playlist-view-title-header ms-5 col-4">
+                        TIÊU ĐỀ
+                    </div>
+                    <div className="playlist-view-created-at col-2">
+                        NGÀY TẠO
+                    </div>
+                    <div className="playlist-view-duration ms-5 col-1">
                         <FontAwesomeIcon
                             icon={faClockFour}
                             color="white"
