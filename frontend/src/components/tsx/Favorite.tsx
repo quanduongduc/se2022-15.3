@@ -3,6 +3,7 @@ import {
     faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactElement, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTrackContext } from '../../context/TrackContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import { useFavoriteTracksContext } from '../../context/FavoriteContextProvider';
