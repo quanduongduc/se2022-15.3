@@ -11,6 +11,7 @@ const Home = (): ReactElement => {
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
+    const [listRecentTrack, setListRecentTrack] = useState([]);
 
     const {
         trackContextState: { selectedTrackId }
@@ -40,9 +41,12 @@ const Home = (): ReactElement => {
     );
     const lastTrack = tracks[lastTrackIndex];
 
-    const listRecentTrack: any = tracks.slice(-6, -1);
-    listRecentTrack.push(tracks[tracks.length - 1]);
-    listRecentTrack.reverse();
+    useEffect(() => {
+        const newListRecentTrack: any = tracks.slice(-6, -1);
+        newListRecentTrack.push(tracks[tracks.length - 1]);
+        newListRecentTrack.reverse();
+        setListRecentTrack(newListRecentTrack);
+    }, [tracks]);
 
     return (
         <div className="home-wrapper overflow-auto">
