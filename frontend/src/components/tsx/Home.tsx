@@ -8,6 +8,7 @@ const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 const Home = (): ReactElement => {
     const { updateTrackContextState } = useTrackContext();
     const [lastTrackActive, setLastTrackActive] = useState(false);
+    const [listRecentTrack, setListRecentTrack] = useState<any>([]);
     const {
         tracksContextState: { tracks }
     } = useTracksContext();
@@ -40,9 +41,12 @@ const Home = (): ReactElement => {
     );
     const lastTrack = tracks[lastTrackIndex];
 
-    const listRecentTrack: any = tracks.slice(-6, -1);
-    listRecentTrack.push(tracks[tracks.length - 1]);
-    listRecentTrack.reverse();
+    useEffect(() => {
+        const newListRecentTrack: any = tracks.slice(-6, -1);
+        newListRecentTrack.push(tracks[tracks.length - 1]);
+        newListRecentTrack.reverse();
+        setListRecentTrack(newListRecentTrack);
+    }, [tracks]);
 
     return (
         <div className="home-wrapper overflow-auto">
