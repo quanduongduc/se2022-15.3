@@ -40,33 +40,10 @@ const Home = (): ReactElement => {
     );
     const lastTrack = tracks[lastTrackIndex];
 
-    const listRecentTrack: any = [];
+    const listRecentTrack: any = tracks.slice(-6, -1);
+    listRecentTrack.push(tracks[tracks.length - 1]);
+    listRecentTrack.reverse();
 
-    const recentTracks = (listTrack: any, count: number) => {
-        const recentTrack = new Date(
-            Math.max(
-                ...listTrack.map((track: any) =>
-                    new Date(track.updated_at).getTime()
-                )
-            )
-        ).toISOString();
-
-        for (const track of listTrack) {
-            if (track.updated_at === recentTrack) {
-                listRecentTrack.push(track);
-            }
-        }
-
-        listTrack = listTrack.filter(
-            (track: any) => track.updated_at !== recentTrack
-        );
-        count++;
-
-        if (count < 6) {
-            recentTracks(listTrack, count);
-        }
-    };
-    recentTracks(tracks, 0);
     return (
         <div className="home-wrapper overflow-auto">
             <div className="home-content">
