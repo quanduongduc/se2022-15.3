@@ -478,7 +478,7 @@ Find artist by name
 ```json
 {
     "message": "get artists successfully",
-    "users": [
+    "artists": [
         {
             "_id": "63aad07da14ea04ded568570",
             "name": "Hana",
