@@ -32,7 +32,7 @@
 }
 
 .register-title {
-    padding-left: 20px;
+    padding-left: 5px;
     font-size: 34px;
     font-weight: 600;
 }
@@ -52,6 +52,10 @@
     align-items: center;
     display: flex;
     flex-direction: row;
+}
+
+.register-group {
+    width: 450px;
 }
 
 .register-font {
