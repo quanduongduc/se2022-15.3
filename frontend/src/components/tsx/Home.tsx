@@ -41,14 +41,24 @@ const Home = (): ReactElement => {
     const lastTrack = tracks[lastTrackIndex];
 
     const listRecentTrack: any = [];
-    const recentTracks = (listTrack: any, count: number) => {
-        let recentTrack = listTrack[0];
-        for (const track of listTrack)
-            if (track.updated_at > recentTrack.updated_at) recentTrack = track;
 
-        listRecentTrack.push(recentTrack);
+    const recentTracks = (listTrack: any, count: number) => {
+        const recentTrack = new Date(
+            Math.max(
+                ...listTrack.map((track: any) =>
+                    new Date(track.updated_at).getTime()
+                )
+            )
+        ).toISOString();
+
+        for (const track of listTrack) {
+            if (track.updated_at === recentTrack) {
+                listRecentTrack.push(track);
+            }
+        }
+
         listTrack = listTrack.filter(
-            (track: any) => track.updated_at !== recentTrack.updated_at
+            (track: any) => track.updated_at !== recentTrack
         );
         count++;
 

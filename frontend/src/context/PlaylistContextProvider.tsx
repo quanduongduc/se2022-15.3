@@ -46,14 +46,9 @@ const PlaylistContextProvider = ({ children }: { children: ReactNode }) => {
             .get(USER_URL, {
                 withCredentials: true
             })
-            .then((response) => {
-                const userResponse = response?.data?.users;
+            .then(() => {
                 if (auth?.user) {
-                    const userIndexResponse = userResponse.findIndex(
-                        (user: any) => user._id === auth?.user._id
-                    );
-                    const userPlaylistResponse =
-                        userResponse[userIndexResponse].playlists;
+                    const userPlaylistResponse = auth?.user.playlists;
                     updatePlaylistContextState({
                         playlists: userPlaylistResponse
                     });

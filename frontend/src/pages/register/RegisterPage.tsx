@@ -1,21 +1,34 @@
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { ReactElement, SyntheticEvent, useState } from 'react';
+import React, {
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useState
+} from 'react';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import Logo from '../../image/logo.png';
 import axios from '../../api/axios';
+import validator from 'validator';
 import './register.css';
 const REGISTER_URL = 'auth/register';
 
 const RegisterPage = (): ReactElement => {
     const navigate = useNavigate();
+    const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
+    const upperChars = /[A-Z]/;
+    const digitChars = /[0-9]/;
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [gender, setGender] = useState('undefined');
     const [errMsg, setErrMsg] = useState('');
+    const [errMsgFirstName, setErrMsgFistName] = useState('');
+    const [errMsgLastName, setErrMsgLastName] = useState('');
+    const [errMsgUserName, setErrMsgUserName] = useState('');
+    const [errMsgPassWord, setErrMsgPassWord] = useState('');
 
     const submitHandler = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -49,23 +62,71 @@ const RegisterPage = (): ReactElement => {
             });
     };
 
+    useEffect(() => {
+        if (!validator.isAlpha(firstName)) {
+            setErrMsgFistName('Bạn cần nhập họ của bạn chỉ là chữ');
+        }
+
+        if (firstName === '') {
+            setErrMsgFistName('Bạn cần nhập họ của bạn');
+        }
+
+        if (validator.isAlpha(firstName)) {
+            setErrMsgFistName('');
+        }
+    }, [firstName]);
+
+    useEffect(() => {
+        if (!validator.isAlpha(lastName)) {
+            setErrMsgLastName('Bạn cần nhập tên của bạn chỉ là chữ');
+        } else if (lastName === '') {
+            setErrMsgLastName('Bạn cần nhập tên của bạn');
+        } else {
+            setErrMsgLastName('');
+        }
+    }, [lastName]);
+
+    useEffect(() => {
+        if (userName.length < 8) {
+            setErrMsgUserName('Tên tài khoản của bạn cần nhiều hơn 8 ký tự');
+        } else if (userName.length > 32) {
+            setErrMsgUserName('Tên tài khoản của bạn cần ít hơn 32 ký tự');
+        } else {
+            setErrMsgUserName('');
+        }
+    }, [userName]);
+
+    useEffect(() => {
+        if (password.length < 8) {
+            setErrMsgPassWord('Mật khẩu phải có lớn hơn 8 ký tự');
+        } else if (!upperChars.test(password)) {
+            setErrMsgPassWord('Mật khẩu phải có 1 chữ in hoa');
+        } else if (!digitChars.test(password)) {
+            setErrMsgPassWord('Mật khẩu phải có ít nhất 1 số');
+        } else if (!specialChars.test(password)) {
+            setErrMsgPassWord('Mật khẩu phải có 1 ký tự đặc biệt');
+        } else {
+            setErrMsgPassWord('');
+        }
+    }, [password]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGender(e.target.value);
     };
 
     return (
         <div className="register-wrapper d-flex align-items-center">
-            <div className="register-header">
+            <div className="register-header mt-2">
                 <div className="register-title-wrapper">
-                    <div className="logo mb-3">
+                    <div className="logo mb-2">
                         <img src={Logo} className="register-logo" />
                     </div>
                     <div className="register-title">Salyr</div>
                 </div>
             </div>
-            <div className="register-content mt-3">
+            <div className="register-content">
                 <div className="register-form-wrapper">
-                    <div className="register-container mt-5">
+                    <div className="register-container">
                         <p
                             className={
                                 errMsg
@@ -102,7 +163,7 @@ const RegisterPage = (): ReactElement => {
                             onSubmit={submitHandler}
                             noValidate
                         >
-                            <div className="register-group  input-group mb-3">
+                            <div className="register-group mb-3">
                                 <label
                                     htmlFor="firstName-validation"
                                     className="register-form-label"
@@ -122,8 +183,11 @@ const RegisterPage = (): ReactElement => {
                                     value={firstName}
                                     required
                                 />
+                                <p className="err-msg-first-name text-danger fw-bold ms-2">
+                                    {errMsgFirstName}
+                                </p>
                             </div>
-                            <div className="register-group  input-group mb-3">
+                            <div className="register-group mb-3">
                                 <label
                                     htmlFor="lastName-validation"
                                     className="register-form-label"
@@ -143,8 +207,11 @@ const RegisterPage = (): ReactElement => {
                                     value={lastName}
                                     required
                                 />
+                                <p className="err-msg-last-name text-danger fw-bold ms-2">
+                                    {errMsgLastName}
+                                </p>
                             </div>
-                            <div className="register-group  input-group mb-3">
+                            <div className="register-group mb-3">
                                 <label
                                     htmlFor="username-validation"
                                     className="register-form-label"
@@ -164,8 +231,11 @@ const RegisterPage = (): ReactElement => {
                                     value={userName}
                                     required
                                 />
+                                <p className="err-msg-user-name text-danger fw-bold ms-2">
+                                    {errMsgUserName}
+                                </p>
                             </div>
-                            <div className="register-group  input-group mb-3">
+                            <div className="register-group mb-3">
                                 <label
                                     htmlFor="password-validation"
                                     className="register-form-label"
@@ -185,6 +255,9 @@ const RegisterPage = (): ReactElement => {
                                     value={password}
                                     required
                                 />
+                                <p className="err-msg-password text-danger fw-bold ms-2">
+                                    {errMsgPassWord}
+                                </p>
                             </div>
                             <div className="gender-group d-flex flex-wrap mb-3">
                                 <div className="form-check ps-4 pe-4">
