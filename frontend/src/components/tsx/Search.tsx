@@ -22,13 +22,15 @@ const Search = (): ReactElement => {
 
     useEffect(() => {
         const newTracksSearch: any = [];
-        for (const track of searchTracks) {
-            if (
-                newTracksSearch.findIndex(
-                    (trackE: any) => trackE._id === track._id
-                ) === -1
-            ) {
-                newTracksSearch.push(track);
+        if (searchTracks.length > 0) {
+            for (const track of searchTracks) {
+                if (
+                    newTracksSearch.findIndex(
+                        (trackE: any) => trackE?._id === track?._id
+                    ) === -1
+                ) {
+                    newTracksSearch.push(track);
+                }
             }
         }
         setSearchTracksShow(newTracksSearch);
@@ -41,26 +43,26 @@ const Search = (): ReactElement => {
                     <div className="search-track-container" key={index}>
                         <div
                             className="search-track-content d-flex flex-row text-white align-items-center rounded-3"
-                            onClick={setLastPlaying(track._id)}
+                            onClick={setLastPlaying(track?._id)}
                         >
                             <span className="search-track-index ms-5 me-5">
                                 {index + 1}
                             </span>
                             <img
-                                src={track.themeUrl}
+                                src={track?.themeUrl}
                                 alt=""
                                 className="search-track-img me-3 ms-3"
                             />
                             <div className="search-track-info ">
                                 <div className="search-track-name">
-                                    {track.title}
+                                    {track?.title}
                                 </div>
                                 <div className="search-track-artist">
-                                    {track.artists[0].name}
+                                    {track?.artists[0]?.name}
                                 </div>
                             </div>
                             <div className="search-track-duration">
-                                {track.duration}
+                                {track?.duration}
                             </div>
                         </div>
                     </div>
