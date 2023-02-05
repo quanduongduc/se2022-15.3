@@ -175,7 +175,7 @@ const RegisterPage = (): ReactElement => {
                                     aria-invalid="false"
                                     className="form-control border-dark"
                                     id="firstName-validation"
-                                    placeholder="Nhập họ của bạn."
+                                    placeholder="Nhập họ của bạn. Không dấu!"
                                     autoCapitalize="off"
                                     onChange={(e) =>
                                         setFirstName(e.target.value)
@@ -199,7 +199,7 @@ const RegisterPage = (): ReactElement => {
                                     aria-invalid="false"
                                     className="form-control border-dark"
                                     id="lastName-validation"
-                                    placeholder="Nhập tên của bạn."
+                                    placeholder="Nhập tên của bạn. Không dấu!"
                                     autoCapitalize="off"
                                     onChange={(e) =>
                                         setLastName(e.target.value)
