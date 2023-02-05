@@ -68,7 +68,7 @@ const PlayingBar = (): ReactElement => {
             setLastPlaying(tracks[trackPlay]?._id);
             setHidden(false);
         }
-    }, [selectedTrackId]);
+    }, [selectedTrackId, tracks]);
 
     const setLastPlaying = (trackId: string | any) => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
