@@ -40,7 +40,6 @@ const TrackContextProvider = ({ children }: { children: ReactNode }) => {
             updateTrackContextState({
                 selectedTrackId: auth?.user?.lastPlay._id
             });
-            console.log(auth?.user?.lastPlay._id);
         }
     }, [auth]);
 
