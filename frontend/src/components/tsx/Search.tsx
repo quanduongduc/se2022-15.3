@@ -22,13 +22,15 @@ const Search = (): ReactElement => {
 
     useEffect(() => {
         const newTracksSearch: any = [];
-        for (const track of searchTracks) {
-            if (
-                newTracksSearch.findIndex(
-                    (trackE: any) => trackE?._id === track?._id
-                ) === -1
-            ) {
-                newTracksSearch.push(track);
+        if (searchTracks.length > 0) {
+            for (const track of searchTracks) {
+                if (
+                    newTracksSearch.findIndex(
+                        (trackE: any) => trackE?._id === track?._id
+                    ) === -1
+                ) {
+                    newTracksSearch.push(track);
+                }
             }
         }
         setSearchTracksShow(newTracksSearch);
