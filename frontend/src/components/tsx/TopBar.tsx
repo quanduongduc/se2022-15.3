@@ -47,7 +47,7 @@ const TopBar = () => {
                             withCredentials: true
                         })
                         .then((response) => {
-                            const users = response?.data?.users;
+                            const users = response?.data?.artists;
                             for (const user of users) {
                                 for (const trackInTracks in user.tracks) {
                                     const trackIndex = tracks.findIndex(
