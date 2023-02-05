@@ -64,17 +64,17 @@ const Home = (): ReactElement => {
                         <div className="last-play-track-wrapper d-flex flex-row align-items-center rounded-3">
                             <div className="last-play-track-image-wrapper">
                                 <img
-                                    src={lastTrack.themeUrl}
+                                    src={lastTrack?.themeUrl}
                                     alt=""
                                     className="last-play-track-img rounded-1"
                                 />
                             </div>
                             <div className="last-play-track-info ms-4 d-flex flex-column">
                                 <div className="last-play-track-title text-white">
-                                    {lastTrack.title}
+                                    {lastTrack?.title}
                                 </div>
                                 <div className="last-play-track-artist">
-                                    {lastTrack.artists[0].name}
+                                    {lastTrack?.artists[0]?.name}
                                 </div>
                             </div>
                         </div>
@@ -89,21 +89,21 @@ const Home = (): ReactElement => {
                             <div
                                 className="new-track-wrapper d-flex flex-column rounded-3 align-items-center"
                                 key={track._id}
-                                onClick={setLastPlaying(track._id)}
+                                onClick={setLastPlaying(track?._id)}
                             >
                                 <div className="new-track-home-img-wrapper d-flex">
                                     <img
-                                        src={track.themeUrl}
+                                        src={track?.themeUrl}
                                         alt=""
                                         className="track-home-img rounded-3"
                                     />
                                 </div>
                                 <div className="new-track-home-info mt-3 d-flex flex-column ms-3">
                                     <div className="new-track-home-title">
-                                        {track.title}
+                                        {track?.title}
                                     </div>
                                     <div className="new-track-home-artist mt-2">
-                                        {track.artists[0].name}
+                                        {track?.artists[0]?.name}
                                     </div>
                                 </div>
                             </div>

@@ -10,8 +10,6 @@ import {
     IFavoriteTracksContext
 } from '../types/type';
 import useAuth from '../hooks/useAuth';
-import axios from '../api/axios';
-const USER_URL = '/user';
 
 const defaultFavoriteTracksContextState: FavoriteTracksContextState = {
     favoriteTracks: []
@@ -44,28 +42,11 @@ const FavoriteTracksContextProvider = ({
 
     const { auth } = useAuth();
     useEffect(() => {
-        axios
-            .get(USER_URL, {
-                withCredentials: true
-            })
-            .then((response) => {
-                const userResponse = response?.data?.users;
-                if (auth?.user) {
-                    const userIndexResponse = userResponse.findIndex(
-                        (user: any) => user._id === auth?.user._id
-                    );
-                    const userFavoriteTracksResponse =
-                        userResponse[userIndexResponse].favouriteTracks;
-                    if (
-                        favoriteTracksContextState.favoriteTracks !==
-                        userFavoriteTracksResponse
-                    ) {
-                        updateFavoriteTracksContextState({
-                            favoriteTracks: userFavoriteTracksResponse
-                        });
-                    }
-                }
+        if (auth?.user) {
+            updateFavoriteTracksContextState({
+                favoriteTracks: auth?.user?.favouriteTracks
             });
+        }
     }, [auth]);
 
     const favoriteTracksContextProviderData = {

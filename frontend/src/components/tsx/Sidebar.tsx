@@ -72,7 +72,10 @@ const Sidebar = (): ReactElement => {
         <div className="sidebar-wrapper">
             <div className="sidebar-title-wrapper w-100 pt-3 mb-4">
                 <div className="sidebar-logo">
-                    <img src={Logo} className="sidebar-img me-1" />
+                    <img
+                        src={Logo}
+                        className="sidebar-img me-2 rounded-circle"
+                    />
                 </div>
                 <div className="sidebar-title text-white px-0 fs-3 pt-1">
                     Salyr

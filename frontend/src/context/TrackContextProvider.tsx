@@ -5,10 +5,8 @@ import {
     useEffect,
     useState
 } from 'react';
-import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 import { ITrackContext, TrackContextState } from '../types/type';
-const USER_URL = '/user';
 
 const defaultTrackContextState: TrackContextState = {
     selectedTrackId: undefined
@@ -38,30 +36,11 @@ const TrackContextProvider = ({ children }: { children: ReactNode }) => {
 
     const { auth } = useAuth();
     useEffect(() => {
-        axios
-            .get(USER_URL, {
-                withCredentials: true
-            })
-            .then((response) => {
-                const userResponse = response?.data?.users;
-                if (auth?.user) {
-                    const userIndexResponse = userResponse.findIndex(
-                        (user: any) => user._id === auth?.user._id
-                    );
-                    if (userResponse[userIndexResponse].lastPlay) {
-                        const userTrackResponse =
-                            userResponse[userIndexResponse].lastPlay._id;
-                        if (
-                            trackContextState.selectedTrackId !==
-                            userTrackResponse
-                        ) {
-                            updateTrackContextState({
-                                selectedTrackId: userTrackResponse
-                            });
-                        }
-                    }
-                }
+        if (auth?.user?.lastPlay) {
+            updateTrackContextState({
+                selectedTrackId: auth?.user?.lastPlay._id
             });
+        }
     }, [auth]);
 
     const trackContextProviderData = {

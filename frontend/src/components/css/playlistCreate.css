@@ -1,5 +1,5 @@
 .playlist-view-create-container {
-    width: 100vw;
+    width: calc(100vw - 250px);
     height: 100vh;
 }
 
