@@ -38,28 +38,30 @@ const TopBar = () => {
             axios
                 .get(`${SEARCH_URL}${title}`, { withCredentials: true })
                 .then((response) => {
-                    const tracks = response?.data?.tracks;
-                    for (const track of tracks) {
+                    const tracksSearch = response?.data?.tracks;
+                    for (const track of tracksSearch) {
                         listTrack.push(track);
                     }
-                    updateSearchTracksContextState({ searchTracks: listTrack });
-                });
-            axios
-                .get(`${SEARCH_ARTIST_URL}${title}`, { withCredentials: true })
-                .then((response) => {
-                    const users = response?.data?.users;
-                    for (const user of users) {
-                        for (const trackInTracks in user.tracks) {
-                            const trackIndex = tracks.findIndex(
-                                (track: any) =>
-                                    track._id === user.tracks[trackInTracks]
-                            );
-                            listTrack.push(tracks[trackIndex]);
-                        }
-                        updateSearchTracksContextState({
-                            searchTracks: listTrack
+                    axios
+                        .get(`${SEARCH_ARTIST_URL}${title}`, {
+                            withCredentials: true
+                        })
+                        .then((response) => {
+                            const users = response?.data?.users;
+                            for (const user of users) {
+                                for (const trackInTracks in user.tracks) {
+                                    const trackIndex = tracks.findIndex(
+                                        (track: any) =>
+                                            track._id ===
+                                            user.tracks[trackInTracks]
+                                    );
+                                    listTrack.push(tracks[trackIndex]);
+                                }
+                                updateSearchTracksContextState({
+                                    searchTracks: listTrack
+                                });
+                            }
                         });
-                    }
                 });
         } else {
             axios
