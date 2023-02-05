@@ -43,7 +43,9 @@ const PlayingBar = (): ReactElement => {
         return false;
     };
     const [hidden, setHidden] = useState(selectedTrackId === undefined);
-    const [currentTrack, setcurrentTrack] = useState<any>();
+    const [currentTrack, setcurrentTrack] = useState<any>(
+        tracks.findIndex((track: any) => track._id === selectedTrackId)
+    );
     const [isRandom, setIsRandom] = useState(false);
     const [isRepeat, setIsRepeat] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -67,9 +69,6 @@ const PlayingBar = (): ReactElement => {
             setHidden(false);
         }
     }, [selectedTrackId]);
-    console.log(tracks);
-    console.log(selectedTrackId);
-    console.log(currentTrack);
 
     const setLastPlaying = (trackId: string | any) => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
