@@ -28,7 +28,7 @@ const TracksContextProvider = ({ children }: { children: ReactNode }) => {
             .get(TRACKS_URL, {
                 withCredentials: true
             })
-            .then((response) => {
+            .then(async (response) => {
                 const userTracksReponse = response?.data?.tracks;
                 setracksContextState({
                     tracks: userTracksReponse
