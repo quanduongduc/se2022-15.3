@@ -42,8 +42,13 @@ const Home = (): ReactElement => {
     const lastTrack = tracks[lastTrackIndex];
 
     useEffect(() => {
-        const newListRecentTrack: any = tracks.slice(-6, -1);
-        newListRecentTrack.push(tracks[tracks.length - 1]);
+        let newListRecentTrack: any = [];
+        if (tracks.length >= 6) {
+            newListRecentTrack = tracks.slice(-6, -1);
+            newListRecentTrack.push(tracks[tracks.length - 1]);
+        } else {
+            newListRecentTrack = tracks;
+        }
         newListRecentTrack.reverse();
         setListRecentTrack(newListRecentTrack);
     }, [tracks]);

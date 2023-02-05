@@ -13,6 +13,8 @@ const defaultTracksContextState: TracksContextState = {
     tracks: []
 };
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const TracksContext = createContext<ITracksContext>({
     tracksContextState: defaultTracksContextState
 });
@@ -28,8 +30,9 @@ const TracksContextProvider = ({ children }: { children: ReactNode }) => {
             .get(TRACKS_URL, {
                 withCredentials: true
             })
-            .then((response) => {
+            .then(async (response) => {
                 const userTracksReponse = response?.data?.tracks;
+                await delay(3000);
                 setracksContextState({
                     tracks: userTracksReponse
                 });
