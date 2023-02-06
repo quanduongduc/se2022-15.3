@@ -146,7 +146,7 @@ class ArtistController extends BaseController {
 
             this.res(res, {
                 message: 'get artists successfully',
-                users: artists
+                artists: artists
             });
         } catch (error) {
             console.log(error);
