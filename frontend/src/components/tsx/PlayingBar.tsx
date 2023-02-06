@@ -61,7 +61,7 @@ const PlayingBar = (): ReactElement => {
         currentTime: 0,
         duration: 0
     });
-    const [currentPage, setCurrentPage] = useState('/home');
+    const [currentPage, setCurrentPage] = useState('/');
     const [tracksPlaying, setTracksPlaying] = useState<any>(tracks);
 
     useEffect(() => {
@@ -77,16 +77,11 @@ const PlayingBar = (): ReactElement => {
                 );
                 newTracks.push(tracks[newTrack]);
             }
-        } else if (
-            currentPage === '/playlist/' &&
-            selectedPlaylist.tracks.length > 0
-        ) {
-            newTracks = selectedPlaylist.tracks;
         } else {
             newTracks = tracks;
         }
         setTracksPlaying(newTracks);
-    }, [currentPage, selectedPlaylist, favoriteTracks, tracks]);
+    }, [currentPage, favoriteTracks, selectedTrackId, tracks]);
 
     useEffect(() => {
         if (selectedTrackId !== undefined) {
@@ -98,7 +93,7 @@ const PlayingBar = (): ReactElement => {
             setLastPlaying(tracksPlaying[trackPlay]?._id);
             setHidden(false);
         }
-    }, [selectedTrackId, tracks]);
+    }, [selectedTrackId, tracksPlaying]);
 
     const setLastPlaying = (trackId: string | any) => {
         axios.patch(`${LAST_PLAY_URL}${trackId}`, JSON.stringify({ trackId }), {
@@ -115,7 +110,7 @@ const PlayingBar = (): ReactElement => {
         const trackIndex = tracksPlaying.findIndex(
             (track: any) => track._id === trackID
         );
-        return tracks[trackIndex];
+        return tracksPlaying[trackIndex];
     };
 
     const addTrackToFavorite = (trackID: string) => {
@@ -233,8 +228,8 @@ const PlayingBar = (): ReactElement => {
     };
 
     const trackEndHandler = () => {
-        const currentIndex = tracks.findIndex(
-            (track) => track._id === tracksPlaying[currentTrack]._id
+        const currentIndex = tracksPlaying.findIndex(
+            (track: any) => track._id === tracksPlaying[currentTrack]._id
         );
         setFeaturePlaying(currentIndex);
     };
@@ -253,7 +248,7 @@ const PlayingBar = (): ReactElement => {
         if (direction === 'forward-step-btn') {
             setFeaturePlaying(currentIndex);
         } else if (direction === 'backward-step-btn') {
-            let backTrack = tracksPlaying[tracks.length - 1]._id;
+            let backTrack = tracksPlaying[tracksPlaying.length - 1]._id;
 
             if (currentIndex - 1 === -1) {
                 setSelectedTrack(backTrack);
