@@ -18,6 +18,7 @@ import { useTrackContext } from '../../context/TrackContextProvider';
 import { useTracksContext } from '../../context/TracksContextProvider';
 import axios from '../../api/axios';
 import '../css/playingbar.css';
+import { usePlaylistContext } from '../../context/PlaylistContextProvider';
 const LAST_PLAY_URL = '/user/tracking/lastPlay/';
 const ADD_TRACK_TO_FAVORITE_URL = '/user/add-favourite/';
 const REMOVE_TRACK_FAVORITE_URL = '/user/remove-favourite/';
@@ -34,6 +35,9 @@ const PlayingBar = (): ReactElement => {
         favoriteTracksContextState: { favoriteTracks },
         updateFavoriteTracksContextState
     } = useFavoriteTracksContext();
+    const {
+        playlistContextState: { selectedPlaylist }
+    } = usePlaylistContext();
 
     const checkIsFavorite = (trackId: string) => {
         const trackIndex = favoriteTracks.findIndex(
@@ -57,15 +61,41 @@ const PlayingBar = (): ReactElement => {
         currentTime: 0,
         duration: 0
     });
+    const [currentPage, setCurrentPage] = useState('/home');
+    const [tracksPlaying, setTracksPlaying] = useState<any>(tracks);
+
+    useEffect(() => {
+        setCurrentPage(window.location.pathname);
+    }, [window.location.pathname]);
+
+    useEffect(() => {
+        let newTracks: any = [];
+        if (currentPage === '/favorite' && favoriteTracks.length > 0) {
+            for (const trackF of favoriteTracks) {
+                const newTrack = tracks.findIndex(
+                    (track: any) => trackF._id === track._id
+                );
+                newTracks.push(tracks[newTrack]);
+            }
+        } else if (
+            currentPage === '/playlist/' &&
+            selectedPlaylist.tracks.length > 0
+        ) {
+            newTracks = selectedPlaylist.tracks;
+        } else {
+            newTracks = tracks;
+        }
+        setTracksPlaying(newTracks);
+    }, [currentPage, selectedPlaylist, favoriteTracks, tracks]);
 
     useEffect(() => {
         if (selectedTrackId !== undefined) {
-            const trackPlay = tracks.findIndex(
+            const trackPlay = tracksPlaying.findIndex(
                 (track: any) => track._id === selectedTrackId
             );
             setcurrentTrack(trackPlay);
-            setIsFavorite(checkIsFavorite(tracks[trackPlay]?._id));
-            setLastPlaying(tracks[trackPlay]?._id);
+            setIsFavorite(checkIsFavorite(tracksPlaying[trackPlay]?._id));
+            setLastPlaying(tracksPlaying[trackPlay]?._id);
             setHidden(false);
         }
     }, [selectedTrackId, tracks]);
@@ -82,7 +112,7 @@ const PlayingBar = (): ReactElement => {
     };
 
     const newFavoriteTrack = (trackID: string) => {
-        const trackIndex = tracks.findIndex(
+        const trackIndex = tracksPlaying.findIndex(
             (track: any) => track._id === trackID
         );
         return tracks[trackIndex];
@@ -144,7 +174,7 @@ const PlayingBar = (): ReactElement => {
             setIsPlaying(!isPlaying);
         } else {
             setIsPlaying(!isPlaying);
-            setLastPlaying(tracks[currentTrack]._id);
+            setLastPlaying(tracksPlaying[currentTrack]._id);
         }
     };
 
@@ -178,16 +208,16 @@ const PlayingBar = (): ReactElement => {
 
     const favoriteHandler = () => {
         if (isFavorite) {
-            removeTrackFromFavorite(tracks[currentTrack]._id);
+            removeTrackFromFavorite(tracksPlaying[currentTrack]._id);
             setIsFavorite(!isFavorite);
         } else {
-            addTrackToFavorite(tracks[currentTrack]._id);
+            addTrackToFavorite(tracksPlaying[currentTrack]._id);
             setIsFavorite(!isFavorite);
         }
     };
 
     const setFeaturePlaying = (currentIndex: number) => {
-        let nextTrack = (currentIndex + 1) % tracks.length;
+        let nextTrack = (currentIndex + 1) % tracksPlaying.length;
 
         if (isRepeat) {
             nextTrack = currentIndex;
@@ -197,14 +227,14 @@ const PlayingBar = (): ReactElement => {
         }
 
         if (isRandom) {
-            nextTrack = Math.floor(Math.random() * tracks.length);
+            nextTrack = Math.floor(Math.random() * tracksPlaying.length);
         }
-        setSelectedTrack(tracks[nextTrack]._id);
+        setSelectedTrack(tracksPlaying[nextTrack]._id);
     };
 
     const trackEndHandler = () => {
         const currentIndex = tracks.findIndex(
-            (track) => track._id === tracks[currentTrack]._id
+            (track) => track._id === tracksPlaying[currentTrack]._id
         );
         setFeaturePlaying(currentIndex);
     };
@@ -216,19 +246,21 @@ const PlayingBar = (): ReactElement => {
     };
 
     const skipTrackHandler = async (direction: any) => {
-        const currentIndex = tracks.findIndex(
-            (track) => track._id === selectedTrackId
+        const currentIndex = tracksPlaying.findIndex(
+            (track: any) => track._id === selectedTrackId
         );
 
         if (direction === 'forward-step-btn') {
             setFeaturePlaying(currentIndex);
         } else if (direction === 'backward-step-btn') {
-            let backTrack = tracks[tracks.length - 1]._id;
+            let backTrack = tracksPlaying[tracks.length - 1]._id;
 
             if (currentIndex - 1 === -1) {
                 setSelectedTrack(backTrack);
             } else {
-                backTrack = tracks[(currentIndex - 1) % tracks.length]._id;
+                backTrack =
+                    tracksPlaying[(currentIndex - 1) % tracksPlaying.length]
+                        ._id;
                 setSelectedTrack(backTrack);
             }
             setIsFavorite(checkIsFavorite(backTrack));
@@ -253,7 +285,7 @@ const PlayingBar = (): ReactElement => {
                     <div className="playing-widget d-flex align-items-center">
                         <div className="widget-container">
                             <img
-                                src={tracks[currentTrack]?.themeUrl}
+                                src={tracksPlaying[currentTrack]?.themeUrl}
                                 alt=""
                                 className="track-img"
                             />
@@ -261,12 +293,15 @@ const PlayingBar = (): ReactElement => {
                         <div className="song-info d-flex flex-column align-items-center text-white">
                             <div className="song-name-wrapper  d-flex align-items-center">
                                 <span className={runSongName()}>
-                                    {tracks[currentTrack]?.title}
+                                    {tracksPlaying[currentTrack]?.title}
                                 </span>
                             </div>
                             <div className="song-artist d-flex align-items-center">
                                 <span className="song-artist">
-                                    {tracks[currentTrack]?.artists[0]?.name}
+                                    {
+                                        tracksPlaying[currentTrack]?.artists[0]
+                                            ?.name
+                                    }
                                 </span>
                             </div>
                         </div>
@@ -407,7 +442,7 @@ const PlayingBar = (): ReactElement => {
                     onTimeUpdate={updateTimeHandler}
                     onEnded={trackEndHandler}
                     ref={audioRef}
-                    src={tracks[currentTrack]?.trackUrl}
+                    src={tracksPlaying[currentTrack]?.trackUrl}
                 />
             </div>
         );
