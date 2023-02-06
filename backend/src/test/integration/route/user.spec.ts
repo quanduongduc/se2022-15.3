@@ -1,13 +1,13 @@
 import { HttpStatus } from '../../../utils';
 import { jsonHeaders, request } from '../../helpers';
-import { connectDB } from '../../../configs';
+import { connectTestDB } from '../../helpers';
 import mongoose from 'mongoose';
 import { Role, User } from '../../../models';
 
 describe('User route test', () => {
     let userId = '';
     beforeAll(async () => {
-        await connectDB();
+        await connectTestDB();
         const res = await User.create({
             userName: 'testUserName',
             password: 'aStrongPassWord1!',

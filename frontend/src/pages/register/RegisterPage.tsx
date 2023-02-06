@@ -10,12 +10,12 @@ import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import Logo from '../../image/logo.png';
 import axios from '../../api/axios';
-import validator from 'validator';
 import './register.css';
 const REGISTER_URL = 'auth/register';
 
 const RegisterPage = (): ReactElement => {
     const navigate = useNavigate();
+    const UNICODE_LETTER_REGEX = /^\p{L}+$/u;
     const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     const upperChars = /[A-Z]/;
     const digitChars = /[0-9]/;
@@ -63,24 +63,26 @@ const RegisterPage = (): ReactElement => {
     };
 
     useEffect(() => {
-        if (!validator.isAlpha(firstName)) {
+        if (firstName.length < 1) {
+            setErrMsgFistName('Họ của bạn cần nhiều hơn 1 ký tự');
+        } else if (firstName.length > 32) {
+            setErrMsgFistName('Họ của bạn cần ít hơn 32 ký tự');
+        } else if (!UNICODE_LETTER_REGEX.test(firstName)) {
             setErrMsgFistName('Bạn cần nhập họ của bạn chỉ là chữ');
-        }
-
-        if (firstName === '') {
+        } else if (firstName === '') {
             setErrMsgFistName('Bạn cần nhập họ của bạn');
-        }
-
-        if (validator.isAlpha(firstName)) {
+        } else {
             setErrMsgFistName('');
         }
     }, [firstName]);
 
     useEffect(() => {
-        if (!validator.isAlpha(lastName)) {
+        if (lastName.length < 1) {
+            setErrMsgLastName('Tên của bạn cần nhiều hơn 1 ký tự');
+        } else if (lastName.length > 32) {
+            setErrMsgLastName('Tên của bạn cần ít hơn 32 ký tự');
+        } else if (!UNICODE_LETTER_REGEX.test(lastName)) {
             setErrMsgLastName('Bạn cần nhập tên của bạn chỉ là chữ');
-        } else if (lastName === '') {
-            setErrMsgLastName('Bạn cần nhập tên của bạn');
         } else {
             setErrMsgLastName('');
         }
@@ -175,7 +177,7 @@ const RegisterPage = (): ReactElement => {
                                     aria-invalid="false"
                                     className="form-control border-dark"
                                     id="firstName-validation"
-                                    placeholder="Nhập họ của bạn. Không dấu!"
+                                    placeholder="Nhập họ của bạn."
                                     autoCapitalize="off"
                                     onChange={(e) =>
                                         setFirstName(e.target.value)
@@ -199,7 +201,7 @@ const RegisterPage = (): ReactElement => {
                                     aria-invalid="false"
                                     className="form-control border-dark"
                                     id="lastName-validation"
-                                    placeholder="Nhập tên của bạn. Không dấu!"
+                                    placeholder="Nhập tên của bạn."
                                     autoCapitalize="off"
                                     onChange={(e) =>
                                         setLastName(e.target.value)
