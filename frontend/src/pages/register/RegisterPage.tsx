@@ -56,7 +56,7 @@ const RegisterPage = (): ReactElement => {
                 setGender('');
                 navigate('/login');
             })
-            .catch((err:any) => {
+            .catch((err) => {
                 if (err.response) {
                     setErrMsg(err.response.data.message);
                 }
