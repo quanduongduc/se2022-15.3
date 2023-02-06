@@ -16,7 +16,6 @@ const REGISTER_URL = 'auth/register';
 const RegisterPage = (): ReactElement => {
     const navigate = useNavigate();
     const UNICODE_LETTER_REGEX = /^\p{L}+$/u;
-    const specialCharsUser = /[_.]/;
     const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     const upperChars = /[A-Z]/;
     const digitChars = /[0-9]/;
@@ -94,8 +93,6 @@ const RegisterPage = (): ReactElement => {
             setErrMsgUserName('Tên tài khoản của bạn cần nhiều hơn 8 ký tự');
         } else if (userName.length > 32) {
             setErrMsgUserName('Tên tài khoản của bạn cần ít hơn 32 ký tự');
-        } else if (!specialCharsUser.test(userName)) {
-            setErrMsgUserName('Vui lòng nhập ký tự đặc biệt . hoặc _');
         } else {
             setErrMsgUserName('');
         }
