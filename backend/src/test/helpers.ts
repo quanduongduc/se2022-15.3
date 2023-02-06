@@ -1,6 +1,8 @@
 import app from '../app';
 import _request from 'supertest';
 import { config } from '../configs';
+import mongoose from 'mongoose';
+import { ConnectOptions } from 'mongoose';
 
 jest.setTimeout(300000);
 export const request = _request(app);
