@@ -63,10 +63,6 @@
     margin-left: 10px;
 }
 
-.playlist-find-tracks {
-    width: calc(100%-250px);
-}
-
 .playlist-add-track-btn {
     width: 70px;
     height: 40px;
