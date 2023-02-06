@@ -49,18 +49,18 @@ const LoginPage = (): ReactElement => {
                 setPassword('');
                 axios
                     .get(AUTH_URL, { withCredentials: true })
-                    .then((res) => {
+                    .then((res:any) => {
                         const user = res?.data?.user;
                         setAuth({ user });
                         navigate(0);
                     })
-                    .catch((err) => {
+                    .catch((err:any) => {
                         if (err.response) {
                             console.log(err.response?.data?.message);
                         }
                     });
             })
-            .catch((err) => {
+            .catch((err:any) => {
                 if (err.response) {
                     setErrMsg(err.response.data.message);
                 }

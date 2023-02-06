@@ -1,13 +1,13 @@
 import { HttpStatus } from '../../../utils';
 import { jsonHeaders, request } from '../../helpers';
-import { connectDB } from '../../../configs';
+import { connectTestDB } from '../../helpers';
 import mongoose from 'mongoose';
 import { User } from '../../../models';
 
 describe('Auth route test', () => {
     let token = '';
     beforeAll(async () => {
-        await connectDB();
+        await connectTestDB();
         await User.remove({});
     });
 
