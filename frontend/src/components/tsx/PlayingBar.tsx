@@ -35,6 +35,7 @@ const PlayingBar = (): ReactElement => {
         favoriteTracksContextState: { favoriteTracks },
         updateFavoriteTracksContextState
     } = useFavoriteTracksContext();
+
     const {
         playlistContextState: { selectedPlaylist }
     } = usePlaylistContext();
@@ -66,7 +67,7 @@ const PlayingBar = (): ReactElement => {
 
     useEffect(() => {
         setCurrentPage(window.location.pathname);
-    }, [window.location.pathname]);
+    }, [selectedTrackId]);
 
     useEffect(() => {
         let newTracks: any = [];
@@ -77,11 +78,16 @@ const PlayingBar = (): ReactElement => {
                 );
                 newTracks.push(tracks[newTrack]);
             }
+        } else if (
+            currentPage === '/playlist/' &&
+            selectedPlaylist.tracks.length > 0
+        ) {
+            newTracks = selectedPlaylist.tracks;
         } else {
             newTracks = tracks;
         }
         setTracksPlaying(newTracks);
-    }, [currentPage, favoriteTracks, selectedTrackId, tracks]);
+    }, [currentPage, selectedTrackId, favoriteTracks, tracks]);
 
     useEffect(() => {
         if (selectedTrackId !== undefined) {
