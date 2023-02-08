@@ -143,12 +143,7 @@ const Favorite = (): ReactElement => {
                         NGÀY TẠO
                     </div>
                     <div className="favorite-duration">
-                        <FontAwesomeIcon
-                            icon={faClockFour}
-                            color="white"
-                            className="favorite-clock-font"
-                            title="duration"
-                        />
+                        LƯỢT XEM
                     </div>
                 </div>
                 <div className="favorite-data-content d-flex flex-column">

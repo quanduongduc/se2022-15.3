@@ -148,12 +148,7 @@ const PlaylistView = () => {
                         NGÀY TẠO
                     </div>
                     <div className="playlist-view-duration ms-5 col-1">
-                        <FontAwesomeIcon
-                            icon={faClockFour}
-                            color="white"
-                            className="clock-font"
-                            title="duration"
-                        />
+                        LƯỢT XEM
                     </div>
                 </div>
                 <div className="track-content d-flex flex-column">
