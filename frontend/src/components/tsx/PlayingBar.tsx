@@ -288,7 +288,7 @@ const PlayingBar = (): ReactElement => {
                             <img
                                 src={tracksPlaying[currentTrack]?.themeUrl}
                                 alt=""
-                                className="track-img"
+                                className="track-playingbar-img"
                             />
                         </div>
                         <div className="song-info d-flex flex-column align-items-center text-white">
