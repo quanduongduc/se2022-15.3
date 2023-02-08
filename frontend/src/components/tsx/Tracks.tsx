@@ -35,9 +35,7 @@ const Tracks = (): ReactElement => {
                     <div className="index-header col-1">#</div>
                     <div className="title-header ms-3 col-5">TIÊU ĐỀ</div>
                     <div className="created-at col-3">NGÀY TẠO</div>
-                    <div className="duration col-1">
-                        LƯỢT XEM
-                    </div>
+                    <div className="duration col-1">LƯỢT XEM</div>
                 </div>
                 <div className="playlist-track-content">
                     {tracks.map((track: any, index: number) => (

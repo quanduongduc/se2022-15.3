@@ -142,9 +142,7 @@ const Favorite = (): ReactElement => {
                     <div className="favorite-created-at col-2 me-5">
                         NGÀY TẠO
                     </div>
-                    <div className="favorite-duration">
-                        LƯỢT XEM
-                    </div>
+                    <div className="favorite-duration">LƯỢT XEM</div>
                 </div>
                 <div className="favorite-data-content d-flex flex-column">
                     {trackInFavorite.map((track, index) => (
