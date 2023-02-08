@@ -132,7 +132,7 @@ const PlaylistView = () => {
     return (
         <div className="playlist-view-wrapper d-flex flex-column text-white">
             <div className="playlist-view-header align-items-center">
-                <div className="playlist-view-title mt-5 ms-3">
+                <div className="playlist-view-title ms-3">
                     {selectedPlaylist.title}
                 </div>
             </div>
