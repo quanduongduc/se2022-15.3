@@ -1,4 +1,4 @@
-# SE06-19.2 : Salyr
+# SE2022-15.3 : Salyr
 Salyr is a music streaming web application developed and deployed based on CI/CD, containerization technology, cloud computing, and nodejs.
 
 ## Requirements
