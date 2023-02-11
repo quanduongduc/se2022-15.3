@@ -1,1 +1,4 @@
 .vscode/
+backend.env
+.env
+dev.env
