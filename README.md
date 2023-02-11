@@ -71,7 +71,7 @@ There are two main step in CD Workflow :
 
 - Build : Build docker images then pushing them to registry(AWS ECR for our project)
 
-- Deploy : Deploy to sever
+- Deploy : Deploy to server
   1. Use SSH to Remote Server
   2. Install required packages (docker, aws cli, ... )
   3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with env store in actions secret. This branch is only for deployment.
