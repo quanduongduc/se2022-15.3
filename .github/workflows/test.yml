@@ -43,8 +43,8 @@ jobs:
         run: |
           touch .env
           touch ./backend/.env
-          cat ${{ secrets.GLOBAL_ENVS }}
-          cat ${{ secrets.BACKEND_ENVS }}
+          echo "${{ secrets.GLOBAL_ENVS }}" >> .env
+          echo "${{ secrets.BACKEND_ENVS }}" >> ./backend/.env
           
       - name: Install dependencies
         run: npm install --prefix ./backend
