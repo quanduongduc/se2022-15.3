@@ -67,7 +67,7 @@ Pull requests must be reviewed by at least one contributor after merging into th
 
 CD Workflow will only be triggered when pushing(merging) code to [main branch](https://github.com/quanduongduc/se2022-15.3/tree/main)
 
-There are two main step in CD Workflow :
+There are two main steps in CD Workflow :
 
 - Build : Build docker images then pushing them to registry(AWS ECR for our project)
 
