@@ -1,6 +1,6 @@
 *
 !.gitignore
-!.env
+.env
 !.docker-compose.production.yml
 !.README.md
-!*.env
+*.env
