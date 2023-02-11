@@ -42,35 +42,35 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: build and push backend image
-      #   id: build-backend-image
-      #   env:
-      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     IMAGE_TAG: ${{ github.sha }}
-      #   run: |
-      #     # Build a docker container and
-      #     # push it to ECR so that it can
-      #     # be deployed to ECS.
-      #     imagename=$ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG
-      #     echo "Build and push $imagename"
-      #     docker build -t $imagename ./backend
-      #     docker push $imagename
-      #     echo "backend-image=$imagename" >> $GITHUB_OUTPUT
+      - name: build and push backend image
+        id: build-backend-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG
+          echo "Build and push $imagename"
+          docker build -t $imagename ./backend
+          docker push $imagename
+          echo "backend-image=$imagename" >> $GITHUB_OUTPUT
 
-      # - name: build and push frontend image
-      #   id: build-frontend-image
-      #   env:
-      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     IMAGE_TAG: ${{ github.sha }}
-      #   run: |
-      #     # Build a docker container and
-      #     # push it to ECR so that it can
-      #     # be deployed to ECS.
-      #     imagename=$ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
-      #     echo "Build and push $imagename"
-      #     docker build -t $imagename ./frontend
-      #     docker push $imagename
-      #     echo "frontend-image=$imagename" >> $GITHUB_OUTPUT
+      - name: build and push frontend image
+        id: build-frontend-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          imagename=$ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
+          echo "Build and push $imagename"
+          docker build -t $imagename ./frontend
+          docker push $imagename
+          echo "frontend-image=$imagename" >> $GITHUB_OUTPUT
 
       - name: build and push nginx image
         id: build-nginx-image
@@ -105,7 +105,7 @@ jobs:
           NGINX_IMAGE: ${{ needs.build.outputs.nginx-image }}
           ECR_REGISTRY: ${{ needs.build.outputs.ECR_REGISTRY }}
           PROJECT_NAME: "se2022-15.3"
-          GLOBAL_ENVS: ${{ secrets.GLOBAL_ENV }}
+          GLOBAL_ENVS: ${{ secrets.GLOBAL_ENVS }}
           BACKEND_ENVS: ${{ secrets.BACKEND_ENVS }}
         with:
           host: ${{ secrets.HOSTNAME }}
@@ -177,8 +177,7 @@ jobs:
             echo -e "AWS_ECR_NGINX=$NGINX_IMAGE" >> .env
             echo -e "AWS_ECR_BACKEND=$BACKEND_IMAGE" >> .env
             echo -e "AWS_ECR_FRONTEND=$FRONTEND_IMAGE" >> .env
-            cat .env
-            cat backend.env
+
             sudo docker compose -f docker-compose.production.yml up -d
             echo "--- Clean up old docker images ---"
             sudo docker image prune -f -a
