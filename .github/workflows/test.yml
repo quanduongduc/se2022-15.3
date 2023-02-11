@@ -39,6 +39,13 @@ jobs:
           mongodb-db: admin
           mongodb-port: 27017
 
+      - name: Fill env files
+        run: |
+          touch .env
+          touch ./backend/.env
+          cat ${{ secrets.GLOBAL_ENVS }}
+          cat ${{ secrets.BACKEND_ENVS }}
+          
       - name: Install dependencies
         run: npm install --prefix ./backend
 
