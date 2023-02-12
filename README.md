@@ -4,9 +4,9 @@
 [![test status](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml/badge.svg)](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml)
 [![Coverage](https://codecov.io/gh/quanduongduc/se2022-15.3/branch/main/graph/badge.svg?token=WOIN4CS7K0)](https://codecov.io/gh/quanduongduc/se2022-15.3)
 
-Salyr is a music streaming web application developed and deployed based on ***CI/CD***, ***containerization technology***, ***cloud computing***, and nodejs.
+Salyr is a music streaming web application developed and deployed based on **_CI/CD_**, **_containerization technology_**, **_cloud computing_**, and nodejs.
 
-Living Site : https://salyr.online :notes:
+Living Site : <https://salyr.online> :notes:
 
 ## Requirements
 
@@ -80,7 +80,7 @@ There are two main steps in CD Workflow :
 - Deploy : Deploy to server
   1. Use SSH to Remote Server
   2. Install required packages (docker, aws cli, ... )
-  3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with enviroment variables store in [actions secrets](#Actions-Secrets). This branch is only for deployment.
+  3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with enviroment variables store in [actions secrets](#actions-secrets). This branch is only for deployment.
   4. Pull docker images from the registry
   5. Run containers
 
@@ -102,23 +102,24 @@ Secrets **No 1 to 5** are used for initiating SSH connection to the server.
 
 ## Directory structure
 
-- `.github/workflows`:        Github Actions workflow files
-- `backend`:                  Backend Nodejs REST API
-- `frontend`:                 Frontend React
-- `nginx`:                    Contains Nginx config file
+- `.github/workflows`: Github Actions workflow files
+- `backend`: Backend Nodejs REST API
+- `frontend`: Frontend React
+- `nginx`: Contains Nginx config file
 
 ### Files
 
-- `docker-compose.yml`:    The Compose file use in development enviroment
+- `docker-compose.yml`: The Compose file use in development enviroment
 - `docker-compose.production.yml`: The Compose file use in deployment enviroment. This file seems to be redundant in this branches as [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) has its own docker-compose.production file. We are considering to remove this file.
-- `example.env`:                 list all global environment variables (not contain value), which will use in docker compose files
-- `/backend/example.env`:        list all backend environment variables (not contain value), some variables are the same as global env
+- `example.env`: list all global environment variables (not contain value), which will use in docker compose files
+- `/backend/example.env`: list all backend environment variables (not contain value), some variables are the same as global env
 
 ## UseCase
 
-  ![218251702-25c6439e-d8cd-4d40-a1b0-2c7f1890adfd](https://user-images.githubusercontent.com/59951771/218302384-f2e52f43-5578-418f-b0ce-d8017374fb81.png)
+![218251702-25c6439e-d8cd-4d40-a1b0-2c7f1890adfd](https://user-images.githubusercontent.com/59951771/218302384-f2e52f43-5578-418f-b0ce-d8017374fb81.png)
 
 ## Features
+
 - APIs : check all implemented API [here](https://github.com/quanduongduc/se2022-15.3/blob/main/backend/readme.md)
 - Appication Features :
   - REGISTRATION AND LOGIN AUTHENTICATION
@@ -126,10 +127,19 @@ Secrets **No 1 to 5** are used for initiating SSH connection to the server.
   - MUSIC PLAYER
   - FAVOURITE MUSIC
   - PERSONAL MUSIC PLAYLIST
+
 ## Project Notes
-  - **Err** output of workflow is not an actual error. It seems to be a confuse log from [ssh action](https://github.com/appleboy/ssh-action). [More information](https://github.com/appleboy/ssh-action/issues/110). [#14](https://github.com/quanduongduc/se2022-15.3/issues/14)
-  - For anyone who wants to contribute to the CD process: Cloud Server's OS is Ubuntu Server 22.04 LTS (HVM)(64-bit (x86))
+
+- **Err** output of workflow is not an actual error. It seems to be a confuse log from [ssh action](https://github.com/appleboy/ssh-action). [More information](https://github.com/appleboy/ssh-action/issues/110). [#14](https://github.com/quanduongduc/se2022-15.3/issues/14)
+- For anyone who wants to contribute to the CD process: Cloud Server's OS is Ubuntu Server 22.04 LTS (HVM)(64-bit (x86))
+
 ## Future Works
+
+- Integrate code quality analysis tool into project.
+- Change deployment architecture to Per components per host.
+- Optimize page load time.
+- Implement more APIs.
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
@@ -142,4 +152,19 @@ If you have a suggestion that would make this better, please fork the repo and c
 4. Push to the the above Branch
 5. Open a Pull Request
 
+## Credits
+
+- [Docker Tutorials](https://www.youtube.com/watch?v=3c-iBn73dDE&t=5017s)
+- [GitHub Actions Cheat Sheet](https://resources.github.com/whitepapers/github-actions-cheat/?fbclid=IwAR1PLAzai7XJiKhLlEyqymH3vJPSB1elpMqp4J2HKNrzyfsTUDJ0cVSPRp8)
+- [Build and push Docker images](https://github.com/marketplace/actions/build-and-push-docker-images?fbclid=IwAR2ah4D8RGUDwwd6B0lxpEscDzQTjC4_7Zphd8NsZjokuB_7NmjlCm1ZmeI)
+- [GitHub Actions Tutorial](https://www.youtube.com/watch?v=R8_veQiYBjI)
+- Music data used in application is crawled from zingmp3.
+
 ## Acknowledgments
+
+- Special thanks to Mr.Freddie Nguyen for the Software Engineering courses
+- Thanks also to Mr.Thanh Le for guiding us in this project
+- Many thanks to youtubers, medium writers, and developers on the interner for tutorials and instructions article
+- Thanks to [@quanduongduc](https://github.com/quanduongduc) for leading team to complete this project
+- Thanks to [@nguyennghia1209](https://github.com/nguyennghia1209) for designing and implementing application's frontend
+- Thanks to [@manhhus](https://github.com/manhhus) for massive testing works, finding and fixing bugs
