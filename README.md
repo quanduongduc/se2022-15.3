@@ -4,7 +4,9 @@
 [![test status](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml/badge.svg)](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml)
 [![Coverage](https://codecov.io/gh/quanduongduc/se2022-15.3/branch/main/graph/badge.svg?token=WOIN4CS7K0)](https://codecov.io/gh/quanduongduc/se2022-15.3)
 
-Salyr is a music streaming web application developed and deployed based on CI/CD, containerization technology, cloud computing, and nodejs.
+Salyr is a music streaming web application developed and deployed based on ***CI/CD***, ***containerization technology***, ***cloud computing***, and nodejs.
+
+Living Site : https://salyr.online :notes:
 
 ## Requirements
 
@@ -65,7 +67,7 @@ Workflow's step :
 
 When a Pull request opened, CodeCov bot will comment Coverage information into it.
 
-Pull requests must be reviewed by at least one contributor after merging into the main branch.
+Pull requests must be reviewed by at least one contributor after merging into [main branch](https://github.com/quanduongduc/se2022-15.3/tree/main).
 
 ### CD WorkFlow
 
@@ -100,14 +102,34 @@ Secrets **No 1 to 5** are used for initiating SSH connection to the server.
 
 ## Directory structure
 
+- `.github/workflows`:        Github Actions workflow files
+- `backend`:                  Backend Nodejs REST API
+- `frontend`:                 Frontend React
+- `nginx`:                    Contains Nginx config file
+
+### Files
+
+- `docker-compose.yml`:    The Compose file use in development enviroment
+- `docker-compose.production.yml`: The Compose file use in deployment enviroment. This file seems to be redundant in this branches as [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) has its own docker-compose.production file. We are considering to remove this file.
+- `example.env`:                 list all global environment variables (not contain value), which will use in docker compose files
+- `/backend/example.env`:        list all backend environment variables (not contain value), some variables are the same as global env
+
 ## UseCase
 
-## Application Features
+  ![218251702-25c6439e-d8cd-4d40-a1b0-2c7f1890adfd](https://user-images.githubusercontent.com/59951771/218302384-f2e52f43-5578-418f-b0ce-d8017374fb81.png)
 
+## Features
+- APIs : check all implemented API [here](https://github.com/quanduongduc/se2022-15.3/blob/main/backend/readme.md)
+- Appication Features :
+  - REGISTRATION AND LOGIN AUTHENTICATION
+  - MUSIC SEARCH BY NAME AND ARTIST
+  - MUSIC PLAYER
+  - FAVOURITE MUSIC
+  - PERSONAL MUSIC PLAYLIST
 ## Project Notes
-
+  - **Err** output of workflow is not an actual error. It seems to be a confuse log from [ssh action](https://github.com/appleboy/ssh-action). [More information](https://github.com/appleboy/ssh-action/issues/110). [#14](https://github.com/quanduongduc/se2022-15.3/issues/14)
+  - For anyone who wants to contribute to the CD process: Cloud Server's OS is Ubuntu Server 22.04 LTS (HVM)(64-bit (x86))
 ## Future Works
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
