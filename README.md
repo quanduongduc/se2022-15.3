@@ -1,5 +1,9 @@
 # SE2022-15.3 : Salyr
 
+[![deploy status](https://github.com/quanduongduc/se2022-15.3/actions/workflows/deploy.yml/badge.svg)](https://github.com/quanduongduc/se2022-15.3/actions/workflows/deploy.yml)
+[![test status](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml/badge.svg)](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml)
+[![Coverage](https://codecov.io/gh/quanduongduc/se2022-15.3/branch/main/graph/badge.svg?token=WOIN4CS7K0)](https://codecov.io/gh/quanduongduc/se2022-15.3)
+
 Salyr is a music streaming web application developed and deployed based on CI/CD, containerization technology, cloud computing, and nodejs.
 
 ## Requirements
@@ -27,7 +31,7 @@ The following diagram describe deployment of our project
 
 ![deployment-view](https://user-images.githubusercontent.com/59951771/218251843-77aac474-234a-45a5-8f68-0c9ef32a3c66.png)
 
-### Component
+### Components
 
 | No  | Name             | Description                                                                                             |                  |
 | --- | ---------------- | ------------------------------------------------------------------------------------------------------- | ---------------- |
@@ -74,13 +78,13 @@ There are two main steps in CD Workflow :
 - Deploy : Deploy to server
   1. Use SSH to Remote Server
   2. Install required packages (docker, aws cli, ... )
-  3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with env store in actions secret. This branch is only for deployment.
+  3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with enviroment variables store in [actions secrets](#Actions-Secrets). This branch is only for deployment.
   4. Pull docker images from the registry
   5. Run containers
 
 ### Actions Secrets
 
-There are some project configs, enviroment files which stored in github actions secret For security reasons.
+There are some project configs, enviroment files which stored in github actions secrets For security reasons.
 
 | No  | Name                  | Description                                             |
 | --- | --------------------- | ------------------------------------------------------- |
