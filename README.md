@@ -29,9 +29,10 @@ This section describes how project is deployed through the internet, which is no
 
 ### Deployment Diagram
 
-The following diagram describe deployment of our project
+The following diagram describes deployment of our project
 
-![deployment-view](https://user-images.githubusercontent.com/59951771/218251843-77aac474-234a-45a5-8f68-0c9ef32a3c66.png)
+![deployment-view](https://user-images.githubusercontent.com/59951771/218686425-9e81ff5f-f873-4b4c-a8ba-7dc4e3ce0688.png)
+
 
 ### Components
 
@@ -44,7 +45,7 @@ The following diagram describe deployment of our project
 | 5   | MongoDB database | MongoDB database                                                                                        | Docker Container |
 | 6   | S3               | Object Storage from AWS service                                                                         | AWS Service      |
 
-All above Docker Containers are deployed in a same cloud server (AWS EC2).
+All the above Docker Containers are deployed in the same cloud server (AWS EC2).
 
 ## CI/CD PipeLine
 
@@ -58,14 +59,14 @@ Project's CI/CD pipeline is implemented using github actions.
 
 CI Workflow will be triggered when pushing code to [frontend branch](https://github.com/quanduongduc/se2022-15.3/tree/frontend) or [backend branch](https://github.com/quanduongduc/se2022-15.3/tree/backend)
 
-Workflow's step :
+Workflow  step :
 
 1. Create MongoDB Test Database
 2. Install Dependencies
 3. Perform Test by JEST
 4. Upload Test Coverage To CodeCov
 
-When a Pull request opened, CodeCov bot will comment Coverage information into it.
+When a Pull request is opened, CodeCov bot will comment Coverage information into it.
 
 Pull requests must be reviewed by at least one contributor after merging into [main branch](https://github.com/quanduongduc/se2022-15.3/tree/main).
 
@@ -75,28 +76,28 @@ CD Workflow will only be triggered when pushing(merging) code to [main branch](h
 
 There are two main steps in CD Workflow :
 
-- Build : Build docker images then pushing them to registry(AWS ECR for our project)
+- Build : Build docker images then push them to image registry(AWS ECR for our project)
 
 - Deploy : Deploy to server
   1. Use SSH to Remote Server
   2. Install required packages (docker, aws cli, ... )
-  3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with enviroment variables store in [actions secrets](#actions-secrets). This branch is only for deployment.
+  3. fetch code from [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) and fill in env-files with environment variables stored in [actions secrets](#actions-secrets). This branch is only for deployment.
   4. Pull docker images from the registry
   5. Run containers
 
 ### Actions Secrets
 
-There are some project configs, enviroment files which stored in github actions secrets For security reasons.
+There are some project configs, and environment files which stored in github actions secrets For security reasons.
 
 | No  | Name                  | Description                                             |
 | --- | --------------------- | ------------------------------------------------------- |
 | 1   | AWS_ACCESS_KEY_ID     | AWS access key associated with an IAM user or role.     |
 | 2   | AWS_SECRET_ACCESS_KEY | Specifies the secret key associated with the access key |
 | 3   | AWS_PRIVATE_KEY       | Server SSH Key, Could use Amazon EC2 key pairs for this |
-| 4   | HOSTNAME              | HOSTNAME Of server                                      |
-| 5   | USERNAME              | server's USERNAME                                       |
-| 6   | BACKEND_ENVS          | Enviroment variables of backend                         |
-| 7   | GLOBAL_ENVS           | Enviroment variables of entire project                  |
+| 4   | HOSTNAME              | SSH HOSTNAME                                            |
+| 5   | USERNAME              | SSH USERNAME                                            |
+| 6   | BACKEND_ENVS          | Environment variables of backend                         |
+| 7   | GLOBAL_ENVS           | Environment variables of entire project                  |
 
 Secrets **No 1 to 5** are used for initiating SSH connection to the server.
 
@@ -109,9 +110,9 @@ Secrets **No 1 to 5** are used for initiating SSH connection to the server.
 
 ### Files
 
-- `docker-compose.yml`: The Compose file use in development enviroment
-- `docker-compose.production.yml`: The Compose file use in deployment enviroment. This file seems to be redundant in this branches as [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) has its own docker-compose.production file. We are considering to remove this file.
-- `example.env`: list all global environment variables (not contain value), which will use in docker compose files
+- `docker-compose.yml`: The Compose file used in the development environment
+- `docker-compose.production.yml`: The Compose file used in deployment environment. This file seems to be redundant in this branch as [deploy branch](https://github.com/quanduongduc/se2022-15.3/tree/deploy) has its own docker-compose.production file. We are considering removing this file.
+- `example.env`: list all global environment variables (not contain value), which will use in docker-compose files
 - `/backend/example.env`: list all backend environment variables (not contain value), some variables are the same as global env
 
 ## UseCase
@@ -120,8 +121,8 @@ Secrets **No 1 to 5** are used for initiating SSH connection to the server.
 
 ## Features
 
-- APIs : check all implemented API [here](https://github.com/quanduongduc/se2022-15.3/blob/main/backend/readme.md)
-- Appication Features :
+- APIs : check all implemented APIs [here](https://github.com/quanduongduc/se2022-15.3/blob/main/backend/readme.md)
+- Application Features :
   - REGISTRATION AND LOGIN AUTHENTICATION
   - MUSIC SEARCH BY NAME AND ARTIST
   - MUSIC PLAYER
@@ -130,7 +131,7 @@ Secrets **No 1 to 5** are used for initiating SSH connection to the server.
 
 ## Project Notes
 
-- **Err** output of workflow is not an actual error. It seems to be a confuse log from [ssh action](https://github.com/appleboy/ssh-action). [More information](https://github.com/appleboy/ssh-action/issues/110). [#14](https://github.com/quanduongduc/se2022-15.3/issues/14)
+- **Err** output of workflow is not an actual error. It seems to be a confusing log from [ssh action](https://github.com/appleboy/ssh-action). [More information](https://github.com/appleboy/ssh-action/issues/110). [#14](https://github.com/quanduongduc/se2022-15.3/issues/14)
 - For anyone who wants to contribute to the CD process: Cloud Server's OS is Ubuntu Server 22.04 LTS (HVM)(64-bit (x86))
 
 ## Future Works
@@ -149,7 +150,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 1. Fork the Project
 2. Create your Feature Branch
 3. Commit your Changes
-4. Push to the the above Branch
+4. Push to the above Branch
 5. Open a Pull Request
 
 ## Credits
@@ -164,7 +165,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 - Special thanks to Mr.Freddie Nguyen for the Software Engineering courses
 - Thanks also to Mr.Thanh Le for guiding us in this project
-- Many thanks to youtubers, medium writers, and developers on the interner for tutorials and instructions article
+- Many thanks to youtubers, and developers on the internet for tutorials and tech
 - Thanks to [@quanduongduc](https://github.com/quanduongduc) for leading team to complete this project
 - Thanks to [@nguyennghia1209](https://github.com/nguyennghia1209) for designing and implementing application's frontend
-- Thanks to [@manhhus](https://github.com/manhhus) for massive testing works, finding and fixing bugs
+- Thanks to [@manhhus](https://github.com/manhhus) for massive testing works, finding and fixing bugs, application ideas, and improving UI/UX
