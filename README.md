@@ -165,7 +165,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 - Special thanks to Mr.Freddie Nguyen for the Software Engineering courses
 - Thanks also to Mr.Thanh Le for guiding us in this project
-- Many thanks to youtubers, and developers on the internet for tutorials and tech
+- Many thanks to youtubers, and developers on the internet for tutorials
 - Thanks to [@quanduongduc](https://github.com/quanduongduc) for leading team to complete this project
 - Thanks to [@nguyennghia1209](https://github.com/nguyennghia1209) for designing and implementing application's frontend
 - Thanks to [@manhhus](https://github.com/manhhus) for massive testing works, finding and fixing bugs, application ideas, and improving UI/UX
