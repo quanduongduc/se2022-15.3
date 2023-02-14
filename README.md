@@ -4,7 +4,7 @@
 [![test status](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml/badge.svg)](https://github.com/quanduongduc/se2022-15.3/actions/workflows/test.yml)
 [![Coverage](https://codecov.io/gh/quanduongduc/se2022-15.3/branch/main/graph/badge.svg?token=WOIN4CS7K0)](https://codecov.io/gh/quanduongduc/se2022-15.3)
 
-Salyr is a music streaming web application developed and deployed based on **_CI/CD_**, **_containerization technology_**, **_cloud computing_**, and nodejs.
+Salyr is a music streaming web application developed and deployed based on **_CI/CD_**, **_containerization technology_**, **_cloud computing_**, and nodejs. This project focuses on optimal development progress and application quality
 
 Living Site : <https://salyr.online> :notes:
 
